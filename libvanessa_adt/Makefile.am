@@ -33,6 +33,7 @@ dynamic_array.c \
 element_ops.c \
 queue.c \
 key_value.c \
+config_file.c \
 list.c \
 hash.c
 

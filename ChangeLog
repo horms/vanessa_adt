@@ -14,6 +14,7 @@ XXX
     rather than the payload of an element would be passed to
     e_destroy if e_destroy is non-NULL.
   - Lists may be self-reordering
+  - Added vanessa_config_file_read()
 
 
 ----------------------------------------------------------------------

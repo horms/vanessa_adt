@@ -1102,4 +1102,36 @@ vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h);
 int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
 		                void *data);
 
+
+/**********************************************************************
+ * vanessa_config_file_read
+ * Read in a config file and put elements in a dynamic array
+ * pre: filename: file to read configuration from
+ *      flags: unused
+ * post: The file is parsed according to the following rules.
+ *       Escaping and quoting is intended to be analogous to 
+ *       how a shell (bash) handles these.
+ *       o Each line begins with a key, optionally folled
+ *         by some whitespace and a value 
+ *       o Leading whitespace is ignored
+ *       o Blank lines are ignored
+ *       o Anything after a # (hash) on a line is ignored
+ *       o If a \ precedes a new line then the lines will be concatenated
+ *       o If a \ precedes any other character, including a # (hash)
+ *         it will be treated as a literal
+ *       o Anything inside single quotes (') will be treated as a litreal.
+ *       o Anything other than a (') inside double quotes (") will be
+ *         treated as a litreal.
+ *       o Whitespace in keys must be escaped or quoted.
+ *       o Whitespace in values need not be escaped or quoted.
+ *       o If a key is a single letter it is prefixed by a "-"
+ *         Else the key is prefixed with "--"
+ * return: dynamic array containin elements
+ *         NULL on error
+ **********************************************************************/
+
+vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
+		vanessa_adt_flag_t flag);
+
 #endif /* _VANESSA_ADT_FLIM */
+

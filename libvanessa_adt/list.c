@@ -413,7 +413,11 @@ static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 		}
 		l->first->prev = e;
 		e->next = l->first;
+		e->prev = NULL;
 		l->first = e;
+		if(l->last == e) {
+			l->last = e->next;
+		}
 	}
 	return(e);
 }
