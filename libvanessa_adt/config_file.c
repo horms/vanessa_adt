@@ -524,7 +524,6 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 	vanessa_mode_str_t mode_b;
 	vanessa_mode_num_str_t mode_num_a;
 	vanessa_mode_num_str_t mode_num_b;
-	const char *filename = "./key_ring";
 	struct stat stat_buf;
 	struct passwd *pw_buf;
 	struct group *gr_buf;
@@ -540,8 +539,7 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 
 	if(flag & VANESSA_CONFIG_FILE_CHECK_FILE) {
 		if(!S_ISREG(stat_buf.st_mode)) {
-		 	VANESSA_LOGGER_DEBUG_UNSAFE("%s is not a regular file",
-				 	filename);
+		 	VANESSA_LOGGER_DEBUG_UNSAFE("not a regular file");
 		 	return(-1);
 		}
 	}
@@ -560,9 +558,9 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 			pw_buf = getpwuid(stat_buf.st_uid);
 			str = (pw_buf && pw_buf->pw_name) ? 
 				pw_buf->pw_name : "";
-			VANESSA_LOGGER_DEBUG_UNSAFE("%s is owned by %s (%d) ", 
+			VANESSA_LOGGER_DEBUG_UNSAFE("owned by %s (%d) " 
 					"instead of %s (%d)",
-					filename, str, stat_buf.st_uid, estr, 
+					str, stat_buf.st_uid, estr, 
 					euid);
 			free(estr);
 			return(-1);
@@ -583,9 +581,9 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 			gr_buf = getgrgid(stat_buf.st_gid);
 			str = (gr_buf && gr_buf->gr_name) ? 
 				gr_buf->gr_name : "";
-			VANESSA_LOGGER_DEBUG_UNSAFE("%s is group %s (%d) " 
+			VANESSA_LOGGER_DEBUG_UNSAFE("group %s (%d) " 
 					"instead of %s (%d)",
-				filename, str, stat_buf.st_gid, estr, egid);
+				str, stat_buf.st_gid, estr, egid);
 			free(estr);
 			return(-1);
 		}
@@ -599,9 +597,8 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 					&mode_num_a);
 			vanessa_mode_num_str((S_IRUSR|S_IWUSR), &mode_num_b);
 	 		VANESSA_LOGGER_DEBUG_UNSAFE(
-				 	"%s is mode %s (%s) "
-					"instead of %s (%s)", 
-				 	filename, mode_num_a.mode_str, 
+				 	"mode %s (%s) instead of %s (%s)", 
+				 	mode_num_a.mode_str, 
 					mode_a.mode_str, mode_num_b.mode_str, 
 					mode_b.mode_str);
 		 	return(-1);
