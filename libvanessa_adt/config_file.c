@@ -105,7 +105,6 @@ static void remove_trailing_whitespace(char *buf)
 		return;
 	}
 
-	VANESSA_LOGGER_DEBUG_UNSAFE("\"%s\"", buf);
 	len = strlen(buf);
 
 	while(len) {
