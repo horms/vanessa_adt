@@ -186,6 +186,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q);
 #define VANESSA_DISPLAY_STR (void (*)(char *d, void *s))strcpy
 #define VANESSA_LENGTH_STR (size_t (*)(void *s))strlen
 #define VANESSA_MATCH_STR (size_t (*)(void *s))strcmp
+#define VANESSA_SORT_STR VANESSA_MATCH_STR
 
 /* Sort versions */
 #define VANESSA_DESS VANESSA_DESTROY_STR
@@ -193,6 +194,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q);
 #define VANESSA_DISS VANESSA_DISPLAY_STR
 #define VANESSA_LENS VANESSA_LENGTH_STR
 #define VANESSA_MATS VANESSA_MATCH_STR
+#define VANESSA_SORS VANESSA_MATCH_STR
 
 typedef struct {
 	void **vector;
@@ -527,6 +529,7 @@ int vanessa_match_int(int *a, int *b);
 	(size_t (*)(void *s))vanessa_length_int
 #define VANESSA_MATCH_INT \
 	(int (*)(void *e, void *k))vanessa_match_int
+#define VANESSA_SORT_INT VANESSA_MATCH_INT
 
 /* ... and shorter versions */
 #define VANESSA_DESI VANESSA_DESTROY_INT
@@ -534,6 +537,7 @@ int vanessa_match_int(int *a, int *b);
 #define VANESSA_DISI VANESSA_DISPLAY_INT
 #define VANESSA_LENI VANESSA_LENGTH_INT
 #define VANESSA_MATI VANESSA_MATCH_INT
+#define VANESSA_SORI VANESSA_MATCH_INT
 
 
 /**********************************************************************
@@ -713,9 +717,10 @@ typedef struct {
 	size_t recent_offset;
 	void (*e_destroy) (void *e);
 	void *(*e_duplicate) (void *e);
-	int (*e_match) (void *e, void *key);
 	void (*e_display) (char *s, void *e);
 	size_t(*e_length) (void *e);
+	int (*e_match) (void *e, void *key);
+	int (*e_sort) (void *a, void *b);
 } vanessa_list_t;
 
 
@@ -750,6 +755,13 @@ typedef struct {
  *                         element_display. May be NULL, in which case
  *                         vanessa_dynamic_array_display will return an
  *                         empty string ("");
+ *      element_match:     Pointer to a function to match an element
+ *                         by a key.
+ *      element_sort:      Pointer to a function that will compare
+ *                         two elements and and b. Will return < 0 if a 
+ *                         should be before b in the list > 0 if a should
+ *                         be after b in the list. 0 if they are equal.
+ *                         Used in vanessa_list_add_element
  *
  * post: list structure is alocated, and values initialised to NULL
  * return: pointer to list
@@ -759,9 +771,10 @@ typedef struct {
 vanessa_list_t *vanessa_list_create(int norecent,
                                    void (*element_destroy) (void *e),
                                    void *(*element_duplicate) (void *e),
-                                   int (*element_match) (void *e, void *key),
                                    void (*element_display) (char *s, void *e),
-                                   size_t(*element_size) (void *e));
+                                   size_t(*element_size) (void *e),
+                                   int (*element_match) (void *e, void *key),
+				   int (*element_sort) (void *a, void *b));
 
 
 /**********************************************************************
@@ -849,6 +862,9 @@ size_t vanessa_list_get_count(vanessa_list_t *l);
  * pre: l: list to insert value into
  *      value: value to insert
  * post: value is inserted into the list
+ *       if element_sort passed to vanessa_list_create is non-NULL
+ *       then the element will be inserted in order. Otherwise
+ *       the element will be inserted at the begining of the list.
  * return: NULL if l is NULL
  *         l, unchanged if n is null
  **********************************************************************/
@@ -879,5 +895,21 @@ void vanessa_list_remove_element(vanessa_list_t *l, void *key);
  **********************************************************************/
 
 vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l);
+
+/**********************************************************************
+ * vanessa_list_iterate
+ * Run a fucntion over each element in the list
+ * pre: l: list run the function over
+ *      action: function to run
+ *              action should return < 0 if an error occurs,
+ *              which indicates that processing will be stopped
+ *      data: data passed to action
+ * post: action is run with the value of each element as its first argumetn
+ * return: 0 on success
+ *         < 0 if action returns < 0
+ **********************************************************************/
+
+int vanessa_list_iterate(vanessa_list_t *l, int(* action)(void *e, void *data),
+		void *data);
 
 #endif

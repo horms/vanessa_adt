@@ -75,24 +75,6 @@ vanessa_list_elem_t *vanessa_list_elem_assign(vanessa_list_elem_t * e,
 
 
 /**********************************************************************
- * vanessa_list_elem_unassign
- * Assign NULL values to a list element.
- * As the name suggets this can be used to unasign values, possibly
- * so you can destroy the list element without freeing its contents.
- * pre: e: alocated pointer to elelemt to seed
- * post: values are assigned to e
- * return: pointer to e
- *         NULL if e was NULL
- **********************************************************************/
-
-static
-vanessa_list_elem_t *vanessa_list_elem_unassign(vanessa_list_elem_t * e)
-{
-	return (vanessa_list_elem_assign(e, NULL, NULL, NULL));
-}
-
-
-/**********************************************************************
  * vanessa_list_elem_destroy
  * Destroy a list element
  * pre: e: pointer to elelemt to destroy
@@ -107,62 +89,10 @@ void vanessa_list_elem_destroy(vanessa_list_elem_t * e,
 	if (e == NULL) {
 		return;
 	}
-	destroy_value(e->value);
+	if(destroy_value != NULL) {
+		destroy_value(e->value);
+	}
 	free(e);
-}
-
-
-/**********************************************************************
- * vanessa_list_elem_remove
- * remove an element from a list
- * pre: l: list to remove elment from
- *      e: element to remove
- * post: element is removed from list
- *       If this was the last element of the list then l->recent is
- *       set to the previous (now last) elemet of the list.
- *       Otherwise l->recent is set to the next element in the list
- *       No change is made to the list if l or e are NULL
- * return: l
- *         NULL if l or e are NULL
- **********************************************************************/
-
-static
-vanessa_list_t *vanessa_list_elem_remove(vanessa_list_t * l,
-	vanessa_list_elem_t * e, void (*element_destroy) (void *e))
-{
-	size_t i;
-
-	if (l == NULL || e == NULL) {
-		return (NULL);
-	}
-	for (i = 0; i < l->norecent; i++) {
-		if (*(l->recent + i) == e) {
-			*(l->recent + i) = NULL;
-			l->recent_offset = (l->recent_offset + 
-					l->norecent - 1) % l->norecent;
-		}
-	}
-
-	if(e->value != NULL && element_destroy != NULL) {
-		element_destroy(e->value);
-	}
-
-	if (e->prev != NULL) {
-		e->prev->next = e->next;
-		*(l->recent + l->recent_offset) = e->prev;
-	}
-	if (e->next != NULL) {
-		e->next->prev = e->prev;
-		*(l->recent + l->recent_offset) = e->next;
-	}
-	if (l->first == e) {
-		l->first = e->next;
-	}
-	if (l->last == e) {
-		l->last = e->prev;
-	}
-
-	return (l);
 }
 
 
@@ -240,6 +170,13 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
  *                         element_display. May be NULL, in which case
  *                         vanessa_dynamic_array_display will return an
  *                         empty string ("");
+ *      element_match:     Pointer to a function to match an element
+ *                         by a key.
+ *      element_sort:      Pointer to a function that will compare
+ *                         two elements and and b. Will return < 0 if a 
+ *                         should be before b in the list > 0 if a should
+ *                         be after b in the list. 0 if they are equal.
+ *                         Used in vanessa_list_add_element
  *
  * post: list structure is alocated, and values initialised to NULL
  * return: pointer to list
@@ -249,9 +186,10 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
 vanessa_list_t *vanessa_list_create(int norecent,
                                    void (*element_destroy) (void *e),
                                    void *(*element_duplicate) (void *e),
-                                   int (*element_match) (void *e, void *key),
                                    void (*element_display) (char *s, void *e),
-                                   size_t(*element_size) (void *e))
+                                   size_t(*element_size) (void *e),
+                                   int (*element_match) (void *e, void *key),
+                                   int (*element_sort) (void *a, void *b))
 {
 	vanessa_list_t *l;
 	size_t i;
@@ -285,9 +223,10 @@ vanessa_list_t *vanessa_list_create(int norecent,
 	l->last = NULL;
 	l->e_destroy = element_destroy;
 	l->e_duplicate = element_duplicate;
-	l->e_match = element_match;
 	l->e_display = element_display;
 	l->e_length = element_size;
+	l->e_match = element_match;
+	l->e_sort = element_sort;
 
 	return (l);
 }
@@ -308,10 +247,12 @@ void vanessa_list_destroy(vanessa_list_t * l)
 		return;
 	}
 
-	while (l->first != NULL) {
-		next = l->first->next;
-		l->e_destroy(l->first);
-		l->first = next;
+	if(l->e_destroy != NULL) {
+		while (l->first != NULL) {
+			next = l->first->next;
+			l->e_destroy(l->first);
+			l->first = next;
+		}
 	}
 
 	free(l);
@@ -427,24 +368,31 @@ char *vanessa_list_display(vanessa_list_t * l, char delimiter) {
  *         NULL if l or key is NULL or if value matching key is not found
  **********************************************************************/
 
+int __vanessa_list_get_element_match(void *value, void *key) {
+	return((value==key)?0:1);
+}
+
 static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 		void *key) {
 	int i;
 	vanessa_list_elem_t *e;
+	int (*match)(void *value, void *key);
 
-	if (l == NULL  || l->e_match == NULL || key == NULL) {
+	if (l == NULL  || key == NULL) {
 		return(NULL);
 	}
 
+	match=(l->e_match != NULL)?l->e_match:__vanessa_list_get_element_match;
+
 	for(i=0 ; i<l->norecent ; i++) {
 		e = *(l->recent + i);
-		if(e != NULL && l->e_match(e->value, key) == 0) {
+		if(e != NULL && match(e->value, key) == 0) {
 			return(e);
 		}
 	}
 
 	for(e = l->first; e != NULL ; e = e->next ) {
-		if(l->e_match(e->value, key) == 0) {
+		if(match(e->value, key) == 0) {
 			return(e);
 		}
 	}
@@ -496,6 +444,9 @@ size_t vanessa_list_get_count(vanessa_list_t *l){
  * pre: l: list to insert value into
  *      value: value to insert
  * post: value is inserted into the list
+ *       if element_sort passed to vanessa_list_create is non-NULL
+ *       then the element will be inserted in order. Otherwise
+ *       the element will be inserted at the begining of the list.
  * return: NULL if l is NULL
  *         l, unchanged if n is null
  **********************************************************************/
@@ -503,25 +454,48 @@ size_t vanessa_list_get_count(vanessa_list_t *l){
 vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
 {
 	vanessa_list_elem_t *e;
+	vanessa_list_elem_t *prev;
 
 	if(l == NULL) {
 		return(NULL);
 	}
 
-	e = vanessa_list_elem_create(NULL, l->first, value, l->e_duplicate);
+	if(l->e_sort == NULL) {
+		prev = l->first;
+	}
+	else {
+		for(prev = l->last ; prev != NULL ; prev = prev->prev) {
+			if(l->e_sort(value, prev->value) >= 0) {
+				break;
+			}
+		}
+	}
+	
+	e = vanessa_list_elem_create(prev, (prev==NULL)?NULL:prev->next, 
+			value, l->e_duplicate);
 	if (e == NULL) {
 		VANESSA_ADT_DEBUG_ERRNO("vanessa_list_elem_create");
 		vanessa_list_destroy(l);
 		return (NULL);
 	}
 
-	if (l->first != NULL) {
-		l->first->prev = e;
+	if(prev != NULL) {
+		if(prev->next != NULL) {
+			prev->next->prev = e;
+		}
+		prev->next = e;
 	}
-	if (l->last == NULL) {
+	if(prev == l->last) {
 		l->last = e;
 	}
-	l->first = e;
+	if(prev == NULL) {
+		e->next = l->first;
+		if(l->first != NULL) {
+			l->first->prev = e;
+		}
+		l->first = e;
+	}
+
 	if(l->norecent > 0) {
 		l->recent_offset = (l->recent_offset + 1) % l->norecent;
 		*(l->recent + l->recent_offset) = e;
@@ -580,6 +554,7 @@ void vanessa_list_remove_element(vanessa_list_t *l, void *key) {
 	__vanessa_list_remove_element(l, e);
 }
 
+
 /**********************************************************************
  * vanessa_list_duplicate
  * Duplicate a list
@@ -598,8 +573,8 @@ vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l) {
 	}
 
 	new_list=vanessa_list_create(l->norecent, l->e_destroy,
-			l->e_duplicate, l->e_match, l->e_display,
-			l->e_length);
+			l->e_duplicate, l->e_display,
+			l->e_length, l->e_match, l->e_sort);
 	if(new_list == NULL) {
 		VANESSA_ADT_DEBUG("vanessa_list_create");
 		return(NULL);
@@ -611,4 +586,36 @@ vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l) {
 	}
 
 	return(new_list);
+}
+
+
+/**********************************************************************
+ * vanessa_list_iterate
+ * Run a fucntion over each element in the list
+ * pre: l: list run the function over
+ *      action: function to run
+ *              action should return < 0 if an error occurs,
+ *              which indicates that processing will be stopped
+ *      data: data passed to action
+ * post: action is run with the value of each element as its first argumetn
+ * return: 0 on success
+ *         < 0 if action returns < 0
+ **********************************************************************/
+
+int vanessa_list_iterate(vanessa_list_t *l, int(* action)(void *e, void *data),
+		void *data) {
+	int status;
+	vanessa_list_elem_t *e;
+
+	if(l == NULL) {
+		return(0);
+	}
+
+	for(e = l->first; e != NULL ; e = e->next) {
+		if((status=action((e->value), data)) < 0) {
+			return(status);
+		}
+	}
+
+	return(0);
 }

@@ -106,7 +106,7 @@ size_t vanessa_length_int(int *i)
 		j++;
 		i_cpy = -i_cpy;
 	}
-	while (i_cpy > 10) {
+	while (i_cpy > 9) {
 		i_cpy /= 10;
 		j++;
 	}

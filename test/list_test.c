@@ -65,9 +65,10 @@ int main(int argc, char **argv)
 	printf("Creating List\n");
 	if ((l = vanessa_list_create(-1, VANESSA_DESTROY_INT,
 				     VANESSA_DUPLICATE_INT,
-				     VANESSA_MATCH_INT,
 				     VANESSA_DISPLAY_INT,
-				     VANESSA_LENGTH_INT)) == NULL) {
+				     VANESSA_LENGTH_INT,
+				     VANESSA_MATCH_INT, 
+				     VANESSA_SORT_INT)) == NULL) {
 		vanessa_logger_log(vl, LOG_DEBUG,
 				   "main: vanessa_list_create");
 		vanessa_logger_log(vl, LOG_ERR,
