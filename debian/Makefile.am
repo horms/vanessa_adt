@@ -33,6 +33,7 @@ libvanessa-adt0.dirs \
 libvanessa-adt0.files \
 libvanessa-adt0.postinst \
 shlibs.local \
-rules
+rules \
+dpkg-checkbuild
 
 m4datadir = $(datadir)/aclocal
