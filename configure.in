@@ -19,7 +19,7 @@ dnl Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 AC_INIT(libvanessa_adt/vanessa_adt.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(vanessa_adt, 0.0.4beta3pre1)
+AM_INIT_AUTOMAKE(vanessa_adt, 0.0.4beta4)
 
 AM_PROG_LIBTOOL
 AC_PROG_CC
