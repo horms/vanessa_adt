@@ -31,6 +31,20 @@
 #include "vanessa_adt.h"
 #include "logger.h"
 
+struct vanessa_queue_member_t_struct {
+        void *value;
+        struct vanessa_queue_member_t_struct *prev;
+        struct vanessa_queue_member_t_struct *next;
+};
+
+struct vanessa_queue_t_struct {
+        vanessa_queue_member_t *first;
+        vanessa_queue_member_t *last;
+        void (*e_destroy) (const void *);
+        int size;
+};
+
+
 
 /**********************************************************************
  * vanessa_queue_member_free

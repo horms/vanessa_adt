@@ -38,6 +38,19 @@
 #include "logger.h"
 
 
+struct vanessa_dynamic_array_t_struct {
+        void **vector;
+        size_t count;
+        size_t allocated_size;
+        size_t block_size;
+        void (*e_destroy) (void *);
+        void *(*e_duplicate) (void *s);
+        void (*e_display) (char *, void *);
+        size_t(*e_length) (void *);
+};
+
+
+
 /**********************************************************************
  * vanessa_dynamic_array_create
  * Create a dynamic array

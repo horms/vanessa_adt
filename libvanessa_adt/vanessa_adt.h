@@ -42,18 +42,9 @@ typedef unsigned int vanessa_adt_flag_t;
  * Data independent queue
  **********************************************************************/
 
-typedef struct __vanessa_queue_member_t_struct {
-	void *value;
-	struct __vanessa_queue_member_t_struct *prev;
-	struct __vanessa_queue_member_t_struct *next;
-} vanessa_queue_member_t;
+typedef struct vanessa_queue_member_t_struct vanessa_queue_member_t;
 
-typedef struct {
-	vanessa_queue_member_t *first;
-	vanessa_queue_member_t *last;
-	void (*e_destroy) (const void *);
-	int size;
-} vanessa_queue_t;
+typedef struct vanessa_queue_t_struct vanessa_queue_t;
 
 
 /**********************************************************************
@@ -196,16 +187,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q);
 #define VANESSA_MATS VANESSA_MATCH_STR
 #define VANESSA_SORS VANESSA_MATCH_STR
 
-typedef struct {
-	void **vector;
-	size_t count;
-	size_t allocated_size;
-	size_t block_size;
-	void (*e_destroy) (void *);
-	void *(*e_duplicate) (void *s);
-	void (*e_display) (char *, void *);
-	 size_t(*e_length) (void *);
-} vanessa_dynamic_array_t;
+typedef struct vanessa_dynamic_array_t_struct vanessa_dynamic_array_t;
 
 
 /**********************************************************************
@@ -544,14 +526,7 @@ int vanessa_match_int(int *a, int *b);
  * Key value pair
  **********************************************************************/
 
-typedef struct {
-	void *key;
-	void (*destroy_key) (void *);
-	void *(*dup_key) (void *);
-	void *value;
-	void (*destroy_value) (void *);
-	void *(*dup_value) (void *);
-} vanessa_key_value_t;
+typedef struct vanessa_key_value_t_struct vanessa_key_value_t;
 
 
 /**********************************************************************

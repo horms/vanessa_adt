@@ -28,6 +28,17 @@
 #include "vanessa_adt.h"
 #include "logger.h"
 
+
+struct vanessa_key_value_t_struct {
+	void *key;
+	void (*destroy_key) (void *);
+	void *(*dup_key) (void *);
+	void *value;
+	void (*destroy_value) (void *);
+	void *(*dup_value) (void *);
+};
+
+
 /**********************************************************************
  * vanessa_key_value_create
  * Create a new vanessa_key_value structure
