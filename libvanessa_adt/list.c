@@ -248,7 +248,8 @@ void vanessa_list_destroy(vanessa_list_t * l)
 	if(l->e_destroy != NULL) {
 		while (l->first != NULL) {
 			next = l->first->next;
-			l->e_destroy(l->first);
+			l->e_destroy(l->first->value);
+			free(l->first);
 			l->first = next;
 		}
 	}

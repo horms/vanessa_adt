@@ -10,6 +10,9 @@ XXX
   * XXX
   - Use loging convenicence macros provided by libvanessa_logger
     rather than providing our own.
+  - Fixed bug in vanessa_list_destroy, whereby an element,
+    rather than the payload of an element would be passed to
+    e_destroy if e_destroy is non-NULL.
 
 
 ----------------------------------------------------------------------
