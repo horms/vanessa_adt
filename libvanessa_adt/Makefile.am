@@ -35,6 +35,7 @@ queue.c \
 key_value.c \
 logger.c \
 list.c \
+hash.c \
 logger.h
 
 libvanessa_adt_la_LDFLAGS    = -version-info 0:3:0

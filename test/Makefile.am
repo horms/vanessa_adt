@@ -23,11 +23,13 @@
 #
 ######################################################################
 
-bin_PROGRAMS = dynamic_array_test list_test
+bin_PROGRAMS = dynamic_array_test list_test hash_test
 
 dynamic_array_test_SOURCES = dynamic_array_test.c
 
 list_test_SOURCES = list_test.c
+
+hash_test_SOURCES = hash_test.c
 
 INCLUDES= -I$(top_srcdir)/libvanessa_adt
 

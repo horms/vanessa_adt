@@ -16,6 +16,7 @@ xxx
    - vanessa_duplicate_int and friends now work on poiters to integers
      rather than integers
    - made data structures more opaque
+   - added hash
 
 ----------------------------------------------------------------------
 

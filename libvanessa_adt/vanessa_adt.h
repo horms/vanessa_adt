@@ -25,8 +25,8 @@
  *
  **********************************************************************/
 
-#ifndef _VANESSA_ADT_FLIM
-#define _VANESSA_ADT_FLIM
+#ifndef _VANESSA_ADT_H
+#define _VANESSA_ADT_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -309,26 +309,25 @@ vanessa_dynamic_array_t
 
 
 /**********************************************************************
- * vanessa_dynamic_array_display
- * Make an ASCII representation of a dynamic array.
- * pre: a: dynamic array to display
- *      delimiter: character to place between elements of the array
- * post: If a is NULL or there are no elements in a then nothing is done
- *       If element_display or element_length, as passed to
- *       vanessa_dynamic_array_create, are NULL, then an empty string
- *       ("") is returned.  Else a character buffer is allocated and
- *       and ASCII representation of of each array element, as
- *       determined by element_display passed to
- *       vanessa_dynamic_array_create, separated by delimiter is
- *       placed in the '\0' terminated buffer returned. It is up to
- *       the user to free this buffer.  
- * return: Allocated buffer as above 
- *         NULL on error, 
- *         NULL a or empty a
+ * vanessa_dynamic_array_length
+ * Find the length of an ASCII representation of a dynamic array.
+ * Not including a terminating '\0'.
+ * pre: a: dynamic array to find the length of
+ * post: If a is NULL or there are no elements in a then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_dynamic_array_create, 
+ *          is NULL, then 0 is returned.
+ *       Else the cumulative lenth of the elemements as per the
+ *           element_length function, plus one character per 
+ *           element for a delimiter between elements.
+ *           The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
+ * return: Cumulative length of the elements.
+ *         0 if a is NULL or there are no elements in a or if
+ *           element_length passed to vanessa_list_create is NULL.
  **********************************************************************/
 
-char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
-				    char delimiter);
+size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -336,20 +335,22 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  * Find the length of an ASCII representation of a dynamic array.
  * Not including a terminating '\0'.
  * pre: a: dynamic array to find the length of
- * post: If a is NULL or there are no elements in a then the length is 0
- *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then 0 is returned.
+ * post: If a is NULL or there are no elements in a then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_dynamic_array_create, 
+ *          is NULL, then 0 is returned.
  *       Else the cumulative lenth of the elemements as per the
- *       element_length function passed to vanessa_list_create, plus one
- *       character per element for a delimiter between elements.
- *       The trailing '\0' is not counted.
- *       It is up to the user to free this buffer.  
+ *           element_length function, plus one character per 
+ *           element for a delimiter between elements.
+ *           The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
  * return: Cumulative length of the elements.
  *         0 if a is NULL or there are no elements in a or if
- *         element_length passed to vanessa_list_create is NULL.
+ *           element_length passed to vanessa_list_create is NULL.
  **********************************************************************/
 
-size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a);
+char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
+				    char delimiter);
 
 
 /**********************************************************************
@@ -675,8 +676,7 @@ extern vanessa_logger_t *vanessa_adt_logger;
  * The primitive type for the array is void *. Thus, providing your own
  * duplicate_primitive, destroy_primitive, match_primative,
  * display_primitive and length_primitive functions will allow you to use
- * the vanessa_dynamic_array API to have a dynamic array containing any
- * primitive
+ * the vanessa_list API to have a listcontaining any primitive
  *
  * Includes macros required to create an array of strings or integers.
  **********************************************************************/
@@ -766,18 +766,19 @@ void vanessa_list_destroy(vanessa_list_t * l);
  * vanessa_list_length
  * Find the length of an ASCII representation of a dynamic array.
  * Not including a terminating '\0'.
- * pre: a: dynamic array to find the length of
- * post: If l is NULL or there are no elements in l then the length is 0
- *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then 0 is returned.
+ * pre: l: list to find the length of
+ * post: If l is NULL or there are no elements in l then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_list_create, 
+ *          is NULL, then 0 is returned.
  *       Else the cumulative lenth of the elemements as per the
- *       element_length function passed to vanessa_list_create, plus one
- *       character per element for a delimiter between elements.
- *       The trailing '\0' is not counted.
- *       It is up to the user to free this buffer.  
+ *          element_length function, plus one character per element 
+ *          for a delimiter between elements.
+ *          The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
  * return: Cumulative length of the elements.
  *         0 if a is NULL or there are no elements in a or if
- *         element_length passed to vanessa_list_create is NULL.
+ *           element_length passed to vanessa_list_create is NULL.
  **********************************************************************/
 
 size_t vanessa_list_length(vanessa_list_t * l);
@@ -788,18 +789,19 @@ size_t vanessa_list_length(vanessa_list_t * l);
  * Make an ASCII representation of the list
  * pre: l: list to display
  *      delimiter: character to place between elements of the list
- * post: If l is NULL or there are no elements in l then nothing is done
+ * post: If l is NULL or there are no elements in l then nothing is 
+ *          done
  *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then an empty string 
- *       ("") is returned.  Else a character buffer is allocated
- *       and * and ASCII representation of of each list, as
- *       determined by element_display passed to
- *       vanessa_list_create, separated by delimiter is placed in the 
- *       '\0' terminated buffer returned. It * is up to the user to free 
- *       this buffer.  
+ *          vanessa_list_create, are NULL, then an empty string 
+ *          ("") is returned.  
+ *       Else a character buffer is allocated and an ASCII 
+ *          representation of each list element, as determined by 
+ *          element_display, separated by delimiter is placed in 
+ *          the '\0' terminated buffer that is returned. 
+ *          It is up to the user to free this buffer.  
  * return: Allocated buffer as above 
  *         NULL on error, 
- *         NULL a or empty a
+ *         NULL l or empty l
  **********************************************************************/
 
 char *vanessa_list_display(vanessa_list_t * l, char delimiter);
@@ -841,7 +843,7 @@ size_t vanessa_list_get_count(vanessa_list_t *l);
  *       then the element will be inserted in order. Otherwise
  *       the element will be inserted at the begining of the list.
  * return: NULL if l is NULL
- *         l, unchanged if n is null
+ *         l, unchanged if value is NULL
  **********************************************************************/
 
 vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
@@ -854,7 +856,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
  *      value: value to insert
  * post: value is removed from the list
  * return: NULL if l is NULL
- *         l, unchanged if n is null
+ *         l, unchanged if value is null
  **********************************************************************/
 
 void vanessa_list_remove_element(vanessa_list_t *l, void *key);
@@ -887,4 +889,209 @@ vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l);
 int vanessa_list_iterate(vanessa_list_t *l, int(* action)(void *e, void *data),
 		void *data);
 
-#endif
+
+
+/**********************************************************************
+ * Hash to put your flims in.
+ * 
+ * The primitive type for the array is void *. Thus, providing your
+ * own duplicate_primitive, destroy_primitive, match_primative,
+ * display_primitive, length_primitive and hash_primitive, functions
+ * will allow you to use the vanessa_hash API to have a
+ * hash containing any primitive
+ *
+ * Includes macros, excluding hash_primitive,  required to create an
+ * list of strings or integers.
+ **********************************************************************/
+
+
+typedef struct vanessa_hash_t_struct vanessa_hash_t;
+
+
+/**********************************************************************
+ * vanessa_hash_create
+ * Create a new, empty hash
+ * pre: nobucket: number of buckets in the hash
+ *      element_destroy:   Pointer to a function to destroy an element
+ *                         Function should take an argument of a pointer
+ *                         and free the memory allocated to the structure
+ *                         pointed to.
+ *      element_duplicate: Pointer to a function to duplicate an element
+ *                         Function should take a pointer to an element to
+ *                         duplicate as the only element and return a copy
+ *                         of the element Any memory allocation required
+ *                         should be done by this function.
+ *      element_match:     Pointer to a function to match an element
+ *                         by a key.
+ *      element_display:   Pointer to a function to display an element
+ *                         Function should take a pointer to char and a
+ *                         pointer to an element as arguments. An ASCII
+ *                         representation of the element should be placed
+ *                         in the character buffer given as the first
+ *                         argument.  May be NULL in which case
+ *                         vanessa_dynamic_array_display will return an empty
+ *                         string ("\0");
+ *      element_length:    Pointer to a function to find the length of an
+ *                         ASCII representation of the element not
+ *                         including the trailing '\0'. Used to guard
+ *                         against buffer over runs when using
+ *                         element_display. May be NULL, in which case
+ *                         vanessa_dynamic_array_display will return an
+ *                         empty string ("");
+ *      element_hash:      Pointer to a function that return the hash
+ *                         bucket index, a number >= 0 && < nobucket,
+ *                         for an element.
+ *
+ * post: hash structure is alocated, and values initialised to NULL
+ *       note that the hash buckets are linked lists and are created
+ *       on demand.
+ * return: pointer to hash
+ *         NULL on error
+ **********************************************************************/
+
+vanessa_hash_t *vanessa_hash_create(size_t nobucket, 
+		                    void (*element_destroy) (void *e),
+		                    void *(*element_duplicate) (void *e),
+		                    int (*element_match) (void *e, void *key),
+		                    void (*element_display) (char *s, void *e),
+		                    size_t(*element_length) (void *e),
+		                    size_t (*element_hash) (void *e));
+
+
+/**********************************************************************
+ * vanessa_hash_destroy
+ * Destroy a hash and all the data contained in the hash
+ * pre: h: hash
+ * post: all elements of h are destroyed
+ **********************************************************************/
+
+void vanessa_hash_destroy(vanessa_hash_t *h);
+
+
+/**********************************************************************
+ * vanessa_hash_length
+ * Find the length of an ASCII representation of a dynamic array.
+ * Not including a terminating '\0'.
+ * pre: h: hash to find the length of
+ * post: If h is NULL or there are no elements in h then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_hash_create, 
+ *          is NULL, then 0 is returned. 
+ *       Else the cumulative lenth of the elemements as per the 
+ *          element_length, plus one character per element for a 
+ *          delimiter between elements.
+ *          The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
+ * return: Cumulative length of the elements.
+ *         0 if a is NULL or there are no elements in a or if
+ *            element_length passed to vanessa_hash_create is NULL.
+ **********************************************************************/
+
+
+size_t vanessa_hash_length(vanessa_hash_t *h) ;
+
+
+/**********************************************************************
+ * vanessa_hash_display
+ * Make an ASCII representation of the hash
+ * pre: h: hash to display
+ *      delimiter: character to place between elements of the hash
+ * post: If h is NULL or there are no elements in h then nothing is 
+ *         done
+ *       If element_display or element_length, as passed to
+ *          vanessa_hash_create, are NULL, then an empty string 
+ *          ("") is returned.  
+ *       Else a character buffer is allocated and an ASCII 
+ *          representation of each hashed element, as determined by 
+ *          element_display, separated by delimiter is placed in the 
+ *          '\0' terminated buffer that is returned. 
+ *          It is up to the user to free this buffer.  
+ * return: Allocated buffer as above 
+ *         NULL on error, 
+ *         NULL h or empty h
+ **********************************************************************/
+
+char *vanessa_hash_display(vanessa_hash_t *h, const char delimiter);
+
+
+/**********************************************************************
+ * vanessa_hash_get_element
+ * Get the number of elements stored in the hash
+ * pre: h: hash to count the elements of
+ * post: none
+ * return: Number of elements stored in the hash
+ *         0 if h is NULL or empty
+ **********************************************************************/
+
+size_t vanessa_hash_get_count(vanessa_hash_t *h) ;
+
+
+/**********************************************************************
+ * vanessa_hash_get_element
+ * Retrieve an element from the hash by value
+ * passed to vanessa_list_create
+ * pre: h: hash to search
+ *      value: value to match
+ * post: none
+ * return: element if found
+ *         NULL if h or value is NULL or if the element is in the hash
+ **********************************************************************/
+
+void *vanessa_hash_get_element(vanessa_hash_t *h, void *value);
+
+
+/**********************************************************************
+ * vanessa_hash_add_element
+ * Insert element into a hash
+ * pre: h: hash to insert value into
+ *      value: value to insert
+ * post: value is inserted into the hash
+ * return: NULL if h is NULL
+ *         h, unchanged if value is NULL
+ **********************************************************************/
+
+vanessa_hash_t *vanessa_hash_add_element(vanessa_hash_t *h, void *value);
+
+
+/**********************************************************************
+ * vanessa_hash_remove_element
+ * Insert element into a hash
+ * pre: h: hash to insert value into
+ *      value: value to insert
+ * post: value is removed from the hash
+ * return: NULL if h is NULL
+ *         h, unchanged if value is null
+ **********************************************************************/
+
+vanessa_hash_t *vanessa_hash_remove_element(vanessa_hash_t *h, void *value);
+
+
+/**********************************************************************
+ * vanessa_hash_duplicate
+ * Duplicate a hash
+ * pre: h: hash to duplicate
+ * post: hash is duplicated
+ * return: NULL if h is NULL or on error
+ *         duplicated hash 
+ **********************************************************************/
+
+vanessa_hash_t *hash_duplicate(vanessa_hash_t *h);
+
+
+/**********************************************************************
+ * vanessa_hash_iterate
+ * Run a fucntion over each element in the hash
+ * pre: h: hash run the function over
+ *      action: function to run
+ *              action should return < 0 if an error occurs,
+ *              which indicates that processing will be stopped
+ *      data: data passed to action
+ * post: action is run with the value of each element as its first argumetn
+ * return: 0 on success
+ *         < 0 if action returns < 0
+ **********************************************************************/
+
+int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
+		                void *data);
+
+#endif /* _VANESSA_ADT_FLIM */

@@ -7,7 +7,7 @@
  * The primitive type for the array is void *. Thus, providing your own
  * duplicate_primitive, destroy_primitive, match_primative,
  * display_primitive and length_primitive functions will allow you to use
- * the vanessa_dynamic_array API to have a dynamic array containing any
+ * the vanessa_list API to have a linked list containing any
  * primitive
  *
  * Includes macros required to create an list of strings or integers.
@@ -170,8 +170,6 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
  *                         element_display. May be NULL, in which case
  *                         vanessa_dynamic_array_display will return an
  *                         empty string ("");
- *      element_match:     Pointer to a function to match an element
- *                         by a key.
  *      element_sort:      Pointer to a function that will compare
  *                         two elements and and b. Will return < 0 if a 
  *                         should be before b in the list > 0 if a should
@@ -264,18 +262,19 @@ void vanessa_list_destroy(vanessa_list_t * l)
  * vanessa_list_length
  * Find the length of an ASCII representation of a dynamic array.
  * Not including a terminating '\0'.
- * pre: a: dynamic array to find the length of
- * post: If l is NULL or there are no elements in l then the length is 0
- *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then 0 is returned.
+ * pre: l: list to find the length of
+ * post: If l is NULL or there are no elements in l then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_list_create, 
+ *          is NULL, then 0 is returned.
  *       Else the cumulative lenth of the elemements as per the
- *       element_length function passed to vanessa_list_create, plus one
- *       character per element for a delimiter between elements.
- *       The trailing '\0' is not counted.
- *       It is up to the user to free this buffer.  
+ *          element_length function, plus one character per element 
+ *          for a delimiter between elements.
+ *          The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
  * return: Cumulative length of the elements.
  *         0 if a is NULL or there are no elements in a or if
- *         element_length passed to vanessa_list_create is NULL.
+ *           element_length passed to vanessa_list_create is NULL.
  **********************************************************************/
 
 size_t vanessa_list_length(vanessa_list_t * l) {
@@ -303,18 +302,19 @@ size_t vanessa_list_length(vanessa_list_t * l) {
  * Make an ASCII representation of the list
  * pre: l: list to display
  *      delimiter: character to place between elements of the list
- * post: If l is NULL or there are no elements in l then nothing is done
+ * post: If l is NULL or there are no elements in l then nothing is 
+ *          done
  *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then an empty string 
- *       ("") is returned.  Else a character buffer is allocated
- *       and * and ASCII representation of of each list, as
- *       determined by element_display passed to
- *       vanessa_list_create, separated by delimiter is placed in the 
- *       '\0' terminated buffer returned. It * is up to the user to free 
- *       this buffer.  
+ *          vanessa_list_create, are NULL, then an empty string 
+ *          ("") is returned.  
+ *       Else a character buffer is allocated and an ASCII 
+ *          representation of each list element, as determined by 
+ *          element_display, separated by delimiter is placed in 
+ *          the '\0' terminated buffer that is returned. 
+ *          It is up to the user to free this buffer.  
  * return: Allocated buffer as above 
  *         NULL on error, 
- *         NULL a or empty a
+ *         NULL l or empty l
  **********************************************************************/
 
 char *vanessa_list_display(vanessa_list_t * l, char delimiter) {
@@ -448,7 +448,7 @@ size_t vanessa_list_get_count(vanessa_list_t *l){
  *       then the element will be inserted in order. Otherwise
  *       the element will be inserted at the begining of the list.
  * return: NULL if l is NULL
- *         l, unchanged if n is null
+ *         l, unchanged if value is null
  **********************************************************************/
 
 vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
@@ -512,7 +512,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
  *      value: value to insert
  * post: value is removed from the list
  * return: NULL if l is NULL
- *         l, unchanged if n is null
+ *         l, unchanged if value is null
  **********************************************************************/
 
 static void __vanessa_list_remove_element(vanessa_list_t * l, 

@@ -305,19 +305,61 @@ vanessa_dynamic_array_t
 
 
 /**********************************************************************
+ * vanessa_dynamic_array_length
+ * Find the length of an ASCII representation of a dynamic array.
+ * Not including a terminating '\0'.
+ * pre: a: dynamic array to find the length of
+ * post: If a is NULL or there are no elements in a then the 
+ *          length is 0
+ *       If element_length, as passed to vanessa_dynamic_array_create, 
+ *          is NULL, then 0 is returned.
+ *       Else the cumulative lenth of the elemements as per the
+ *           element_length function, plus one character per 
+ *           element for a delimiter between elements.
+ *           The trailing '\0' is not counted.
+ *          It is up to the user to free this buffer.  
+ * return: Cumulative length of the elements.
+ *         0 if a is NULL or there are no elements in a or if
+ *           element_length passed to vanessa_list_create is NULL.
+ **********************************************************************/
+
+size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a)
+{
+	void **a_current;
+	void **a_top;
+	size_t len = 0;
+
+	if (a == NULL || a->count == 0 || a->e_length == NULL) {
+		return (0);
+	}
+
+	a_top = a->vector + a->count;
+	len = a->count - 1;
+	for (a_current = a->vector; a_current < a_top; a_current++) {
+		len += a->e_length(*a_current);
+		len++;		/* Space for delimiter */
+	}
+	len--;			/* No space for trailing '\0' */
+
+	return (len);
+}
+
+
+/**********************************************************************
  * vanessa_dynamic_array_display
  * Make an ASCII representation of a dynamic array.
  * pre: a: dynamic array to display
  *      delimiter: character to place between elements of the array
- * post: If a is NULL or there are no elements in a then nothing is done
+ * post: If a is NULL or there are no elements in a then nothing is 
+ *          done
  *       If element_display or element_length, as passed to
- *       vanessa_dynamic_array_create, are NULL, then an empty string
- *       ("") is returned.  Else a character buffer is allocated and
- *       and ASCII representation of of each array element, as
- *       determined by element_display passed to
- *       vanessa_dynamic_array_create, separated by delimiter is
- *       placed in the '\0' terminated buffer returned. It is up to
- *       the user to free this buffer.  
+ *          vanessa_dynamic_array_create, are NULL, then an empty 
+ *          string ("") is returned.  
+ *       Else a character buffer is allocated and an ASCII 
+ *          representation of of each array element, as determined by 
+ *          element_display, separated by delimiter is placed in the 
+ *          '\0' terminated buffer that is returned. 
+ *       It is up to the user to free this buffer.  
  * return: Allocated buffer as above 
  *         NULL on error, 
  *         NULL a or empty a
@@ -363,46 +405,6 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
 	*buffer_current = '\0';
 
 	return (buffer);
-}
-
-
-/**********************************************************************
- * vanessa_dynamic_array_length
- * Find the length of an ASCII representation of a dynamic array.
- * Not including a terminating '\0'.
- * pre: a: dynamic array to find the length of
- * post: If a is NULL or there are no elements in a then the length is 0
- *       If element_display or element_length, as passed to
- *       vanessa_list_create, are NULL, then 0 is returned.
- *       Else the cumulative lenth of the elemements as per the
- *       element_length function passed to vanessa_list_create, plus one
- *       character per element for a delimiter between elements.
- *       The trailing '\0' is not counted.
- *       It is up to the user to free this buffer.  
- * return: Cumulative length of the elements.
- *         0 if a is NULL or there are no elements in a or if
- *         element_length passed to vanessa_list_create is NULL.
- **********************************************************************/
-
-size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a)
-{
-	void **a_current;
-	void **a_top;
-	size_t len = 0;
-
-	if (a == NULL || a->count == 0 || a->e_length == NULL) {
-		return (0);
-	}
-
-	a_top = a->vector + a->count;
-	len = a->count - 1;
-	for (a_current = a->vector; a_current < a_top; a_current++) {
-		len += a->e_length(*a_current);
-		len++;		/* Space for delimiter */
-	}
-	len--;			/* No space for trailing '\0' */
-
-	return (len);
 }
 
 
