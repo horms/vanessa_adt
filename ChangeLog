@@ -36,7 +36,7 @@ Copyright (C) 1999-2003  Horms
 (Horms)
   
   * 0.0.4beta1
-  - Use loging convenicence macros provided by libvanessa_logger
+  - Use logging convenicence macros provided by libvanessa_logger
     rather than providing our own.
   - Fixed bug in vanessa_list_destroy, whereby an element,
     rather than the payload of an element would be passed to
