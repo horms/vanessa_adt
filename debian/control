@@ -6,13 +6,13 @@ Standards-Version: 3.1.1
 
 Package: libvanessa-adt-dev
 Architecture: any
-Depends: libvanessa-adt0 (= ${Source-Version}), libc6-dev
+Depends: libvanessa-adt0 (= ${Source-Version}), libvanessa-logger-dev, libc6-dev
 Description: 
   Headers and static libraries required to develop against vanessa_adt.
 
 Package: libvanessa-adt0
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, libvanessa-logger0
 Description:
   Library of Abstract Data Types (ADTs) that may be useful.  Incudes queue,
   dynamic array and key value ADT.

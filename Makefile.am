@@ -23,7 +23,7 @@
 #
 ######################################################################
 
-SUBDIRS = libvanessa_adt test
+SUBDIRS = libvanessa_adt test debian
 
 EXTRA_DIST = \
 configure \

@@ -59,6 +59,7 @@ AC_CHECK_LIB(
 )
 
 AC_OUTPUT(
+debian/Makefile 
 libvanessa_adt/Makefile 
 test/Makefile 
 Makefile
