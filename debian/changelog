@@ -1,4 +1,4 @@
-vanessa-adt (0.0.5alpha0-1) unstable; urgency=low
+vanessa-adt (0.0.4release-2) unstable; urgency=low
 
   * Improved description of libvanessa-adt-dev
   closes: Bug#209882
