@@ -5,6 +5,16 @@ Library of Abstract Data Types
 Copyright (C) 1999-2000  Horms
 ----------------------------------------------------------------------
 
+17th May 2002
+(Horms)
+
+   * 0.0.3
+   - Include sys/types in vanessa_adt.h so ssize_t is defined on
+     FreeBSD
+
+
+----------------------------------------------------------------------
+
 24th March 2002
 (Horms)
 

@@ -33,6 +33,7 @@
 #include <string.h>
 #include <errno.h>
 #include <syslog.h>
+#include <sys/types.h>
 #include <vanessa_logger.h>
 
 
