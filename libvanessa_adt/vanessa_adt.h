@@ -1255,5 +1255,35 @@ int vanessa_config_file_check_permission(const char *filename,
 		uid_t uid, gid_t gid, mode_t mode, vanessa_adt_flag_t flag);
 
 
+/**********************************************************************
+ * vanessa_config_file_check_exits_fd
+ * Check the that file exists and is a regular file or 
+ * a symlink to a regular file.
+ * pre: fd: Open file discriptor to file to check
+ * post: checks are performed
+ * return: 0 if the file pases the checks
+ *         -1 otherwise
+ **********************************************************************/
+
+int vanessa_config_file_check_exits_fd(int fd);
+
+
+/**********************************************************************
+ * vanessa_config_file_check_exits
+ * Check that a file exists and is a regular file or 
+ * a symlink to a regular file.
+ * pre: filename: file to check
+ *      see vanessa_config_file_check_exits_fd() for other arguments
+ * post: File is opened read only
+ *       File is checked, see vanessa_config_file_check_exits_fd() for details
+ *       File is closed
+ * return: 0 if file passes checks
+ *         N.B: you must have permision to open the file for reading
+ *         -1 on error
+ **********************************************************************/
+
+int vanessa_config_file_check_exits(const char *filename, 
+		uid_t uid, gid_t gid, mode_t mode, vanessa_adt_flag_t flag);
+
 #endif /* _VANESSA_ADT_H */
 

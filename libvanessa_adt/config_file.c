@@ -306,7 +306,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
  * pre: filename: file to read configuration from
  *      flags: passed to vanessa_config_file_read_fd
  * post: File is opened read only
- *       File is parsed, see vanessa_config_file_read for details
+ *       File is checked, see vanessa_config_file_read for details
  *       File is closed
  * return: dynamic array containin elements
  *         NULL on error
@@ -615,7 +615,7 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
  * pre: filename: file to check
  *      see vanessa_config_file_check() for other arguments
  * post: File is opened read only
- *       File is parsed, see vanessa_config_file_check() for details
+ *       File is checked, see vanessa_config_file_check() for details
  *       File is closed
  * return: 0 if file passes checks
  *         N.B: you must have permision to open the file for reading
@@ -630,8 +630,6 @@ int vanessa_config_file_check_permission(const char *filename,
 
 	fd = open(filename, O_RDONLY);
 	if(fd < 0) {
-		VANESSA_LOGGER_DEBUG_UNSAFE("open(%s): %s", filename,
-					    strerror(errno));
 		return (-1);
 	}
 
@@ -643,4 +641,53 @@ int vanessa_config_file_check_permission(const char *filename,
 	return(status);
 }
 
+
+/**********************************************************************
+ * vanessa_config_file_check_exits_fd
+ * Check the that file exists and is a regular file or 
+ * a symlink to a regular file.
+ * pre: fd: Open file discriptor to file to check
+ * post: checks are performed
+ * return: 0 if the file pases the checks
+ *         -1 otherwise
+ **********************************************************************/
+
+int vanessa_config_file_check_exits_fd(int fd)
+{
+	return(vanessa_config_file_check_permission_fd(fd, 0, 0, 0,
+			VANESSA_CONFIG_FILE_CHECK_FILE));
+}
+
+
+/**********************************************************************
+ * vanessa_config_file_check_exits
+ * Check that a file exists and is a regular file or 
+ * a symlink to a regular file.
+ * pre: filename: file to check
+ *      see vanessa_config_file_check_exits_fd() for other arguments
+ * post: File is opened read only
+ *       File is checked, see vanessa_config_file_check_exits_fd() for details
+ *       File is closed
+ * return: 0 if file passes checks
+ *         N.B: you must have permision to open the file for reading
+ *         -1 on error
+ **********************************************************************/
+
+int vanessa_config_file_check_exits(const char *filename, 
+		uid_t uid, gid_t gid, mode_t mode, vanessa_adt_flag_t flag)
+{
+	int status;
+	int fd;
+
+	fd = open(filename, O_RDONLY);
+	if(fd < 0) {
+		return (-1);
+	}
+
+	status = vanessa_config_file_check_exits_fd(fd);
+
+	close(fd);
+
+	return(status);
+}
 
