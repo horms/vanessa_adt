@@ -1,3 +1,10 @@
+vanessa-adt (0.0.5alpha0-1) unstable; urgency=low
+
+  * Improved description of libvanessa-adt-dev
+  closes: Bug#209882
+
+ -- Simon Horman <horms@vergenet.net>  Wed, 10 Sep 2003 10:32:36 +0900
+
 vanessa-adt (0.0.4release-1) unstable; urgency=low
 
   * New Upstream

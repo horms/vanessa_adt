@@ -11,6 +11,8 @@ Section: libdevel
 Depends: libvanessa-adt0 (= ${Source-Version}), libvanessa-logger-dev, libc6-dev
 Description: Headers and static libraries for vanessa_adt
  Headers and static libraries required to develop against vanessa_adt.
+ vanessa_adt is a abstract data types (ADT) library.  Includes queue,
+ dynamic array and key value ADT.
 
 Package: libvanessa-adt0
 Architecture: any
