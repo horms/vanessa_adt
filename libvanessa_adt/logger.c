@@ -30,7 +30,7 @@
 /*
  * Its all about this global
  */
-vanessa_logger_t *vanessa_adt_logger=NULL;
+vanessa_logger_t *vanessa_adt_logger = NULL;
 
 /**********************************************************************
  * Note:

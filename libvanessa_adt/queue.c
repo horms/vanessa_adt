@@ -40,18 +40,18 @@
  * return: none
  **********************************************************************/
 
-static void vanessa_queue_member_free(
-  vanessa_queue_member_t *mem, 
-  void (*e_destroy)(const void *)
-){
-  if(mem==NULL){
-    return;
-  }
+static void vanessa_queue_member_free(vanessa_queue_member_t * mem,
+				      void (*e_destroy) (const void *)
+    )
+{
+	if (mem == NULL) {
+		return;
+	}
 
-  if(mem->value!=NULL && e_destroy!=NULL){
-    e_destroy(&(mem->value));
-  }
-  free(mem);
+	if (mem->value != NULL && e_destroy != NULL) {
+		e_destroy(&(mem->value));
+	}
+	free(mem);
 }
 
 
@@ -67,20 +67,23 @@ static void vanessa_queue_member_free(
  **********************************************************************/
 
 
-vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *)){
-  vanessa_queue_t *q;
+vanessa_queue_t *vanessa_queue_create(void (*e_destroy) (const void *))
+{
+	vanessa_queue_t *q;
 
-  if( (q=(vanessa_queue_t *)malloc(sizeof(vanessa_queue_t))) == NULL ){
-    VANESSA_ADT_DEBUG("malloc");
-    return(NULL);
-  }
-  
-  q->first=NULL;
-  q->last=NULL;
-  q->e_destroy=e_destroy;
-  q->size=0;
+	if ((q =
+	     (vanessa_queue_t *) malloc(sizeof(vanessa_queue_t))) ==
+	    NULL) {
+		VANESSA_ADT_DEBUG("malloc");
+		return (NULL);
+	}
 
-  return q;
+	q->first = NULL;
+	q->last = NULL;
+	q->e_destroy = e_destroy;
+	q->size = 0;
+
+	return q;
 }
 
 
@@ -95,38 +98,39 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *)){
  *       destroyed.
  **********************************************************************/
 
-vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value){
-  vanessa_queue_member_t *new;
+vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value)
+{
+	vanessa_queue_member_t *new;
 
-  if(q==NULL){
-    return(NULL);
-  }
+	if (q == NULL) {
+		return (NULL);
+	}
 
-  if( (new=(vanessa_queue_member_t *)malloc(
-	sizeof(vanessa_queue_member_t))) == NULL){
-    VANESSA_ADT_DEBUG("malloc");
-    vanessa_queue_destroy(q);
-    return(NULL);
-  }
+	if ((new =
+	     (vanessa_queue_member_t *)
+	     malloc(sizeof(vanessa_queue_member_t))) == NULL) {
+		VANESSA_ADT_DEBUG("malloc");
+		vanessa_queue_destroy(q);
+		return (NULL);
+	}
 
-  /*Put in payload*/
-  new->value=value;
+	/*Put in payload */
+	new->value = value;
 
-  /*Update vanessa_queue pointers*/
-  new->next=q->first;
-  new->prev=NULL;
-  if(q->first==NULL){
-    q->last=new;
-  }
-  else{
-    q->first->prev = new;
-  }
-  q->first=new;
+	/*Update vanessa_queue pointers */
+	new->next = q->first;
+	new->prev = NULL;
+	if (q->first == NULL) {
+		q->last = new;
+	} else {
+		q->first->prev = new;
+	}
+	q->first = new;
 
-  /*Increment vanessa_queue size*/
-  q->size++;
+	/*Increment vanessa_queue size */
+	q->size++;
 
-  return q;
+	return q;
 }
 
 
@@ -142,32 +146,32 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value){
  * Note: popping an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
-vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t *q, void **value){
-  vanessa_queue_member_t *old;
+vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value)
+{
+	vanessa_queue_member_t *old;
 
-  if(q==NULL || q->last==NULL){
-    return(NULL);
-  }
+	if (q == NULL || q->last == NULL) {
+		return (NULL);
+	}
 
-  /*Grab payload*/
-  *value = q->last->value;
+	/*Grab payload */
+	*value = q->last->value;
 
-  /*Fix pointers*/
-  old = q->last;
-  if ( (q->last=old->prev) == NULL ){
-    q->first=NULL;
-  }
-  else{
-    q->last->next=NULL;
-  }
-  
-  /*Decrement vanessa_queue size*/
-  q->size--;
+	/*Fix pointers */
+	old = q->last;
+	if ((q->last = old->prev) == NULL) {
+		q->first = NULL;
+	} else {
+		q->last->next = NULL;
+	}
 
-  /* Free queue member, but not value */
-  vanessa_queue_member_free(old, NULL);
-  
-  return q;
+	/*Decrement vanessa_queue size */
+	q->size--;
+
+	/* Free queue member, but not value */
+	vanessa_queue_member_free(old, NULL);
+
+	return q;
 }
 
 
@@ -191,18 +195,19 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t *q, void **value){
  * return: none
  **********************************************************************/
 
-void vanessa_queue_destroy(vanessa_queue_t *q){
-  vanessa_queue_member_t *old_first;
+void vanessa_queue_destroy(vanessa_queue_t * q)
+{
+	vanessa_queue_member_t *old_first;
 
-  if(q==NULL){
-    return;
-  }
+	if (q == NULL) {
+		return;
+	}
 
-  while(q->first!=NULL){
-    old_first = q->first;
-    q->first = old_first->next;
-    vanessa_queue_member_free(old_first, q->e_destroy);
-  }
+	while (q->first != NULL) {
+		old_first = q->first;
+		q->first = old_first->next;
+		vanessa_queue_member_free(old_first, q->e_destroy);
+	}
 
-  free(q);
+	free(q);
 }

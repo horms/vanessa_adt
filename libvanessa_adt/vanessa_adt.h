@@ -43,18 +43,18 @@ typedef unsigned int vanessa_adt_flag_t;
  **********************************************************************/
 
 typedef struct __vanessa_queue_member_t_struct {
-  void *value;
-  struct __vanessa_queue_member_t_struct *prev;
-  struct __vanessa_queue_member_t_struct *next;
+	void *value;
+	struct __vanessa_queue_member_t_struct *prev;
+	struct __vanessa_queue_member_t_struct *next;
 } vanessa_queue_member_t;
 
 typedef struct {
-  vanessa_queue_member_t *first;
-  vanessa_queue_member_t *last;
-  void (*e_destroy)(const void *);
-  int size;
+	vanessa_queue_member_t *first;
+	vanessa_queue_member_t *last;
+	void (*e_destroy) (const void *);
+	int size;
 } vanessa_queue_t;
-  
+
 
 /**********************************************************************
  * vanessa_queue_create
@@ -67,7 +67,7 @@ typedef struct {
  *         NULL on error
  **********************************************************************/
 
-vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *));
+vanessa_queue_t *vanessa_queue_create(void (*e_destroy) (const void *));
 
 
 /**********************************************************************
@@ -81,7 +81,7 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *));
  *         destroyed.
  **********************************************************************/
 
-vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value);
+vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value);
 
 
 /**********************************************************************
@@ -96,7 +96,7 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value);
  * Note: popping an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
-vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t *q, void **value);
+vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value);
 
 
 /**********************************************************************
@@ -145,7 +145,7 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t *q, void **value);
  * return: none
  **********************************************************************/
 
-void vanessa_queue_destroy(vanessa_queue_t *q);
+void vanessa_queue_destroy(vanessa_queue_t * q);
 
 
 /**********************************************************************
@@ -162,13 +162,15 @@ void vanessa_queue_destroy(vanessa_queue_t *q);
 
 
 /**********************************************************************
- * Dynamic array, to store all your flims in
- * Includes macros required to create an array of strings but as the
- * primitive type for the array is void * providing your own
+ * Dynamic array, to store all your flims in. 
+ *
+ * The primitive type for the array is void *. Thus, providing your own
  * duplicate_primitive, destroy_primitive, display_primitive and
  * length_primitive functions will allow you to use the
  * vanessa_dynamic_array API to have a dynamic array containing any
  * primitive
+ *
+ * Includes macros required to create an array of strings or integers.
  **********************************************************************/
 
 /*
@@ -183,22 +185,24 @@ void vanessa_queue_destroy(vanessa_queue_t *q);
 #define VANESSA_DUPLICATE_STR (void *(*)(void *s))strdup
 #define VANESSA_DISPLAY_STR (void (*)(char *d, void *s))strcpy
 #define VANESSA_LENGTH_STR (size_t (*)(void *s))strlen
+#define VANESSA_MATCH_STR (size_t (*)(void *s))strcmp
 
 /* Sort versions */
 #define VANESSA_DESS VANESSA_DESTROY_STR
 #define VANESSA_DUPS VANESSA_DUPLICATE_STR
 #define VANESSA_DISS VANESSA_DISPLAY_STR
 #define VANESSA_LENS VANESSA_LENGTH_STR
+#define VANESSA_MATS VANESSA_MATCH_STR
 
 typedef struct {
-  void   **vector;
-  size_t count;
-  size_t allocated_size;
-  size_t block_size;
-  void   (*e_destroy)(void *);
-  void  *(*e_duplicate)(void *s);
-  void   (*e_display)(char *, void *);
-  size_t (*e_length)(void *);
+	void **vector;
+	size_t count;
+	size_t allocated_size;
+	size_t block_size;
+	void (*e_destroy) (void *);
+	void *(*e_duplicate) (void *s);
+	void (*e_display) (char *, void *);
+	 size_t(*e_length) (void *);
 } vanessa_dynamic_array_t;
 
 
@@ -240,13 +244,19 @@ typedef struct {
  *         NULL on error
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_create(
-  size_t block_size,
-  void   (*element_destroy)(void *),
-  void  *(*element_duplicate)(void *s),
-  void   (*element_display)(char *, void *),
-  size_t (*element_size)(void *)
-);
+vanessa_dynamic_array_t *vanessa_dynamic_array_create(size_t block_size,
+						      void
+						      (*element_destroy)
+						      (void *),
+						      void
+						      *(*element_duplicate)
+						      (void *s),
+						      void
+						      (*element_display)
+						      (char *, void *),
+						      size_t(*element_size)
+						      (void *)
+    );
 
 
 /**********************************************************************
@@ -259,7 +269,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_create(
  *       Nothing if a is NULL
  **********************************************************************/
 
-void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t *a);
+void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -276,10 +286,9 @@ void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t *a);
  *         NULL if a is NULL or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
-  vanessa_dynamic_array_t *a, 
-  void *e
-);
+vanessa_dynamic_array_t
+    *vanessa_dynamic_array_add_element(vanessa_dynamic_array_t * a,
+				       void *e);
 
 
 /**********************************************************************
@@ -298,10 +307,9 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
  *         NULL if a is NULL, index is out of bounds or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
-  vanessa_dynamic_array_t *a, 
-  const int index
-);
+vanessa_dynamic_array_t
+    *vanessa_dynamic_array_delete_element(vanessa_dynamic_array_t * a,
+					  const int index);
 
 
 /**********************************************************************
@@ -312,9 +320,8 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
  *         NULL on error
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
-  vanessa_dynamic_array_t *a
-);
+vanessa_dynamic_array_t
+    *vanessa_dynamic_array_duplicate(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -336,31 +343,29 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
  *         NULL a or empty a
  **********************************************************************/
 
-char *vanessa_dynamic_array_display(vanessa_dynamic_array_t *a, char delimiter);
+char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
+				    char delimiter);
 
 
 /**********************************************************************
  * vanessa_dynamic_array_length
  * Find the length of an ASCII representation of a dynamic array.
+ * Not including a terminating '\0'.
  * pre: a: dynamic array to find the length of
- * post: If a is NULL or there are no elements in a then the length i
+ * post: If a is NULL or there are no elements in a then the length is 0
  *       If element_display or element_length, as passed to
- *       vanessa_dynamic_array_create, are NULL, then an empty string
- *       ("\0") is returned.  Else a character buffer is allocated and
- *       and ASCII representation of of each array element, as
- *       determined by element_display passed to
- *       vanessa_dynamic_array_create, separated by delimiter is
- *       placed in the '\0' terminated buffer returned. It is up to
- *       the user to free this buffer.  
- * return: Cumulative length of the elements as per the element_length 
- *         function passed to vanessa_dynamic_array_create, plus once
- *         character per element for a delimiter between elements.
- *         The trailing '\0' is not counted.  0 if a is NULL or there
- *         are no elements in a or if element_length passed to
- *         vanessa_dynamic_array_create is NULL.
+ *       vanessa_list_create, are NULL, then 0 is returned.
+ *       Else the cumulative lenth of the elemements as per the
+ *       element_length function passed to vanessa_list_create, plus one
+ *       character per element for a delimiter between elements.
+ *       The trailing '\0' is not counted.
+ *       It is up to the user to free this buffer.  
+ * return: Cumulative length of the elements.
+ *         0 if a is NULL or there are no elements in a or if
+ *         element_length passed to vanessa_list_create is NULL.
  **********************************************************************/
 
-size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a);
+size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -388,7 +393,7 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a);
 
 #define vanessa_dynamic_array_get_count(_a) \
   ((_a==NULL)?-1:(_a)->count)
-  
+
 
 /**********************************************************************
  * vanessa_dynamic_array_get_vector
@@ -410,7 +415,7 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a);
  * return: none
  **********************************************************************/
 
-void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t *a);
+void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -425,10 +430,9 @@ void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t *a);
  *         string being NULL is an error state
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(
-  char *string, 
-  const char delimiter
-);
+vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
+							 const char
+							 delimiter);
 
 
 /**********************************************************************
@@ -445,14 +449,14 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(
  *         string being NULL is an error state
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(
-  char *string,
-  const char delimiter
-);
+vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
+								*string,
+								const char
+								delimiter);
 
 
 /**********************************************************************
- * vanessa_dynamic_array_destroy_int
+ * vanessa_destroy_int
  * Dummy function to "destroy" an int.
  * DOES NOTHING
  * pre: i: int to "destroy"
@@ -460,11 +464,11 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(
  * return: none
  **********************************************************************/
 
-void vanessa_dynamic_array_destroy_int(int i);
+void vanessa_destroy_int(int i);
 
 
 /**********************************************************************
- * vanessa_dynamic_array_dup_int
+ * vanessa_dup_int
  * Dummy function to "duplicate" an int.
  * DOES NOTHING
  * pre: i: int to "destroy"
@@ -472,11 +476,11 @@ void vanessa_dynamic_array_destroy_int(int i);
  * return: i is returned cast to a void *
  **********************************************************************/
 
-void *vanessa_dynamic_array_dup_int(int i);
+void *vanessa_dup_int(int i);
 
 
 /**********************************************************************
- * vanessa_dynamic_array_display_int
+ * vanessa_display_int
  * Display an int in ASCII as a decimal.
  * pre: d: buffer to display ASCII representation of int to
  *      i: int to display
@@ -484,11 +488,11 @@ void *vanessa_dynamic_array_dup_int(int i);
  * return: none
  **********************************************************************/
 
-void vanessa_dynamic_array_display_int(char *d, int i);
+void vanessa_display_int(char *d, int i);
 
 
 /**********************************************************************
- * vanessa_dynamic_array_length_int
+ * vanessa_length_int
  * Return the length in bytes of an ASCII representation of the in as a
  * decimal.
  * DOES NOTHING
@@ -497,24 +501,40 @@ void vanessa_dynamic_array_display_int(char *d, int i);
  * return: length is returned
  **********************************************************************/
 
-size_t vanessa_dynamic_array_length_int(int i);
+size_t vanessa_length_int(int i);
 
+
+/**********************************************************************
+ * vanessa_match_int
+ * Compare two integers. Return the difference. That is < 1 if a < b,
+ * 0 if a == b and > 1 if a > b.
+ * Analogous to strcmp(3)
+ * pre: a: int to compare
+ *      b: other int to compare
+ * post: none
+ * return: difference between a and b
+ **********************************************************************/
+
+size_t vanessa_match_int(int a, int b);
 
 /* #defines to destroy and duplicate integers */
 #define VANESSA_DESTROY_INT \
-	(void (*)(void *s))vanessa_dynamic_array_destroy_int
+	(void (*)(void *s))vanessa_destroy_int
 #define VANESSA_DUPLICATE_INT \
-	(void *(*)(void *s))vanessa_dynamic_array_dup_int
+	(void *(*)(void *s))vanessa_dup_int
 #define VANESSA_DISPLAY_INT \
-	(void (*)(char *d, void *s))vanessa_dynamic_array_display_int
+	(void (*)(char *d, void *s))vanessa_display_int
 #define VANESSA_LENGTH_INT \
-	(size_t (*)(void *s))vanessa_dynamic_array_length_int
+	(size_t (*)(void *s))vanessa_length_int
+#define VANESSA_MATCH_INT \
+	(size_t (*)(void *s))vanessa_match_int
 
 /* ... and shorter versions */
 #define VANESSA_DESI VANESSA_DESTROY_INT
 #define VANESSA_DUPI VANESSA_DUPLICATE_INT
 #define VANESSA_DISI VANESSA_DISPLAY_INT
 #define VANESSA_LENI VANESSA_LENGTH_INT
+#define VANESSA_MATI VANESSA_MATCH_INT
 
 
 /**********************************************************************
@@ -522,12 +542,12 @@ size_t vanessa_dynamic_array_length_int(int i);
  **********************************************************************/
 
 typedef struct {
-  void *key;
-  void (*destroy_key)(void *); 
-  void *(*dup_key)(void *);
-  void *value;
-  void (*destroy_value)(void *);
-  void *(*dup_value)(void *);
+	void *key;
+	void (*destroy_key) (void *);
+	void *(*dup_key) (void *);
+	void *value;
+	void (*destroy_value) (void *);
+	void *(*dup_value) (void *);
 } vanessa_key_value_t;
 
 
@@ -552,7 +572,7 @@ vanessa_key_value_t *vanessa_key_value_create(void);
  * return: none
  **********************************************************************/
 
-void vanessa_key_value_destroy(vanessa_key_value_t *kv);
+void vanessa_key_value_destroy(vanessa_key_value_t * kv);
 
 
 /**********************************************************************
@@ -562,7 +582,7 @@ void vanessa_key_value_destroy(vanessa_key_value_t *kv);
  * post: 
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t *kv);
+vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t * kv);
 
 
 /**********************************************************************
@@ -588,15 +608,15 @@ vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t *kv);
  *         NULL if kv is NULL
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_assign(
-  vanessa_key_value_t *kv,
-  void *key,
-  void (*destroy_key)(void *), 
-  void *(*dup_key)(void *), 
-  void *value,
-  void (*destroy_value)(void *),
-  void *(*dup_value)(void *)
-);
+vanessa_key_value_t *vanessa_key_value_assign(vanessa_key_value_t * kv,
+					      void *key,
+					      void (*destroy_key) (void *),
+					      void *(*dup_key) (void *),
+					      void *value,
+					      void (*destroy_value) (void
+								     *),
+					      void *(*dup_value) (void *)
+    );
 
 
 /**********************************************************************
@@ -610,7 +630,7 @@ vanessa_key_value_t *vanessa_key_value_assign(
  *         NULL if kv is NULL
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t *kv);
+vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t * kv);
 
 
 /**********************************************************************
@@ -621,7 +641,7 @@ vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t *kv);
  *         NULL if kv is NULL
  **********************************************************************/
 
-void *vanessa_key_value_get_key(vanessa_key_value_t *kv);
+void *vanessa_key_value_get_key(vanessa_key_value_t * kv);
 
 
 /**********************************************************************
@@ -632,7 +652,7 @@ void *vanessa_key_value_get_key(vanessa_key_value_t *kv);
  *         NULL if kv is NULL
  **********************************************************************/
 
-void *vanessa_key_value_get_value(vanessa_key_value_t *kv);
+void *vanessa_key_value_get_value(vanessa_key_value_t * kv);
 
 
 #define VANESSA_DESTROY_KV (void (*)(void *s))vanessa_key_value_destroy
@@ -669,5 +689,184 @@ extern vanessa_logger_t *vanessa_adt_logger;
  **********************************************************************/
 
 #define vanessa_adt_logger_unset() vanessa_adt_logger_set(NULL)
+
+
+/**********************************************************************
+ * Linked List to store all your flims in.
+ *
+ * The primitive type for the array is void *. Thus, providing your own
+ * duplicate_primitive, destroy_primitive, match_primative,
+ * display_primitive and length_primitive functions will allow you to use
+ * the vanessa_dynamic_array API to have a dynamic array containing any
+ * primitive
+ *
+ * Includes macros required to create an array of strings or integers.
+ **********************************************************************/
+
+
+typedef struct vanessa_list_elem_struct vanessa_list_elem_t;
+
+typedef struct {
+	vanessa_list_elem_t *first;
+	vanessa_list_elem_t *last;
+	vanessa_list_elem_t **recent;
+	size_t norecent;
+	size_t recent_offset;
+	void (*e_destroy) (void *e);
+	void *(*e_duplicate) (void *e);
+	void *(*e_match) (void *e, void *key);
+	void (*e_display) (char *s, void *e);
+	size_t(*e_length) (void *e);
+} vanessa_list_t;
+
+
+/**********************************************************************
+ * vanessa_list_create
+ * Create a new, empty list
+ * pre: norecent: number of elements for recent list.
+ *                If negative DEFAULT_NORECENT is used
+ *      element_destroy:   Pointer to a function to destroy an element
+ *                         Function should take an argument of a pointer
+ *                         and free the memory allocated to the structure
+ *                         pointed to.
+ *      element_duplicate: Pointer to a function to duplicate an element
+ *                         Function should take a pointer to an element to
+ *                         duplicate as the only element and return a copy
+ *                         of the element Any memory allocation required
+ *                         should be done by this function.
+ *      element_match:     Pointer to a function to match an element
+ *                         by a key.
+ *      element_display:   Pointer to a function to display an element
+ *                         Function should take a pointer to char and a
+ *                         pointer to an element as arguments. An ASCII
+ *                         representation of the element should be placed
+ *                         in the character buffer given as the first
+ *                         argument.  May be NULL in which case
+ *                         vanessa_dynamic_array_display will return an empty
+ *                         string ("\0");
+ *      element_length:    Pointer to a function to find the length of an
+ *                         ASCII representation of the element not
+ *                         including the trailing '\0'. Used to guard
+ *                         against buffer over runs when using
+ *                         element_display. May be NULL, in which case
+ *                         vanessa_dynamic_array_display will return an
+ *                         empty string ("");
+ *
+ * post: list structure is alocated, and values initialised to NULL
+ * return: pointer to list
+ *         NULL on error
+ **********************************************************************/
+
+vanessa_list_t *vanessa_list_create(int norecent,
+                                   void (*element_destroy) (void *e),
+                                   void *(*element_duplicate) (void *e),
+                                   void *(*element_match) (void *e, void *key),
+                                   void (*element_display) (char *s, void *e),
+                                   size_t(*element_size) (void *e));
+
+
+/**********************************************************************
+ * vanessa_list_destroy
+ * Destroy a list and all the data contained in the list
+ * pre: l: list
+ * post: all elements of l are destroyed
+ **********************************************************************/
+
+void vanessa_list_destroy(vanessa_list_t * l);
+
+
+/**********************************************************************
+ * vanessa_list_length
+ * Find the length of an ASCII representation of a dynamic array.
+ * Not including a terminating '\0'.
+ * pre: a: dynamic array to find the length of
+ * post: If l is NULL or there are no elements in l then the length is 0
+ *       If element_display or element_length, as passed to
+ *       vanessa_list_create, are NULL, then 0 is returned.
+ *       Else the cumulative lenth of the elemements as per the
+ *       element_length function passed to vanessa_list_create, plus one
+ *       character per element for a delimiter between elements.
+ *       The trailing '\0' is not counted.
+ *       It is up to the user to free this buffer.  
+ * return: Cumulative length of the elements.
+ *         0 if a is NULL or there are no elements in a or if
+ *         element_length passed to vanessa_list_create is NULL.
+ **********************************************************************/
+
+size_t vanessa_list_length(vanessa_list_t * l);
+
+
+/**********************************************************************
+ * vanessa_list_display
+ * Make an ASCII representation of the list
+ * pre: l: list to display
+ *      delimiter: character to place between elements of the list
+ * post: If l is NULL or there are no elements in l then nothing is done
+ *       If element_display or element_length, as passed to
+ *       vanessa_list_create, are NULL, then an empty string 
+ *       ("") is returned.  Else a character buffer is allocated
+ *       and * and ASCII representation of of each list, as
+ *       determined by element_display passed to
+ *       vanessa_list_create, separated by delimiter is placed in the 
+ *       '\0' terminated buffer returned. It * is up to the user to free 
+ *       this buffer.  
+ * return: Allocated buffer as above 
+ *         NULL on error, 
+ *         NULL a or empty a
+ **********************************************************************/
+
+char *vanessa_list_display(vanessa_list_t * l, char delimiter);
+
+
+/**********************************************************************
+ * vanessa_list_get_element
+ * Find an element in the list by key using the element_match function
+ * passed to vanessa_list_create
+ * pre: l: list to search
+ *      key: key to match
+ * post: none
+ * return: value it is found
+ *         NULL if l or key is NULL or if value matching key is not found
+ **********************************************************************/
+
+void *vanessa_list_get_element(vanessa_list_t *l, void *key);
+
+
+/**********************************************************************
+ * vanessa_list_get_count
+ * Count the number of elements in the list
+ * pre: l: list to count
+ * post: none
+ * return: number of elements in the list
+ *         0 if l is NULL
+ **********************************************************************/
+
+size_t vanessa_list_get_count(vanessa_list_t *l);
+
+
+/**********************************************************************
+ * vanessa_list_add_element
+ * Insert element into a list
+ * pre: l: list to insert value into
+ *      value: value to insert
+ * post: value is inserted into the list
+ * return: NULL if l is NULL
+ *         l, unchanged if n is null
+ **********************************************************************/
+
+vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
+
+
+/**********************************************************************
+ * vanessa_list_delete_element
+ * Insert element into a list
+ * pre: l: list to insert value into
+ *      value: value to insert
+ * post: value is removed from the list
+ * return: NULL if l is NULL
+ *         l, unchanged if n is null
+ **********************************************************************/
+
+void vanessa_list_delete_element(vanessa_list_t *l, void *key);
 
 #endif

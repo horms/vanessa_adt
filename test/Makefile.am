@@ -23,13 +23,15 @@
 #
 ######################################################################
 
-bin_PROGRAMS = dynamic_array_test
+noinst_PROGRAMS = dynamic_array_test list_test
 
 dynamic_array_test_SOURCES = dynamic_array_test.c
 
+list_test_SOURCES = list_test.c
+
 INCLUDES= -I$(top_srcdir)/libvanessa_adt
 
-dynamic_array_test_LDADD = \
+LDADD = \
 -L../libvanessa_adt \
 -L../libvanessa_adt/.libs/ \
 -lvanessa_adt \

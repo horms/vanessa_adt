@@ -30,11 +30,13 @@ include_HEADERS = vanessa_adt.h
 libvanessa_adt_la_SOURCES = \
 vanessa_adt.h \
 dynamic_array.c \
+element_ops.c \
 queue.c \
 key_value.c \
 logger.c \
+list.c \
 logger.h
 
-libvanessa_adt_la_LDFLAGS    = -version-info 0:2:0
+libvanessa_adt_la_LDFLAGS    = -version-info 0:3:0
 
 libvanessa_adt_la_LIBADD     = -lvanessa_logger

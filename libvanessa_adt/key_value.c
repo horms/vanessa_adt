@@ -38,21 +38,24 @@
  *         NULL on error
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_create(void){
-  vanessa_key_value_t *kv;
+vanessa_key_value_t *vanessa_key_value_create(void)
+{
+	vanessa_key_value_t *kv;
 
-  if((kv=(vanessa_key_value_t *)malloc(sizeof(vanessa_key_value_t)))==NULL){
-    VANESSA_ADT_DEBUG_ERRNO("malloc");
-    return(NULL);
-  }
-  kv->key=NULL;
-  kv->destroy_key=NULL;
-  kv->dup_key=NULL;
-  kv->value=NULL;
-  kv->destroy_value=NULL;
-  kv->dup_value=NULL;
+	if ((kv =
+	     (vanessa_key_value_t *) malloc(sizeof(vanessa_key_value_t)))
+	    == NULL) {
+		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		return (NULL);
+	}
+	kv->key = NULL;
+	kv->destroy_key = NULL;
+	kv->dup_key = NULL;
+	kv->value = NULL;
+	kv->destroy_value = NULL;
+	kv->dup_value = NULL;
 
-  return(kv);
+	return (kv);
 }
 
 
@@ -64,14 +67,15 @@ vanessa_key_value_t *vanessa_key_value_create(void){
  * return: none
  **********************************************************************/
 
-void vanessa_key_value_destroy(vanessa_key_value_t *kv){
-  if(kv!=NULL && kv->destroy_key!=NULL){
-    kv->destroy_key(kv->key);
-  }
-  if(kv!=NULL && kv->destroy_value!=NULL){
-    kv->destroy_value(kv->value);
-  }
-  free(kv);
+void vanessa_key_value_destroy(vanessa_key_value_t * kv)
+{
+	if (kv != NULL && kv->destroy_key != NULL) {
+		kv->destroy_key(kv->key);
+	}
+	if (kv != NULL && kv->destroy_value != NULL) {
+		kv->destroy_value(kv->value);
+	}
+	free(kv);
 }
 
 
@@ -82,22 +86,27 @@ void vanessa_key_value_destroy(vanessa_key_value_t *kv){
  * post: 
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t *kv){
-  vanessa_key_value_t *cp;
+vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t * kv)
+{
+	vanessa_key_value_t *cp;
 
-  if(kv==NULL){ return(NULL); }
-  if((cp=vanessa_key_value_create())==NULL){ return(NULL); }
-  cp->key=(kv->dup_key==NULL)?kv->key:
-    ((kv->key==NULL)?NULL:kv->dup_key(kv->key));
-  cp->destroy_key=kv->destroy_key;
-  cp->dup_key=kv->dup_key;
-  cp->value=(kv->dup_value==NULL)?kv->value:
-    ((kv->value==NULL)?NULL:kv->dup_value(kv->value));
-  cp->destroy_value=kv->destroy_value;
-  cp->dup_value=kv->dup_value;
-  
-  return(cp);
-} 
+	if (kv == NULL) {
+		return (NULL);
+	}
+	if ((cp = vanessa_key_value_create()) == NULL) {
+		return (NULL);
+	}
+	cp->key = (kv->dup_key == NULL) ? kv->key :
+	    ((kv->key == NULL) ? NULL : kv->dup_key(kv->key));
+	cp->destroy_key = kv->destroy_key;
+	cp->dup_key = kv->dup_key;
+	cp->value = (kv->dup_value == NULL) ? kv->value :
+	    ((kv->value == NULL) ? NULL : kv->dup_value(kv->value));
+	cp->destroy_value = kv->destroy_value;
+	cp->dup_value = kv->dup_value;
+
+	return (cp);
+}
 
 
 /**********************************************************************
@@ -123,23 +132,26 @@ vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t *kv){
  *         NULL if kv is NULL
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_assign(
-  vanessa_key_value_t *kv,
-  void *key,
-  void (*destroy_key)(void *), 
-  void *(*dup_key)(void *), 
-  void *value,
-  void (*destroy_value)(void *),
-  void *(*dup_value)(void *)
-){
-  if(kv==NULL){ return(NULL); }
-  kv->key=key;
-  kv->destroy_key=destroy_key;
-  kv->dup_key=dup_key;
-  kv->value=value;
-  kv->destroy_value=destroy_value;
-  kv->dup_value=dup_value;
-  return(kv);
+vanessa_key_value_t *vanessa_key_value_assign(vanessa_key_value_t * kv,
+					      void *key,
+					      void (*destroy_key) (void *),
+					      void *(*dup_key) (void *),
+					      void *value,
+					      void (*destroy_value) (void
+								     *),
+					      void *(*dup_value) (void *)
+    )
+{
+	if (kv == NULL) {
+		return (NULL);
+	}
+	kv->key = key;
+	kv->destroy_key = destroy_key;
+	kv->dup_key = dup_key;
+	kv->value = value;
+	kv->destroy_value = destroy_value;
+	kv->dup_value = dup_value;
+	return (kv);
 }
 
 
@@ -154,15 +166,18 @@ vanessa_key_value_t *vanessa_key_value_assign(
  *         NULL if kv is NULL
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t *kv){
-  if(kv==NULL){ return(NULL); }
-  kv->key=NULL;
-  kv->destroy_key=NULL;
-  kv->dup_key=NULL;
-  kv->value=NULL;
-  kv->destroy_value=NULL;
-  kv->dup_value=NULL;
-  return(kv);
+vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t * kv)
+{
+	if (kv == NULL) {
+		return (NULL);
+	}
+	kv->key = NULL;
+	kv->destroy_key = NULL;
+	kv->dup_key = NULL;
+	kv->value = NULL;
+	kv->destroy_value = NULL;
+	kv->dup_value = NULL;
+	return (kv);
 }
 
 
@@ -174,9 +189,12 @@ vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t *kv){
  *         NULL if kv is NULL
  **********************************************************************/
 
-void *vanessa_key_value_get_key(vanessa_key_value_t *kv){
-  if(kv==NULL){ return(NULL); }
-  return(kv->key);
+void *vanessa_key_value_get_key(vanessa_key_value_t * kv)
+{
+	if (kv == NULL) {
+		return (NULL);
+	}
+	return (kv->key);
 }
 
 
@@ -188,8 +206,10 @@ void *vanessa_key_value_get_key(vanessa_key_value_t *kv){
  *         NULL if kv is NULL
  **********************************************************************/
 
-void *vanessa_key_value_get_value(vanessa_key_value_t *kv){
-  if(kv==NULL){ return(NULL); }
-  return(kv->value);
+void *vanessa_key_value_get_value(vanessa_key_value_t * kv)
+{
+	if (kv == NULL) {
+		return (NULL);
+	}
+	return (kv->value);
 }
-
