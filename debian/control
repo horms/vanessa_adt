@@ -1,5 +1,5 @@
 Source: vanessa-adt
-Build-Depends: libvanessa-logger-dev (>=0.0.4), debhelper (>=2.0.0), automake, libtool
+Build-Depends: libvanessa-logger-dev (>=0.0.5), debhelper (>=2.0.0), automake, libtool
 Section: libs
 Priority: optional
 Maintainer: Simon Horman <horms@debian.org>
