@@ -1,6 +1,6 @@
 /**********************************************************************
  * config_file.c                                          November 1999
- * Horms                                             horms@vergenet.net
+ * Horms                                             horms@verge.net.au
  *
  * Read in a config and parse it into command line arguments,
  * return this as a dynamic array
@@ -9,7 +9,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2002  Horms
+ * Copyright (C) 1999-2003  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

@@ -1,6 +1,6 @@
 /**********************************************************************
  * hash.c                                                  January 2002
- * Horms                                             horms@vergenet.net
+ * Horms                                             horms@verge.net.au
  *
  * Hash to put your flims in.
  * Copyright (C) 2002  Horms
