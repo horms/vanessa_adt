@@ -126,6 +126,7 @@ static void remove_trailing_whitespace(char *buf)
 	} \
 
 #define BEGIN_KEY \
+	last_escaped = 0; \
 	if(!in_escape && !in_comment && !in_quote){ \
 		if(added_key && (flag & \
 				VANESSA_CONFIG_FILE_MULTI_VALUE)) { \
@@ -156,6 +157,7 @@ static void remove_trailing_whitespace(char *buf)
 	}
 
 #define BEGIN_VALUE \
+	last_escaped = 0; \
 	if(!in_key && !in_comment && !in_quote){ \
 		in_value=1; \
 	}

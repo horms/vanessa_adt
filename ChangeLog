@@ -5,6 +5,16 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
+22nd December 2003
+(Horms)
+
+  * 0.0.6
+  - Fixed segmentation fault problem in vanessa_config_file_read*()
+    when used with VANESSA_CONFIG_FILE_MULTI_VALUE on a configuration
+    file that contains escape characters.
+
+----------------------------------------------------------------------
+
 15th December 2003
 (Horms)
 
