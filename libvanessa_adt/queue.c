@@ -54,8 +54,7 @@ struct vanessa_queue_t_struct {
  **********************************************************************/
 
 static void vanessa_queue_member_free(vanessa_queue_member_t * mem,
-				      void (*e_destroy) (const void *)
-    )
+		void (*e_destroy) (const void *))
 {
 	if (mem == NULL) {
 		return;
@@ -84,9 +83,8 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy) (const void *))
 {
 	vanessa_queue_t *q;
 
-	if ((q =
-	     (vanessa_queue_t *) malloc(sizeof(vanessa_queue_t))) ==
-	    NULL) {
+	q = (vanessa_queue_t *) malloc(sizeof(vanessa_queue_t));
+	if (!q) {
 		VANESSA_LOGGER_DEBUG("malloc");
 		return (NULL);
 	}
@@ -119,9 +117,8 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value)
 		return (NULL);
 	}
 
-	if ((new =
-	     (vanessa_queue_member_t *)
-	     malloc(sizeof(vanessa_queue_member_t))) == NULL) {
+	new = (vanessa_queue_member_t *)malloc(sizeof(vanessa_queue_member_t));
+	if (!new) {
 		VANESSA_LOGGER_DEBUG("malloc");
 		vanessa_queue_destroy(q);
 		return (NULL);
@@ -155,7 +152,6 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value)
  *             *value
  * post: elelemt is removed from queue
  * return: vanessa_queue with element removed
- *         NULL on error
  * Note: popping an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
@@ -197,8 +193,8 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value)
  *             *value
  * post: none
  * return: pointer to an element from the vanessa_queue
- *         NULL on error
  * Note: peeking at an empty vanessa_queue results in NULL being returned
+ *       value may be NULL
  **********************************************************************/
 
 void *vanessa_queue_peek_last(vanessa_queue_t * q)
@@ -216,8 +212,8 @@ void *vanessa_queue_peek_last(vanessa_queue_t * q)
  *             *value
  * post: none
  * return: pointer to an element from the vanessa_queue
- *         NULL on error
  * Note: peeking at an empty vanessa_queue results in NULL being returned
+ *       value may be NULL
  **********************************************************************/
 
 void *vanessa_queue_peek_first(vanessa_queue_t * q)

@@ -90,12 +90,12 @@ struct vanessa_hash_t_struct {
  **********************************************************************/
 
 vanessa_hash_t *vanessa_hash_create(size_t nobucket, 
-		                    void (*element_destroy) (void *e),
-		                    void *(*element_duplicate) (void *e),
-		                    int (*element_match) (void *e, void *key),
-		                    void (*element_display) (char *s, void *e),
-		                    size_t(*element_length) (void *e),
-		                    size_t (*element_hash) (void *e))
+		void (*element_destroy) (void *e),
+		void *(*element_duplicate) (void *e),
+		int (*element_match) (void *e, void *key),
+		void (*element_display) (char *s, void *e),
+		size_t(*element_length) (void *e),
+		size_t (*element_hash) (void *e))
 {
 	vanessa_hash_t *h;
 
@@ -306,7 +306,8 @@ static vanessa_list_t *__vanessa_hash_get_bucket(vanessa_hash_t *h,
 	*hash_key = h->e_hash(value);
 
 	if(*hash_key >= h->nobucket) {
-		VANESSA_LOGGER_DEBUG_UNSAFE("hash value too large: %d >= %d", *hash_key,
+		VANESSA_LOGGER_DEBUG_UNSAFE(
+				"hash value too large: %d >= %d", *hash_key,
 				h->nobucket);
 		abort();
 		return(NULL);

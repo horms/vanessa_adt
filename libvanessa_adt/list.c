@@ -59,11 +59,10 @@ struct vanessa_list_elem_struct {
 
 static
 vanessa_list_elem_t *vanessa_list_elem_assign(vanessa_list_elem_t * e,
-					      vanessa_list_elem_t * prev,
-					      vanessa_list_elem_t * next,
-					      void * value)
+		vanessa_list_elem_t * prev, vanessa_list_elem_t * next,
+		void * value)
 {
-	if (e == NULL) {
+	if (!e) {
 		return (NULL);
 	}
 	e->next = next;
@@ -86,7 +85,7 @@ static
 void vanessa_list_elem_destroy(vanessa_list_elem_t * e, 
 		void (*destroy_value) (void *))
 {
-	if (e == NULL) {
+	if (!e) {
 		return;
 	}
 	if(destroy_value != NULL) {
@@ -116,14 +115,14 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
 	void *new_value;
 
 	e = (vanessa_list_elem_t *) malloc(sizeof(vanessa_list_elem_t));
-	if (e == NULL) {
+	if (!e) {
 		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 
-	if(value != NULL && element_duplicate != NULL) {
+	if(value && element_duplicate) {
 		new_value = element_duplicate(value);
-		if(new_value == NULL) {
+		if(!new_value) {
 			VANESSA_LOGGER_DEBUG("element_duplicate");
 			free(e);
 			return(NULL);
@@ -184,18 +183,18 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
  **********************************************************************/
 
 vanessa_list_t *vanessa_list_create(int norecent,
-                                   void (*element_destroy) (void *e),
-                                   void *(*element_duplicate) (void *e),
-                                   void (*element_display) (char *s, void *e),
-                                   size_t(*element_size) (void *e),
-                                   int (*element_match) (void *e, void *key),
-                                   int (*element_sort) (void *a, void *b))
+		void (*element_destroy) (void *e),
+                void *(*element_duplicate) (void *e),
+                void (*element_display) (char *s, void *e),
+                size_t(*element_size) (void *e),
+                int (*element_match) (void *e, void *key),
+                int (*element_sort) (void *a, void *b))
 {
 	vanessa_list_t *l;
 	size_t i;
 
 	l = (vanessa_list_t *) malloc(sizeof(vanessa_list_t));
-	if (l == NULL) {
+	if (!l) {
 		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
@@ -254,7 +253,9 @@ void vanessa_list_destroy(vanessa_list_t * l)
 	if(l->e_destroy != NULL) {
 		while (l->first != NULL) {
 			next = l->first->next;
-			l->e_destroy(l->first->value);
+			if(l->first->value) {
+				l->e_destroy(l->first->value);
+			}
 			free(l->first);
 			l->first = next;
 		}
@@ -294,10 +295,12 @@ size_t vanessa_list_length(vanessa_list_t * l) {
 
 	len = 0;
 	do {
-		len += l->e_length(e->value);
+		if(e->value) {
+			len += l->e_length(e->value);
+		}
 		len++; /* Space for delimiter */
 		e = e->next;
-	} while (e != NULL);
+	} while (e);
 	len--;                  /* No space for trailing '\0' */
 
 	return (len);
@@ -347,13 +350,13 @@ char *vanessa_list_display(vanessa_list_t * l, char delimiter) {
 
 	buffer_current = buffer;
 	do {
-		if ((len = l->e_length(e->value))) {
+		if (e->value && (len = l->e_length(e->value))) {
 			l->e_display(buffer_current, e->value);
 			buffer_current += len;
 		}
 		*buffer_current++ = delimiter;
 		e = e->next;
-	} while (e != NULL);
+	} while (e);
 
 	if (len) {
 		buffer_current--;

@@ -48,15 +48,21 @@
 
 
 /**********************************************************************
- * vanessa_config_file_read
- * Read in a config file and put elements in a dynamic array
+ * vanessa_config_file_read_fd
+ * Reads a configuration file from an file descriptor
+ * that has been opend for reading. 
  * pre: filename: file to read configuration from
- *      flags: unused
+ *      flags: VANESSA_CONFIG_FILE_NONE, VANESSA_CONFIG_FILE_MULTI_VALUE
+ *             or VANESSA_CONFIG_FILE_X. These ar mutually exclusive.
  * post: The file is parsed according to the following rules.
  *       Escaping and quoting is intended to be analogous to 
  *       how a shell (bash) handles these.
  *       o Each line begins with a key, optionally folled
  *         by some whitespace and a value 
+ *         If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
+ *         then there may be multiple wite-space delimited values
+ *         Otherwise eveyrhing after the key and delimiting whitespace
+ *         is considerd as one value
  *       o Leading whitespace is ignored
  *       o Blank lines are ignored
  *       o Anything after a # (hash) on a line is ignored
@@ -68,11 +74,22 @@
  *         treated as a litreal.
  *       o Whitespace in keys must be escaped or quoted.
  *       o Whitespace in values need not be escaped or quoted.
- *       o If a key is a single letter it is prefixed by a "-"
- *         Else the key is prefixed with "--"
+ *       o If flag is VANESSA_CONFIG_FILE_NONE
+ *           If a key is a single letter it is prefixed by a "-"
+ *           Else the key is prefixed with "--"
+ *         If flag is VANESSA_CONFIG_FILE_X
+ *           key is prefixed with a "-"
+ *         Otherwise
+ *           key is not prefixed
+ *        * If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
+ *           a NULL entry is inserted after each line
+ *          Otherwise
+ *           a "" entry is inserted as the first element in the
+ *           dynamic array. This is intended to be a dummy argv[0]
  * return: dynamic array containin elements
  *         NULL on error
  **********************************************************************/
+
 
 #define ADD_TOKEN(_a, _t) \
 	if((_a=vanessa_dynamic_array_add_element(_a, _t))==NULL){ \
@@ -80,19 +97,30 @@
 				"vanessa_dynamic_array_add_element"); \
 		close(fd); \
 		return(NULL); \
-	}
+	} \
 
 #define BEGIN_KEY \
 	if(!in_escape && !in_comment && !in_quote){ \
+		if(added_key && (flag & VANESSA_CONFIG_FILE_MULTI_VALUE)) { \
+			ADD_TOKEN(a, NULL); \
+		} \
 		in_key=1; \
+		added_key=0; \
 	} \
 
 #define END_KEY \
 	if(!in_escape && in_key && !in_quote){ \
 		if(in_key && token_pos){ \
 			*(token_buffer+token_pos+2)='\0'; \
-			ADD_TOKEN(a, ((token_pos==1)? \
-					token_buffer+1:token_buffer)) ; \
+			tmp_token_buffer = token_buffer; \
+			if(flag & VANESSA_CONFIG_FILE_MULTI_VALUE) { \
+				tmp_token_buffer += 2; \
+			} \
+			else if(flag & VANESSA_CONFIG_FILE_X) { \
+				tmp_token_buffer++; \
+			} \
+			ADD_TOKEN(a, tmp_token_buffer++); \
+			added_key=1; \
 		} \
 		token_pos=0; \
 		in_key=0; \
@@ -132,7 +160,8 @@
 #define SINGLE_QUOTE 1
 #define DOUBLE_QUOTE 2
 
-vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename, 
+
+vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd, 
 		vanessa_adt_flag_t flag)
 {
 	vanessa_dynamic_array_t *a;
@@ -140,40 +169,31 @@ vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
 	size_t nread;
 	char token_buffer[MAX_LINE_LENGTH];
 	char read_buffer[MAX_LINE_LENGTH];
+	char *tmp_token_buffer;
 	char c;
 	int max_token_pos = MAX_LINE_LENGTH - 3;
 	int read_pos;
-	int fd;
 
 	int in_escape = 0;
 	int in_comment = 0;
 	int skip_char = 0;
 	int in_value = 0;
 	int in_quote = 0;
-	int in_key = 0;
+	int in_key = 1;
+	int added_key = 0;
 
-	extern int errno;
-
-	if (filename == NULL)
-		return (NULL);
-	if ((fd = open(filename, O_RDONLY)) < 0) {
-		VANESSA_LOGGER_DEBUG_UNSAFE("open(%s): %s", filename,
-					    strerror(errno));
-		return (NULL);
-	}
-
-	if ((a = vanessa_dynamic_array_create(0,
-					      VANESSA_DESTROY_STR,
-					      VANESSA_DUPLICATE_STR,
-					      VANESSA_DISPLAY_STR,
-					      VANESSA_LENGTH_STR)) ==
-	    NULL) {
+	a = vanessa_dynamic_array_create(0, VANESSA_DESTROY_STR,
+		      VANESSA_DUPLICATE_STR, VANESSA_DISPLAY_STR,
+		      VANESSA_LENGTH_STR);
+	if (!a) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 
 	/*insert a dummy argv[0] into the dynamic array */
-	ADD_TOKEN(a, "");
+	if(! (flag & VANESSA_CONFIG_FILE_MULTI_VALUE) ) {
+		ADD_TOKEN(a, "");
+	}
 
 	*token_buffer = '-';
 	*(token_buffer + 1) = '-';
@@ -199,6 +219,9 @@ vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
 			switch (c) {
 			case ' ':
 			case '\t':
+				if(flag | VANESSA_CONFIG_FILE_MULTI_VALUE) {
+					END_VALUE;
+				}
 				END_KEY;
 				if (in_escape) {
 					BEGIN_VALUE;
@@ -261,11 +284,9 @@ vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
 				break;
 			}
 
-			if (in_key | in_value &&
-			    c != '\n' &&
-			    c != '\r' &&
-			    !in_escape &&
-			    !skip_char && token_pos < max_token_pos) {
+			if (in_key | in_value && c != '\n' && c != '\r' &&
+					!in_escape && !skip_char && 
+					token_pos < max_token_pos) {
 				*(token_buffer + token_pos + 2) = c;
 				token_pos++;
 			}
@@ -273,6 +294,43 @@ vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
 		}
 	}
 
-	close(fd);
 	return (a);
 }
+
+
+/**********************************************************************
+ * vanessa_config_file_read
+ * Read in a config file and put elements in a dynamic array
+ * pre: filename: file to read configuration from
+ *      flags: passed to vanessa_config_file_read_fd
+ * post: File is opened read only
+ *       File is parsed, see vanessa_config_file_read for details
+ *       File is closed
+ * return: dynamic array containin elements
+ *         NULL on error
+ **********************************************************************/
+
+vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename, 
+		vanessa_adt_flag_t flag)
+{
+	vanessa_dynamic_array_t *a;
+	int fd;
+
+	fd = open(filename, O_RDONLY);
+	if(fd < 0) {
+		VANESSA_LOGGER_DEBUG_UNSAFE("open(%s): %s", filename,
+					    strerror(errno));
+		return (NULL);
+	}
+
+	a = vanessa_config_file_read_fd(fd, flag);
+	if(!a) {
+		VANESSA_LOGGER_DEBUG("vanessa_config_file_read");
+		return (NULL);
+	}
+
+	close(fd);
+
+	return(a);
+}
+

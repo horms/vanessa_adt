@@ -30,22 +30,6 @@
 
 
 /**********************************************************************
- * vanessa_destroy_int
- * function to destroy an pointer to an int.
- * pre: i: int to "destroy"
- * post: none
- * return: none
- **********************************************************************/
-
-void vanessa_destroy_int(int *i)
-{
-	if(i!=NULL) {
-		free(i);
-	}
-}
-
-
-/**********************************************************************
  * vanessa_dup_int
  * function to duplicate pointer to an int.
  * pre: i: int to duplicate

@@ -84,7 +84,6 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value);
  *             *value
  * post: element is removed from queue
  * return: vanessa_queue with element removed
- *         NULL on error
  * Note: popping an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
@@ -100,8 +99,8 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value);
  *             *value
  * post: none
  * return: pointer to an element from the vanessa_queue
- *         NULL on error
  * Note: peeking at an empty vanessa_queue results in NULL being returned
+ *       value may be NULL
  **********************************************************************/
 
 void *vanessa_queue_peek_last(vanessa_queue_t * q);
@@ -118,8 +117,8 @@ void *vanessa_queue_peek_last(vanessa_queue_t * q);
  *             *value
  * post: none
  * return: pointer to an element from the vanessa_queue
- *         NULL on error
  * Note: peeking at an empty vanessa_queue results in NULL being returned
+ *       value may be NULL
  **********************************************************************/
 
 void *vanessa_queue_peek_first(vanessa_queue_t * q);
@@ -359,6 +358,8 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  * post: no change is made to a
  * return: element requested
  *         NULL if element is beyond the number of elements in the array
+ *         N.B. element may actually be NULL. You can check if an
+ *         overflow has occured using by comparing elemntno to the output        *         of vanessa_dynamic_array_get_count()
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
@@ -497,8 +498,7 @@ int vanessa_match_int(int *a, int *b);
 
 
 /* #defines to destroy and duplicate integers */
-#define VANESSA_DESTROY_INT \
-	(void (*)(void *s))vanessa_destroy_int
+#define VANESSA_DESTROY_INT (void (*)(void *s))free
 #define VANESSA_DUPLICATE_INT \
 	(void *(*)(void *s))vanessa_dup_int
 #define VANESSA_DISPLAY_INT \
@@ -1103,16 +1103,26 @@ int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
 		                void *data);
 
 
+#define VANESSA_CONFIG_FILE_NONE        0x0
+#define VANESSA_CONFIG_FILE_MULTI_VALUE 0x1
+#define VANESSA_CONFIG_FILE_X           0x2
+
 /**********************************************************************
- * vanessa_config_file_read
- * Read in a config file and put elements in a dynamic array
+ * vanessa_config_file_read_fd
+ * Reads a configuration file from an file descriptor
+ * that has been opend for reading. 
  * pre: filename: file to read configuration from
- *      flags: unused
+ *      flags: VANESSA_CONFIG_FILE_NONE, VANESSA_CONFIG_FILE_MULTI_VALUE
+ *             or VANESSA_CONFIG_FILE_X. These ar mutually exclusive.
  * post: The file is parsed according to the following rules.
  *       Escaping and quoting is intended to be analogous to 
  *       how a shell (bash) handles these.
  *       o Each line begins with a key, optionally folled
  *         by some whitespace and a value 
+ *         If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
+ *         then there may be multiple wite-space delimited values
+ *         Otherwise eveyrhing after the key and delimiting whitespace
+ *         is considerd as one value
  *       o Leading whitespace is ignored
  *       o Blank lines are ignored
  *       o Anything after a # (hash) on a line is ignored
@@ -1124,13 +1134,39 @@ int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
  *         treated as a litreal.
  *       o Whitespace in keys must be escaped or quoted.
  *       o Whitespace in values need not be escaped or quoted.
- *       o If a key is a single letter it is prefixed by a "-"
- *         Else the key is prefixed with "--"
+ *       o If flag is VANESSA_CONFIG_FILE_NONE
+ *           If a key is a single letter it is prefixed by a "-"
+ *           Else the key is prefixed with "--"
+ *         If flag is VANESSA_CONFIG_FILE_X
+ *           key is prefixed with a "-"
+ *         Otherwise
+ *           key is not prefixed
+ *        * If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
+ *           a NULL entry is inserted after each line
+ *          Otherwise
+ *           a "" entry is inserted as the first element in the
+ *           dynamic array. This is intended to be a dummy argv[0]
  * return: dynamic array containin elements
  *         NULL on error
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename,
+vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd, 
+		vanessa_adt_flag_t flag);
+
+
+/**********************************************************************
+ * vanessa_config_file_read
+ * Read in a config file and put elements in a dynamic array
+ * pre: filename: file to read configuration from
+ *      flags: unused
+ * post: File is opened read only
+ *       File is parsed, see vanessa_config_file_read for details
+ *       File is closed
+ * return: dynamic array containin elements
+ *         NULL on error
+ **********************************************************************/
+
+vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename, 
 		vanessa_adt_flag_t flag);
 
 #endif /* _VANESSA_ADT_FLIM */

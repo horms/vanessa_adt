@@ -93,25 +93,14 @@ struct vanessa_dynamic_array_t_struct {
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_create(size_t block_size,
-						      void
-						      (*element_destroy)
-						      (void *),
-						      void
-						      *(*element_duplicate)
-						      (void *s),
-						      void
-						      (*element_display)
-						      (char *, void *),
-						      size_t
-						      (*element_length)
-						      (void *)
-    )
+		void (*element_destroy) (void *), void *(*element_duplicate)
+		(void *s), void (*element_display) (char *, void *),
+		size_t (*element_length) (void *))
 {
 	vanessa_dynamic_array_t *a;
 
-	if ((a =
-	     (vanessa_dynamic_array_t *)
-	     malloc(sizeof(vanessa_dynamic_array_t))) == NULL) {
+	a = (vanessa_dynamic_array_t *) malloc(sizeof(vanessa_dynamic_array_t));
+	if (!a) {
 		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
@@ -172,23 +161,20 @@ void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t * a)
  *         NULL if a is NULL or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_add_element(vanessa_dynamic_array_t * a,
-				       void *e)
+vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
+		vanessa_dynamic_array_t * a, void *e)
 {
-	extern int errno;
-
 	/* Make sure arguments are sane */
-	if (a == NULL)
+	if (!a) {
 		return (NULL);
+	}
 
 	/* Grow vector as required */
 	if (a->count == a->allocated_size) {
 		a->allocated_size += a->block_size;
-		if ((a->vector = (void **) realloc(a->vector,
-						   a->allocated_size *
-						   sizeof(void *))) ==
-		    NULL) {
+		a->vector = (void **) realloc(a->vector, 
+				a->allocated_size * sizeof(void *));
+		if (!(a->vector)) {
 			VANESSA_LOGGER_DEBUG_ERRNO("realloc");
 			vanessa_dynamic_array_destroy(a);
 			return (NULL);
@@ -196,12 +182,14 @@ vanessa_dynamic_array_t
 	}
 
 	/* Duplicate element and add it to array */
-	if ((*(a->vector + a->count) =
-	     (e == NULL || a->e_duplicate == NULL) ? e : a->e_duplicate(e)
-	    ) == NULL && e != NULL) {
-		VANESSA_LOGGER_DEBUG("a->e_duplicate");
-		return (NULL);
+	if (e && a->e_duplicate) {
+		e = a->e_duplicate(e);
+		if(!e) {
+			VANESSA_LOGGER_DEBUG("a->e_duplicate");
+			return (NULL);
+		}
 	}
+	*(a->vector + a->count) = e;
 	a->count++;
 
 	return (a);
@@ -224,20 +212,21 @@ vanessa_dynamic_array_t
  *         NULL if a is NULL, index is out of bounds or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_delete_element(vanessa_dynamic_array_t * a,
-					  const int index)
+vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
+		vanessa_dynamic_array_t * a, const int index)
 {
 	int i = 0;
 
 	/* Make sure parameters are sane */
-	if (a == NULL)
+	if (!a) {
 		return (NULL);
-	if (i < 0 || i >= a->count)
+	}
+	if (i < 0 || i >= a->count) {
 		return (NULL);
+	}
 
 	/* Destroy element to be removed */
-	if (a->e_destroy != NULL) {
+	if (a->e_destroy && a->vector[index]) {
 		a->e_destroy(a->vector[index]);
 	}
 
@@ -250,10 +239,9 @@ vanessa_dynamic_array_t
 	/* Shrink vector as required */
 	if (a->count && a->count <= a->allocated_size - a->block_size) {
 		a->allocated_size -= a->block_size;
-		if ((a->vector = (void **) realloc(a->vector,
-						   a->allocated_size *
-						   sizeof(void *))) ==
-		    NULL) {
+		a->vector = (void **) realloc(a->vector, 
+				a->allocated_size * sizeof(void *));
+		if (!(a->vector)) {
 			VANESSA_LOGGER_DEBUG_ERRNO("realloc");
 			vanessa_dynamic_array_destroy(a);
 			return (NULL);
@@ -272,28 +260,25 @@ vanessa_dynamic_array_t
  *         NULL on error
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_duplicate(vanessa_dynamic_array_t * a)
+vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
+		vanessa_dynamic_array_t * a)
 {
 	vanessa_dynamic_array_t *new_a;
 	int i;
 
 	extern int errno;
 
-	if ((new_a = vanessa_dynamic_array_create(a->block_size,
-						  a->e_destroy,
-						  a->e_duplicate,
-						  a->e_display,
-						  a->e_length)) == NULL) {
+	new_a = vanessa_dynamic_array_create(a->block_size, a->e_destroy,
+			a->e_duplicate, a->e_display, a->e_length);
+	if(!new_a) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 
 	for (i = 0; i < a->count; i++) {
-		if (vanessa_dynamic_array_add_element(new_a, a->vector[i])
-		    == NULL) {
-			VANESSA_LOGGER_DEBUG
-			    ("vanessa_dynamic_array_add_element");
+		if (!vanessa_dynamic_array_add_element(new_a, a->vector[i])) {
+			VANESSA_LOGGER_DEBUG(
+					"vanessa_dynamic_array_add_element");
 			vanessa_dynamic_array_destroy(new_a);
 			return (NULL);
 		}
@@ -328,14 +313,16 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a)
 	void **a_top;
 	size_t len = 0;
 
-	if (a == NULL || a->count == 0 || a->e_length == NULL) {
+	if (!a || !(a->count) || !(a->e_length)) {
 		return (0);
 	}
 
 	a_top = a->vector + a->count;
 	len = a->count - 1;
 	for (a_current = a->vector; a_current < a_top; a_current++) {
-		len += a->e_length(*a_current);
+		if(*a_current) {
+			len += a->e_length(*a_current);
+		}
 		len++;		/* Space for delimiter */
 	}
 	len--;			/* No space for trailing '\0' */
@@ -374,16 +361,17 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
 	size_t nochar;
 	size_t len = 0;
 
-	if (a == NULL || a->count == 0) {
+	if (!a || !(a->count)) {
 		return (NULL);
 	}
 
-	if (a->e_length == NULL || a->e_display == NULL) {
+	if (!(a->e_length) || !(a->e_display)) {
 		return (strdup(""));
 	}
 
 	nochar = vanessa_dynamic_array_length(a) + 1;
-	if ((buffer = (char *) malloc(nochar)) == NULL) {
+	buffer = (char *) malloc(nochar);
+	if (!buffer) {
 		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
@@ -391,14 +379,14 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
 	a_top = a->vector + a->count;
 	buffer_current = buffer;
 	for (a_current = a->vector; a_current < a_top; a_current++) {
-		if ((len = a->e_length(*a_current))) {
+		if (*a_current && (len = a->e_length(*a_current))) {
 			a->e_display(buffer_current, *a_current);
 			buffer_current += len;
 		}
 		*buffer_current++ = delimiter;
 	}
 
-	if (len) {
+	if (buffer_current != buffer) {
 		buffer_current--;
 	}
 	*buffer_current = '\0';
@@ -415,12 +403,15 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  * post: no change is made to a
  * return: element requested
  *         NULL if element is beyond the number of elements in the array
+ *         N.B. element may actually be NULL. You can check if an
+ *         overflow has occured using by comparing elemntno to the output
+ *         of vanessa_dynamic_array_get_count()
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a, 
 					size_t elementno)
 {
-	if(a == NULL || elementno > a->count) {
+	if(!a || elementno > a->count) {
 		return(NULL);
 	}
 	
@@ -496,8 +487,7 @@ void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t * a)
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
-							 const char
-							 delimiter)
+		const char delimiter)
 {
 	vanessa_dynamic_array_t *a;
 	char *sub_string;
@@ -505,29 +495,23 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
 	if (string == NULL) {
 		return (NULL);
 	}
-	if ((a = vanessa_dynamic_array_create(0,
-					      VANESSA_DESTROY_STR,
-					      VANESSA_DUPLICATE_STR,
-					      VANESSA_DISPLAY_STR,
-					      VANESSA_LENGTH_STR)) ==
-	    NULL) {
+	a = vanessa_dynamic_array_create(0, VANESSA_DESTROY_STR,
+			VANESSA_DUPLICATE_STR, VANESSA_DISPLAY_STR,
+			VANESSA_LENGTH_STR);
+	if(!a) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 	while ((sub_string = strchr(string, delimiter)) != NULL) {
 		*sub_string = '\0';
-		if (vanessa_dynamic_array_add_element(a, (void *) string)
-		    == NULL) {
-			VANESSA_LOGGER_DEBUG
-			    ("vanessa_dynamic_array_add_element 1");
+		if (!vanessa_dynamic_array_add_element(a, string)) {
+			VANESSA_LOGGER_DEBUG(
+					"vanessa_dynamic_array_add_element 1");
 			return (NULL);
 		}
 		string = sub_string + 1;
 	}
-	if (*string != '\0'
-	    && vanessa_dynamic_array_add_element(a,
-						 (void *) string) ==
-	    NULL) {
+	if (*string != '\0' && !vanessa_dynamic_array_add_element(a, string)) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_add_element 2");
 		return (NULL);
 	}
@@ -549,10 +533,8 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
  *         string being NULL is an error state
  **********************************************************************/
 
-vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
-								*string,
-								const char
-								delimiter)
+vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char *string,
+		const char delimiter)
 {
 	vanessa_dynamic_array_t *a;
 	char *sub_string;
@@ -561,34 +543,31 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
 	if (string == NULL) {
 		return (NULL);
 	}
-	if ((a = vanessa_dynamic_array_create(0,
-					      VANESSA_DESTROY_INT,
-					      VANESSA_DUPLICATE_INT,
-					      VANESSA_DISPLAY_INT,
-					      VANESSA_LENGTH_INT)) ==
-	    NULL) {
+	a = vanessa_dynamic_array_create(0, VANESSA_DESTROY_INT,
+			VANESSA_DUPLICATE_INT, VANESSA_DISPLAY_INT,
+			VANESSA_LENGTH_INT);
+	if(!a) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 	while ((sub_string = strchr(string, delimiter)) != NULL) {
 		*sub_string = '\0';
 		i = atoi(string);
-		if (vanessa_dynamic_array_add_element(a, (void *) i) ==
-		    NULL) {
-			VANESSA_LOGGER_DEBUG
-			    ("vanessa_dynamic_array_add_element");
+		if (!vanessa_dynamic_array_add_element(a, (void *) i)) {
+			VANESSA_LOGGER_DEBUG(
+					"vanessa_dynamic_array_add_element");
 			return (NULL);
 		}
 		string = sub_string + 1;
 	}
 	if (*string != '\0') {
 		i = atoi(string);
-		if (vanessa_dynamic_array_add_element(a, (void *) i) ==
-		    NULL) {
-			VANESSA_LOGGER_DEBUG
-			    ("vanessa_dynamic_array_add_element");
+		if (!vanessa_dynamic_array_add_element(a, (void *) i)) {
+			VANESSA_LOGGER_DEBUG(
+					"vanessa_dynamic_array_add_element");
 			return (NULL);
 		}
 	}
 	return (a);
 }
+
