@@ -692,7 +692,7 @@ typedef struct {
 	vanessa_list_elem_t *first;
 	vanessa_list_elem_t *last;
 	vanessa_list_elem_t **recent;
-	size_t norecent;
+	int norecent;
 	size_t recent_offset;
 	void (*e_destroy) (void *e);
 	void *(*e_duplicate) (void *e);
@@ -703,11 +703,15 @@ typedef struct {
 } vanessa_list_t;
 
 
+#define VANESSA_LIST_REORDER -1
+
 /**********************************************************************
  * vanessa_list_create
  * Create a new, empty list
  * pre: norecent: number of elements for recent list.
- *                If negative DEFAULT_NORECENT is used
+ * 		  If VANESSA_LIST_REORDER then no recent list is used
+ * 		  but elements are moved to the front of the list
+ * 		  as they are retrieved using vanessa_list_get_element
  *      element_destroy:   Pointer to a function to destroy an element
  *                         Function should take an argument of a pointer
  *                         and free the memory allocated to the structure

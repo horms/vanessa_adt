@@ -143,7 +143,9 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
  * vanessa_list_create
  * Create a new, empty list
  * pre: norecent: number of elements for recent list.
- *                If negative DEFAULT_NORECENT is used
+ * 		  If VANESSA_LIST_REORDER then no recent list is used
+ * 		  but elements are moved to the front of the list
+ * 		  as they are retrieved using vanessa_list_get_element
  *      element_destroy:   Pointer to a function to destroy an element
  *                         Function should take an argument of a pointer
  *                         and free the memory allocated to the structure
@@ -198,9 +200,13 @@ vanessa_list_t *vanessa_list_create(int norecent,
 		return (NULL);
 	}
 
-	l->norecent =
-	    (size_t) ((norecent < 0) ? DEFAULT_NORECENT : norecent);
-	if (norecent == 0) {
+	if(norecent > 0 || norecent == VANESSA_LIST_REORDER) {
+		l->norecent = norecent;
+	}
+	else {
+		l->norecent = 0;
+	}
+	if (norecent < 1) {
 		l->recent = NULL;
 	} 
 	else {
@@ -376,7 +382,7 @@ int __vanessa_list_get_element_match(void *value, void *key) {
 static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 		void *key) {
 	int i;
-	vanessa_list_elem_t *e;
+	vanessa_list_elem_t *e = NULL;
 	int (*match)(void *value, void *key);
 
 	if (l == NULL  || key == NULL) {
@@ -385,7 +391,7 @@ static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 
 	match=(l->e_match != NULL)?l->e_match:__vanessa_list_get_element_match;
 
-	for(i=0 ; i<l->norecent ; i++) {
+	for(i=0 ; i < l->norecent ; i++) {
 		e = *(l->recent + i);
 		if(e != NULL && match(e->value, key) == 0) {
 			return(e);
@@ -394,11 +400,22 @@ static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 
 	for(e = l->first; e != NULL ; e = e->next ) {
 		if(match(e->value, key) == 0) {
-			return(e);
+			break;
 		}
 	}
 
-	return(NULL);
+	if(e && l->norecent == VANESSA_LIST_REORDER && l->first != e) {
+		if(e->prev) {
+			e->prev->next = e->next;
+		}
+		if(e->next) {
+			e->next->prev = e->prev;
+		}
+		l->first->prev = e;
+		e->next = l->first;
+		l->first = e;
+	}
+	return(e);
 }
 
 void *vanessa_list_get_element(vanessa_list_t *l, void *key) {
