@@ -1,0 +1,16 @@
+Begin3
+Title:          vanessa_adt
+Version:        0.0.5
+Entered-date:   15DEC03
+Description:    vanessa_adt is a library ibrary of Abstract Data Types
+                (ADTs) that may be useful.  Includes queue,
+                dynamic array and key value ADT.
+Keywords:       ADT Abstract Data Type Queue Dynamic Array
+Author:         Horms <horms@verge.net.au>
+Maintained-by:  Horms <horms@verge.net.au>
+Primary-site:   www.vergenet.net /linux/vanessa/download/vanessa_logger/
+Alternate-site: 
+Original-site:  
+Platforms:      Linux Solaris FreeBSD AIX
+Copying-policy: LGPL
+End

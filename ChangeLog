@@ -5,14 +5,21 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
+15th December 2003
+(Horms)
+
+  * 0.0.5
+  - Strip trailing whitespace from configuration parameters
+  - Don't use *_UNSAFE logging macros with only one argument
+
+----------------------------------------------------------------------
+
 6th June 2003
 (Horms)
 
   * 0.0.4
   - vanessa_config_file_read() and vanessa_config_file_read_fd()
     check to make sure that they are reading a plain file.
-  - Strip trailing whitespace from configuration parameters
-  - Don't use *_UNSAFE logging macros with only one argument
 
 ----------------------------------------------------------------------
 
