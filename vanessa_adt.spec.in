@@ -1,4 +1,4 @@
-%define prefix   @prefix@
+%define prefix   /usr
 
 Summary: Library of Abstract Data Types 
 Name: vanessa_adt
