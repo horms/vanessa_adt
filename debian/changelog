@@ -1,8 +1,8 @@
-vanessa-adt (0.0.3test4-1) unstable; urgency=low
+vanessa-adt (0.0.3beta1-1) unstable; urgency=low
 
   * Minor spelling corrections. closes: Bug#125061
 
- -- Simon Horman <horms@vergenet.net>  Wed, 19 Dec 2001 10:21:54 +1100
+ -- Simon Horman <horms@vergenet.net>  Thu, 14 Mar 2002 22:38:38 +1100
 
 vanessa-adt (0.0.2-1) unstable; urgency=low
 
