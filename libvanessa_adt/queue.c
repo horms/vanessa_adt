@@ -190,11 +190,41 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value)
 
 
 /**********************************************************************
- * Note:
- * vanessa_queue_peek_last, vanessa_queue_peek,
- * vanessa_queue_peek_last an vanessa_queue_length have been replaced
- * by macros defined elsewhere
+ * vanessa_queue_peek_last 
+ * Retrieve the last element from a vanessa_queue without removing it 
+ * from the vanessa_queue
+ * pre: q: vanessa_queue to peek at
+ *      value: element removed from the vanessa_queue is assigned to 
+ *             *value
+ * post: none
+ * return: pointer to an element from the vanessa_queue
+ *         NULL on error
+ * Note: peeking at an empty vanessa_queue results in NULL being returned
  **********************************************************************/
+
+void *vanessa_queue_peek_last(vanessa_queue_t * q)
+{
+	return((q == NULL || q->last == NULL)?NULL:q->last->value);
+}
+
+
+/**********************************************************************
+ * vanessa_queue_peek_first
+ * Retrieve the first element from a vanessa_queue without removing it 
+ * from the * vanessa_queue
+ * pre: q: vanessa_queue to peek at
+ *      value: element removed from the vanessa_queue is assigned to 
+ *             *value
+ * post: none
+ * return: pointer to an element from the vanessa_queue
+ *         NULL on error
+ * Note: peeking at an empty vanessa_queue results in NULL being returned
+ **********************************************************************/
+
+void *vanessa_queue_peek_first(vanessa_queue_t * q)
+{
+	return((q==NULL || q->first==NULL)?NULL:q->first->value);
+}
 
 
 
@@ -224,4 +254,19 @@ void vanessa_queue_destroy(vanessa_queue_t * q)
 	}
 
 	free(q);
+}
+
+
+/**********************************************************************
+ * vanessa_queue_length
+ * Return the number of elements in the vanessa_queue
+ * pre: q: vanessa_queue to find the number of elements in
+ * post: none
+ * return: number of elements in the vanessa_queue
+ *         -1 on error
+ **********************************************************************/
+
+ssize_t vanessa_queue_length(vanessa_queue_t * q)
+{
+	return(q == NULL?-1:q->size);
 }

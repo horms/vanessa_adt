@@ -103,8 +103,7 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value);
  * Note: peeking at an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
-#define vanessa_queue_peek_last(_q) \
-  ((_q)==NULL || (_q)->last==NULL)?NULL:(_q)->last->value
+void *vanessa_queue_peek_last(vanessa_queue_t * q);
 
 #define vanessa_queue_peek vanessa_queue_peek_last
 
@@ -122,8 +121,7 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value);
  * Note: peeking at an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
-#define vanessa_queue_peek_first(_q) \
-  ((_q)==NULL || (_q)->first==NULL)?(NULL):(_q)->first->value
+void *vanessa_queue_peek_first(vanessa_queue_t * q);
 
 
 /**********************************************************************
@@ -148,8 +146,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q);
  *         -1 on error
  **********************************************************************/
 
-#define vanessa_queue_length(_q)  ((_q!=NULL)?(_q)->size:-1)
-
+ssize_t vanessa_queue_length(vanessa_queue_t * q);
 
 
 /**********************************************************************
@@ -363,9 +360,8 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  *         NULL if element is beyond the number of elements in the array
  **********************************************************************/
 
-#define vanessa_dynamic_array_get_element(_a, _elementno) \
-  ((void *)((_a==NULL||_elementno<0||_elementno>=(_a)->count)? \
-	   NULL:*(((_a)->vector)+_elementno)))
+void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
+					 size_t elementno);
 
 
 /**********************************************************************
@@ -376,8 +372,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  *         -1 if a is NULL
  **********************************************************************/
 
-#define vanessa_dynamic_array_get_count(_a) \
-  ((_a==NULL)?-1:(_a)->count)
+ssize_t vanessa_dynamic_array_get_count(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -388,8 +383,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  *         NULL if a is NULL
  **********************************************************************/
 
-#define vanessa_dynamic_array_get_vector(_a) \
-  ((_a==NULL)?NULL:(_a)->vector)
+void **vanessa_dynamic_array_get_vector(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************

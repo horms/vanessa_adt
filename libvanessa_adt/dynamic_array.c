@@ -409,11 +409,52 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
 
 
 /**********************************************************************
- * Note: vanessa_dynamic_array_get_element,
- * vanessa_dynamic_array_get_count and
- * vanessa_dynamic_array_get_vector have been made macros, defined
- * elsewhere.
+ * vanessa_dynamic_array_get_element
+ * Get an element from an array
+ * pre: a: array to retrieve element from
+ *      elementno: index element in array to retrieve
+ * post: no change is made to a
+ * return: element requested
+ *         NULL if element is beyond the number of elements in the array
  **********************************************************************/
+
+void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a, 
+					size_t elementno)
+{
+	if(a == NULL || elementno > a->count) {
+		return(NULL);
+	}
+	
+	return((void *) (a->vector)+elementno);
+}
+
+
+/**********************************************************************
+ * vanessa_dynamic_array_get_count
+ * Get the number of elements in the array
+ * pre: array to find the number of elements in
+ * return: number of elements in the array
+ *         -1 if a is NULL
+ **********************************************************************/
+
+ssize_t vanessa_dynamic_array_get_count(vanessa_dynamic_array_t * a) 
+{
+	return(a==NULL?-1:a->count);
+}
+
+
+/**********************************************************************
+ * vanessa_dynamic_array_get_vector
+ * Get the array contained in the dynamic array
+ * pre: array to find the vector of
+ * return: vector
+ *         NULL if a is NULL
+ **********************************************************************/
+
+void **vanessa_dynamic_array_get_vector(vanessa_dynamic_array_t * a)
+{
+	return(a==NULL?NULL:a->vector);
+}
 
 
 /**********************************************************************
