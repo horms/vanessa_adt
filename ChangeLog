@@ -5,6 +5,15 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
+XXX
+(Horms)
+
+  * XXX
+  - vanessa_config_file_read() handles short arguments correctly
+
+----------------------------------------------------------------------
+
+
 7th February 2003
 (Horms)
 

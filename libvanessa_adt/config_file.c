@@ -122,7 +122,8 @@
 			if(flag & VANESSA_CONFIG_FILE_BLANK) { \
 				tmp_token_buffer += 2; \
 			} \
-			else if(flag & VANESSA_CONFIG_FILE_X) { \
+			else if(flag & VANESSA_CONFIG_FILE_X || \
+					!*(tmp_token_buffer+3)) { \
 				tmp_token_buffer++; \
 			} \
 			ADD_TOKEN(a, tmp_token_buffer++); \
