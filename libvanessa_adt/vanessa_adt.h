@@ -226,18 +226,9 @@ typedef struct vanessa_dynamic_array_t_struct vanessa_dynamic_array_t;
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_create(size_t block_size,
-						      void
-						      (*element_destroy)
-						      (void *),
-						      void
-						      *(*element_duplicate)
-						      (void *s),
-						      void
-						      (*element_display)
-						      (char *, void *),
-						      size_t(*element_size)
-						      (void *)
-    );
+		void (*element_destroy) (void *), void *(*element_duplicate)
+		(void *s), void (*element_display) (char *, void *),
+		size_t(*element_size) (void *));
 
 
 /**********************************************************************
@@ -267,9 +258,8 @@ void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t * a);
  *         NULL if a is NULL or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_add_element(vanessa_dynamic_array_t * a,
-				       void *e);
+vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
+		vanessa_dynamic_array_t * a, void *e);
 
 
 /**********************************************************************
@@ -288,9 +278,8 @@ vanessa_dynamic_array_t
  *         NULL if a is NULL, index is out of bounds or an error occurs
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_delete_element(vanessa_dynamic_array_t * a,
-					  const int index);
+vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
+		vanessa_dynamic_array_t * a, const int index);
 
 
 /**********************************************************************
@@ -301,8 +290,8 @@ vanessa_dynamic_array_t
  *         NULL on error
  **********************************************************************/
 
-vanessa_dynamic_array_t
-    *vanessa_dynamic_array_duplicate(vanessa_dynamic_array_t * a);
+vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
+		vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
@@ -347,7 +336,7 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a);
  **********************************************************************/
 
 char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
-				    char delimiter);
+		char delimiter);
 
 
 /**********************************************************************
@@ -363,7 +352,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
-					 size_t elementno);
+		size_t elementno);
 
 
 /**********************************************************************
@@ -1103,9 +1092,33 @@ int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
 		                void *data);
 
 
+/**********************************************************************
+ * Make handling configuration files just a little bit easier
+ **********************************************************************/
+
+
 #define VANESSA_CONFIG_FILE_NONE        0x0
 #define VANESSA_CONFIG_FILE_MULTI_VALUE 0x1
 #define VANESSA_CONFIG_FILE_X           0x2
+
+typedef struct {
+	char mode_str[11];
+} vanessa_mode_str_t;
+
+typedef struct {
+	char mode_str[5];
+} vanessa_mode_num_str_t;
+
+#define VANESSA_CONFIG_FILE_CHECK_UID  0x1
+#define VANESSA_CONFIG_FILE_CHECK_GID  0x2
+#define VANESSA_CONFIG_FILE_CHECK_MODE 0x4
+#define VANESSA_CONFIG_FILE_CHECK_FILE 0x8
+#define VANESSA_CONFIG_FILE_CHECK_ALL \
+	VANESSA_CONFIG_FILE_CHECK_UID| \
+	VANESSA_CONFIG_FILE_CHECK_GID| \
+	VANESSA_CONFIG_FILE_CHECK_MODE| \
+	VANESSA_CONFIG_FILE_CHECK_FILE
+
 
 /**********************************************************************
  * vanessa_config_file_read_fd
@@ -1169,5 +1182,78 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 vanessa_dynamic_array_t *vanessa_config_file_read(const char *filename, 
 		vanessa_adt_flag_t flag);
 
-#endif /* _VANESSA_ADT_FLIM */
+
+/**********************************************************************
+ * vanessa_mode_str
+ * Make an asscii representation of a mode in "rwx" form.
+ * e.g. -rwx------
+ * pre: mode: mode to format
+ *      mode_num: format to fill in, really just a string
+ * post: mode_num is filled in
+ * return: mode_num on success
+ *         NULL on error (there are no errors)
+ **********************************************************************/
+
+vanessa_mode_str_t *vanessa_mode_str(mode_t mode, 
+		vanessa_mode_str_t *mode_str);
+
+
+/**********************************************************************
+ * vanessa_mode_num_str
+ * Make an asscii representation of a mode in numerical form.
+ * e.g. 0600
+ * pre: mode: mode to format
+ *      mode_num_str: format to fill in, really just a string
+ * post: mode_num_str is filled in
+ * return: mode_num_str on success
+ *         NULL on error (there are no errors)
+ **********************************************************************/
+
+vanessa_mode_num_str_t *vanessa_mode_num_str(mode_t mode, 
+		vanessa_mode_num_str_t *mode_num_str);
+
+
+/**********************************************************************
+ * vanessa_config_file_check_permission_fd
+ * Check the permissions, ownership and mode of a file
+ * Intended for use on files whose permissions need
+ * to be strictly enforced for some reason.
+ * pre: fd: Open file discriptor to file to check
+ *      uid: desired uid
+ *      gid: desired gid
+ *      mode: desired mode
+ *      flag: logical or of:
+ *              VANESSA_CONFIG_FILE_CHECK_UID  to check uid
+ *              VANESSA_CONFIG_FILE_CHECK_GID  to check gid
+ *              VANESSA_CONFIG_FILE_CHECK_MODE to check mode
+ *              VANESSA_CONFIG_FILE_CHECK_FILE to check that it is
+ *                                             a regular file
+ *              VANESSA_CONFIG_FILE_CHECK_ALL  all of the above
+ * post: checks are performed
+ * return: 0 if the file pases the checks
+ *         -1 otherwise
+ **********************************************************************/
+
+int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
+		mode_t mode, vanessa_adt_flag_t flag);
+
+
+/**********************************************************************
+ * vanessa_config_file_check_permission
+ * Check the permissions, ownership and mode of a file
+ * pre: filename: file to check
+ *      see vanessa_config_file_check() for other arguments
+ * post: File is opened read only
+ *       File is parsed, see vanessa_config_file_check() for details
+ *       File is closed
+ * return: 0 if file passes checks
+ *         N.B: you must have permision to open the file for reading
+ *         -1 on error
+ **********************************************************************/
+
+int vanessa_config_file_check_permission(const char *filename, 
+		uid_t uid, gid_t gid, mode_t mode, vanessa_adt_flag_t flag);
+
+
+#endif /* _VANESSA_ADT_H */
 
