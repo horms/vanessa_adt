@@ -33,6 +33,7 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
+#include "logger.h"
 
 
 /**********************************************************************
@@ -86,11 +87,9 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_create(
 ){
   vanessa_dynamic_array_t *a;
 
-  extern int errno;
-
   if((a=(vanessa_dynamic_array_t *)malloc(
 	 sizeof(vanessa_dynamic_array_t)))==NULL){
-    VANESSA_ADT_DEBUG_ERRNO("vanessa_dynamic_array_create: malloc", errno);
+    VANESSA_ADT_DEBUG_ERRNO("malloc");
     return(NULL);
   }
 
@@ -160,10 +159,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
     a->allocated_size+=a->block_size;
     if((a->vector=(void**)realloc(a->vector,
 	  a->allocated_size*sizeof(void*)))==NULL){
-      VANESSA_ADT_DEBUG_ERRNO(
-	"vanessa_dynamic_array_add_element: realloc", 
-	errno
-      );
+      VANESSA_ADT_DEBUG_ERRNO("realloc");
       vanessa_dynamic_array_destroy(a);
       return(NULL);
     }
@@ -173,7 +169,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
   if((
     *(a->vector+a->count)=(e==NULL||a->e_duplicate==NULL)?e:a->e_duplicate(e)
   )==NULL && e!=NULL){
-    VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element: a->e_duplicate");
+    VANESSA_ADT_DEBUG("a->e_duplicate");
     return(NULL);
   }
   a->count++;
@@ -224,10 +220,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
     a->allocated_size-=a->block_size;
     if( (a->vector=(void**)realloc(a->vector,
 	  a->allocated_size*sizeof(void*))) ==NULL){
-      VANESSA_ADT_DEBUG_ERRNO(
-	"vanessa_dynamic_array_delete_element: realloc",
-	errno
-      );
+      VANESSA_ADT_DEBUG_ERRNO("realloc");
       vanessa_dynamic_array_destroy(a);
       return(NULL);
     }
@@ -260,15 +253,13 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
     a->e_display,
     a->e_length
   ))==NULL) {
-    VANESSA_ADT_DEBUG("vanessa_dynamic_array_duplicate: "
-      "vanessa_dynamic_array_create");
+    VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
     return(NULL);
   }
 
   for(i=0;i<a->count;i++){
     if (vanessa_dynamic_array_add_element(new_a, a->vector[i]) == NULL) {
-      VANESSA_ADT_DEBUG("vanessa_dynamic_array_duplicate: "
-        "vanessa_dynamic_array_add_element");
+      VANESSA_ADT_DEBUG( "vanessa_dynamic_array_add_element");
       vanessa_dynamic_array_destroy(new_a);
       return(NULL);
     }
@@ -315,7 +306,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t *a, char delimiter){
 
   nochar=vanessa_dynamic_array_length(a)+1;
   if((buffer=(char *)malloc(nochar))==NULL){
-    VANESSA_ADT_DEBUG_ERRNO("vanessa_dynamic_array_display: malloc", errno);
+    VANESSA_ADT_DEBUG_ERRNO("malloc");
     return(NULL);
   }
 
@@ -445,22 +436,19 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(
     VANESSA_DISPLAY_STR,
     VANESSA_LENGTH_STR
   ))==NULL){
-    VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str: "
-      "vanessa_dynamic_array_create");
+    VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
     return(NULL);
   }
   while((sub_string=strchr(string, delimiter))!=NULL){
     *sub_string='\0';
     if(vanessa_dynamic_array_add_element(a, (void *)string)==NULL){
-      VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str: "
-	"vanessa_dynamic_array_add_element 1");
+      VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element 1");
       return(NULL);
     }
     string=sub_string+1;
   }
   if(*string!='\0'&&vanessa_dynamic_array_add_element(a,(void *)string)==NULL){
-    VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str: "
-      "vanessa_dynamic_array_add_element 2");
+    VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element 2");
     return(NULL);
   }
   return(a);
@@ -497,16 +485,14 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(
     VANESSA_DISPLAY_INT,
     VANESSA_LENGTH_INT
   ))==NULL){
-    VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str_to_int: "
-      "vanessa_dynamic_array_create");
+    VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
     return(NULL);
   }
   while((sub_string=strchr(string, delimiter))!=NULL){
     *sub_string='\0';
     i=atoi(string);
     if(vanessa_dynamic_array_add_element(a, (void *)i)==NULL){
-      VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str_to_int: "
-        "vanessa_dynamic_array_add_element");
+      VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element");
       return(NULL);
     }
     string=sub_string+1;
@@ -514,8 +500,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(
   if(*string!='\0'){
     i=atoi(string);
     if(vanessa_dynamic_array_add_element(a, (void *)i)==NULL){
-      VANESSA_ADT_DEBUG("vanessa_dynamic_array_split_str_to_int: "
-        "vanessa_dynamic_array_add_element");
+      VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element");
       return(NULL);
     }
   }

@@ -69,8 +69,9 @@ int main (int argc, char **argv){
 	VANESSA_DISPLAY_INT,
 	VANESSA_LENGTH_INT
    ))==NULL){
-    VANESSA_ADT_LOG(LOG_DEBUG, "main: vanessa_dynamic_array_create");
-    VANESSA_ADT_LOG(LOG_ERR, "Fatal error creating dynamic array. Exiting.");
+    vanessa_logger_log(vl, LOG_DEBUG, "main: vanessa_dynamic_array_create");
+    vanessa_logger_log(vl, LOG_ERR, 
+      "Fatal error creating dynamic array. Exiting.");
     exit(-1);
   }
 	 
@@ -80,8 +81,10 @@ int main (int argc, char **argv){
   printf("Inserting Elements into Dynamic Array\n");
   for(i=0;i<8;i++){
     if((vanessa_dynamic_array_add_element(a, (void *)i))==NULL){
-      VANESSA_ADT_LOG(LOG_ERR, "main: vanessa_dynamic_array_add_element");
-      VANESSA_ADT_LOG(LOG_ERR, "Fatal error creating adding element. Exiting.");
+      vanessa_logger_log(vl, LOG_ERR, 
+        "main: vanessa_dynamic_array_add_element");
+      vanessa_logger_log(vl, LOG_ERR, 
+        "Fatal error creating adding element. Exiting.");
       exit(-1);
     }
   }
@@ -91,8 +94,9 @@ int main (int argc, char **argv){
    */
   printf("Displaying contents of Dynamic Array\n");
   if((str=vanessa_dynamic_array_display(a, ','))==NULL){
-    VANESSA_ADT_LOG(LOG_DEBUG, "main: vanessa_dynamic_array_display");
-    VANESSA_ADT_LOG(LOG_ERR, "Fatal error displaying dynamic array. Exiting.");
+    vanessa_logger_log(vl, LOG_DEBUG, "main: vanessa_dynamic_array_display");
+    vanessa_logger_log(vl, LOG_ERR, 
+      "Fatal error displaying dynamic array. Exiting.");
     exit(-1);
   }
   printf("%s\n", str);
@@ -110,8 +114,9 @@ int main (int argc, char **argv){
    */
   printf("Displaying contents of Dynamic Array\n");
   if((str=vanessa_dynamic_array_display(a, ','))==NULL){
-    VANESSA_ADT_LOG(LOG_DEBUG, "main: vanessa_dynamic_array_display 2");
-    VANESSA_ADT_LOG(LOG_ERR, "Fatal error displaying dynamic array. Exiting.");
+    vanessa_logger_log(vl, LOG_DEBUG, "main: vanessa_dynamic_array_display 2");
+    vanessa_logger_log(vl, LOG_ERR, 
+      "Fatal error displaying dynamic array. Exiting.");
     exit(-1);
   }
   printf("%s\n", str);

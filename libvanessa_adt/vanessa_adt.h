@@ -645,15 +645,6 @@ void *vanessa_key_value_get_value(vanessa_key_value_t *kv);
 
 extern vanessa_logger_t *vanessa_adt_logger;
 
-#define VANESSA_ADT_LOG(priority, fmt, args...) \
-  vanessa_logger_log(vanessa_adt_logger, priority, fmt, ## args);
-
-#define VANESSA_ADT_DEBUG(s) VANESSA_ADT_LOG(LOG_DEBUG, s);
-
-#define VANESSA_ADT_DEBUG_ERRNO(s, e) \
-  VANESSA_ADT_LOG(LOG_DEBUG, "%s: %e", s, strerror(e));
-
-
 
 /**********************************************************************
  * vanessa_adt_logger_set

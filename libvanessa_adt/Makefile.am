@@ -32,7 +32,8 @@ vanessa_adt.h \
 dynamic_array.c \
 queue.c \
 key_value.c \
-logger.c
+logger.c \
+logger.h
 
 libvanessa_adt_la_LDFLAGS    = -version-info 0:2:0
 

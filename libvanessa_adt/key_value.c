@@ -26,6 +26,7 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
+#include "logger.h"
 
 /**********************************************************************
  * vanessa_key_value_create
@@ -41,7 +42,7 @@ vanessa_key_value_t *vanessa_key_value_create(void){
   vanessa_key_value_t *kv;
 
   if((kv=(vanessa_key_value_t *)malloc(sizeof(vanessa_key_value_t)))==NULL){
-    VANESSA_ADT_DEBUG_ERRNO("vanessa_key_value_create: malloc", errno);
+    VANESSA_ADT_DEBUG_ERRNO("malloc");
     return(NULL);
   }
   kv->key=NULL;
