@@ -425,7 +425,7 @@ void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
 		return(NULL);
 	}
 	
-	return((void *) (a->vector)+elementno);
+	return(a->vector[elementno]);
 }
 
 
