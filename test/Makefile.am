@@ -23,7 +23,7 @@
 #
 ######################################################################
 
-noinst_PROGRAMS = dynamic_array_test list_test
+bin_PROGRAMS = dynamic_array_test list_test
 
 dynamic_array_test_SOURCES = dynamic_array_test.c
 

@@ -110,7 +110,7 @@ size_t vanessa_length_int(int i)
  * return: difference between a and b
  **********************************************************************/
 
-size_t vanessa_match_int(int a, int b)
+int vanessa_match_int(int a, int b)
 {
 	if(a < b) {
 		return(a - b);

@@ -249,7 +249,7 @@ vanessa_list_elem_t *vanessa_list_elem_create_empty(void)
 vanessa_list_t *vanessa_list_create(int norecent,
                                    void (*element_destroy) (void *e),
                                    void *(*element_duplicate) (void *e),
-                                   void *(*element_match) (void *e, void *key),
+                                   int (*element_match) (void *e, void *key),
                                    void (*element_display) (char *s, void *e),
                                    size_t(*element_size) (void *e))
 {
@@ -438,7 +438,7 @@ static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 
 	for(i=0 ; i<l->norecent ; i++) {
 		e = *(l->recent + i);
-		if(l->e_match(e->value, key) == 0) {
+		if(e != NULL && l->e_match(e->value, key) == 0) {
 			return(e);
 		}
 	}
@@ -514,13 +514,13 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
 		return (NULL);
 	}
 
-	l->first = e;
 	if (l->first != NULL) {
 		l->first->prev = e;
 	}
 	if (l->last == NULL) {
 		l->last = e;
 	}
+	l->first = e;
 	if(l->norecent > 0) {
 		l->recent_offset = (l->recent_offset + 1) % l->norecent;
 		*(l->recent + l->recent_offset) = e;
@@ -531,7 +531,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
 
 
 /**********************************************************************
- * vanessa_list_delete_element
+ * vanessa_list_remove_element
  * Insert element into a list
  * pre: l: list to insert value into
  *      value: value to insert
@@ -540,7 +540,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
  *         l, unchanged if n is null
  **********************************************************************/
 
-static void __vanessa_list_delete_element(vanessa_list_t * l, 
+static void __vanessa_list_remove_element(vanessa_list_t * l, 
 		vanessa_list_elem_t *e)
 {
 	int i;
@@ -556,6 +556,13 @@ static void __vanessa_list_delete_element(vanessa_list_t * l,
 		l->last = e->prev;
 	}
 
+	if(e->next != NULL) {
+		e->next->prev = e->prev;
+	}
+	if(e->prev != NULL) {
+		e->prev->next = e->next;
+	}
+
 	for(i=0 ; i<l->norecent ; i++) {
 		if(l->recent[i] == e) {
 			*(l->recent + i) = NULL;
@@ -565,9 +572,9 @@ static void __vanessa_list_delete_element(vanessa_list_t * l,
 	vanessa_list_elem_destroy(e, l->e_destroy);
 }
 
-void vanessa_list_delete_element(vanessa_list_t *l, void *key) {
+void vanessa_list_remove_element(vanessa_list_t *l, void *key) {
 	vanessa_list_elem_t *e;
 
 	e = __vanessa_list_get_element(l, key);
-	__vanessa_list_delete_element(l, e);
+	__vanessa_list_remove_element(l, e);
 }

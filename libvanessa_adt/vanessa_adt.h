@@ -515,7 +515,7 @@ size_t vanessa_length_int(int i);
  * return: difference between a and b
  **********************************************************************/
 
-size_t vanessa_match_int(int a, int b);
+int vanessa_match_int(int a, int b);
 
 /* #defines to destroy and duplicate integers */
 #define VANESSA_DESTROY_INT \
@@ -527,7 +527,7 @@ size_t vanessa_match_int(int a, int b);
 #define VANESSA_LENGTH_INT \
 	(size_t (*)(void *s))vanessa_length_int
 #define VANESSA_MATCH_INT \
-	(size_t (*)(void *s))vanessa_match_int
+	(int (*)(void *e, void *k))vanessa_match_int
 
 /* ... and shorter versions */
 #define VANESSA_DESI VANESSA_DESTROY_INT
@@ -760,7 +760,7 @@ typedef struct {
 vanessa_list_t *vanessa_list_create(int norecent,
                                    void (*element_destroy) (void *e),
                                    void *(*element_duplicate) (void *e),
-                                   void *(*element_match) (void *e, void *key),
+                                   int (*element_match) (void *e, void *key),
                                    void (*element_display) (char *s, void *e),
                                    size_t(*element_size) (void *e));
 
@@ -858,7 +858,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
 
 
 /**********************************************************************
- * vanessa_list_delete_element
+ * vanessa_list_remove_element
  * Insert element into a list
  * pre: l: list to insert value into
  *      value: value to insert
@@ -867,6 +867,6 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
  *         l, unchanged if n is null
  **********************************************************************/
 
-void vanessa_list_delete_element(vanessa_list_t *l, void *key);
+void vanessa_list_remove_element(vanessa_list_t *l, void *key);
 
 #endif

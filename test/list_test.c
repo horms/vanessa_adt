@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	 * Create a dynamic array
 	 */
 	printf("Creating List\n");
-	if ((l = vanessa_list_create(0, VANESSA_DESTROY_INT,
+	if ((l = vanessa_list_create(-1, VANESSA_DESTROY_INT,
 				     VANESSA_DUPLICATE_INT,
 				     VANESSA_MATCH_INT,
 				     VANESSA_DISPLAY_INT,
@@ -101,6 +101,46 @@ int main(int argc, char **argv)
 	printf("%s\n", str);
 	free(str);
 
+	/*
+	 * Delete an element
+	 */
+	printf("Deleting the evil element \"6\"\n");
+	vanessa_list_remove_element(l, (void *)6);
+
+	/* 
+	 * Display the contents
+	 */
+	printf("Displaying contents of List\n");
+	if ((str = vanessa_list_display(l, ',')) == NULL) {
+		vanessa_logger_log(vl, LOG_DEBUG,
+				   "main: vanessa_list_display");
+		vanessa_logger_log(vl, LOG_ERR,
+				   "Fatal error displaying dynamic array. Exiting.");
+		exit(-1);
+	}
+	printf("%s\n", str);
+	free(str);
+
+	/*
+	 * Find an element
+	 */
+	printf("Finding element \"5\"\n");
+	i = (int)vanessa_list_get_element(l, (void *)5);
+	if( i != 5 ) {
+		vanessa_logger_log(vl, LOG_DEBUG,
+				"main: vanessa_get_element");
+		vanessa_logger_log(vl, LOG_ERR,
+				"Fatal error retrieving element. Exiting.");
+		exit(-1);
+	}
+	printf("%d\n", i);
+
+	/*
+	 * Counting the Elements
+	 */
+	printf("Counting the elements\n");
+	i = (int)vanessa_list_get_count(l);
+	printf("%d\n", i);
 
 	/* 
 	 * Clean Up
