@@ -5,12 +5,15 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
-XXX
-  * 0.0.4beta4 Unreleased
+7th February 2003
+(Horms)
+
+  * 0.0.4beta4
   - fixed logic in handling of mutivalue config files
 
 ----------------------------------------------------------------------
 27th December 2002
+(Horms)
   
   * 0.0.4beta1
   - Use loging convenicence macros provided by libvanessa_logger
