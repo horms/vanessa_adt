@@ -4,7 +4,7 @@
 #
 # vanessa_adt
 # Library of Abstract Data Types
-# Copyright (C) 1999-2000  Horms
+# Copyright (C) 1999-2002  Horms
 # 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -33,10 +33,8 @@ dynamic_array.c \
 element_ops.c \
 queue.c \
 key_value.c \
-logger.c \
 list.c \
-hash.c \
-logger.h
+hash.c
 
 libvanessa_adt_la_LDFLAGS    = -version-info 0:3:0
 

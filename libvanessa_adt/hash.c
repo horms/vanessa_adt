@@ -32,9 +32,9 @@
  **********************************************************************/
 
 
-#include <stdlib.h>
 #include "vanessa_adt.h"
-#include "logger.h"
+
+#include <stdlib.h>
 
 struct vanessa_hash_t_struct {
 	vanessa_list_t **bucket;
@@ -101,13 +101,13 @@ vanessa_hash_t *vanessa_hash_create(size_t nobucket,
 
 	h = (vanessa_hash_t *)malloc(sizeof(vanessa_hash_t));
 	if(h == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return(NULL);
 	}
 
 	h->bucket = (vanessa_list_t **)malloc(sizeof(void *) * nobucket);
 	if(h->bucket == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("mallocc");
+		VANESSA_LOGGER_DEBUG_ERRNO("mallocc");
 		free(h);
 		return(NULL);
 	}
@@ -230,7 +230,7 @@ char *vanessa_hash_display(vanessa_hash_t *h, const char delimiter)
 
 	str = (char *)malloc(len);
 	if(str == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return(NULL);
 	}
 
@@ -245,7 +245,7 @@ char *vanessa_hash_display(vanessa_hash_t *h, const char delimiter)
 		}
 		bucket_str = vanessa_list_display(h->bucket[i], delimiter);
 		if(bucket_str == NULL) {
-			VANESSA_ADT_DEBUG("vanessa_list_length");
+			VANESSA_LOGGER_DEBUG("vanessa_list_length");
 			return(NULL);
 		}
 		strcat(str, bucket_str);
@@ -306,7 +306,7 @@ static vanessa_list_t *__vanessa_hash_get_bucket(vanessa_hash_t *h,
 	*hash_key = h->e_hash(value);
 
 	if(*hash_key >= h->nobucket) {
-		VANESSA_ADT_DEBUG_UNSAFE("hash value too large: %d >= %d", *hash_key,
+		VANESSA_LOGGER_DEBUG_UNSAFE("hash value too large: %d >= %d", *hash_key,
 				h->nobucket);
 		abort();
 		return(NULL);
@@ -364,13 +364,13 @@ vanessa_hash_t *vanessa_hash_add_element(vanessa_hash_t *h, void *value)
 	}
 
 	if(h->bucket[hash_key] == NULL) {
-		VANESSA_ADT_DEBUG("vanessa_list_create");
+		VANESSA_LOGGER_DEBUG("vanessa_list_create");
 		vanessa_hash_destroy(h);
 		return(NULL);
 	}
 
 	if(vanessa_list_add_element(h->bucket[hash_key], value) == NULL) {
-		VANESSA_ADT_DEBUG("vanessa_list_add_element");
+		VANESSA_LOGGER_DEBUG("vanessa_list_add_element");
 		vanessa_hash_destroy(h);
 		return(NULL);
 	}
@@ -420,7 +420,7 @@ vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h)
 	new_h = vanessa_hash_create(h->nobucket, h->e_destroy, h->e_duplicate,
 			 h->e_match, h->e_display, h->e_length, h->e_hash);
 	if(new_h == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return(NULL);
 	}
 
@@ -431,7 +431,7 @@ vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h)
 
 		new_h->bucket[i]=vanessa_list_duplicate(h->bucket[i]);
 		if(new_h->bucket[i] == NULL) {
-			VANESSA_ADT_DEBUG("vanessa_list_duplicate");
+			VANESSA_LOGGER_DEBUG("vanessa_list_duplicate");
 			vanessa_hash_destroy(new_h);
 			return(NULL);
 		}

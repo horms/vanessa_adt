@@ -4,7 +4,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	/*
 	 * Set this as the logger for this programme
 	 */
-	vanessa_adt_logger_set(vl);
+	vanessa_logger_set(vl);
 
 
 	/*

@@ -7,7 +7,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -27,7 +27,6 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
-#include "logger.h"
 
 
 /**********************************************************************
@@ -61,7 +60,7 @@ int *vanessa_dup_int(int *i)
 
 	new_i=(int *)malloc(sizeof(int));
 	if(new_i == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("vanessa_dup_int");
+		VANESSA_LOGGER_DEBUG_ERRNO("vanessa_dup_int");
 		return(NULL);
 	}
 

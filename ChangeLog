@@ -2,7 +2,16 @@ ChangeLog
 
 vanessa_adt
 Library of Abstract Data Types
-Copyright (C) 1999-2000  Horms
+Copyright (C) 1999-2002  Horms
+----------------------------------------------------------------------
+
+XXX
+  
+  * XXX
+  - Use loging convenicence macros provided by libvanessa_logger
+    rather than providing our own.
+
+
 ----------------------------------------------------------------------
 
 17th May 2002

@@ -14,7 +14,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -32,9 +32,9 @@
  * 02111-1307  USA
  **********************************************************************/
 
-#include "vanessa_adt.h"
-#include "logger.h"
 #include <stdlib.h>
+
+#include "vanessa_adt.h"
 
 #define DEFAULT_NORECENT 7
 
@@ -117,14 +117,14 @@ vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
 
 	e = (vanessa_list_elem_t *) malloc(sizeof(vanessa_list_elem_t));
 	if (e == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 
 	if(value != NULL && element_duplicate != NULL) {
 		new_value = element_duplicate(value);
 		if(new_value == NULL) {
-			VANESSA_ADT_DEBUG("element_duplicate");
+			VANESSA_LOGGER_DEBUG("element_duplicate");
 			free(e);
 			return(NULL);
 		}
@@ -194,7 +194,7 @@ vanessa_list_t *vanessa_list_create(int norecent,
 
 	l = (vanessa_list_t *) malloc(sizeof(vanessa_list_t));
 	if (l == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 
@@ -207,7 +207,7 @@ vanessa_list_t *vanessa_list_create(int norecent,
 		l->recent = (vanessa_list_elem_t **) 
 			malloc(sizeof(vanessa_list_elem_t *) * l->norecent);
 		if (l->recent == NULL) {
-			VANESSA_ADT_DEBUG_ERRNO("malloc");
+			VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 			free(l);
 			return (NULL);
 		}
@@ -334,7 +334,7 @@ char *vanessa_list_display(vanessa_list_t * l, char delimiter) {
 
 	nochar = vanessa_list_length(l) + 1;
 	if ((buffer = (char *) malloc(nochar)) == NULL){
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return(NULL);
 	}
 
@@ -474,7 +474,7 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
 	e = vanessa_list_elem_create(prev, (prev==NULL)?NULL:prev->next, 
 			value, l->e_duplicate);
 	if (e == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("vanessa_list_elem_create");
+		VANESSA_LOGGER_DEBUG_ERRNO("vanessa_list_elem_create");
 		vanessa_list_destroy(l);
 		return (NULL);
 	}
@@ -576,7 +576,7 @@ vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l) {
 			l->e_duplicate, l->e_display,
 			l->e_length, l->e_match, l->e_sort);
 	if(new_list == NULL) {
-		VANESSA_ADT_DEBUG("vanessa_list_create");
+		VANESSA_LOGGER_DEBUG("vanessa_list_create");
 		return(NULL);
 	}
 

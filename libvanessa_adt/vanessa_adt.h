@@ -6,7 +6,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -635,6 +635,10 @@ void *vanessa_key_value_get_value(vanessa_key_value_t * kv);
 
 /**********************************************************************
  * Logging functionality
+ *
+ * Depreciated, but provided for backwards compatibility.
+ * Call vanessa_socket_set() and vanessa_socket_unset() instead.
+ *
  **********************************************************************/
 
 extern vanessa_logger_t *vanessa_adt_logger;
@@ -642,6 +646,10 @@ extern vanessa_logger_t *vanessa_adt_logger;
 
 /**********************************************************************
  * vanessa_adt_logger_set
+ *
+ * Depreciated, but provided for backwards compatibility.
+ * Call vanessa_socket_set() instead.
+ *
  * set the logger function to use
  * No logging will take place if logger is set to NULL (default)
  * That is you _must_ call this function to enable logging.
@@ -650,11 +658,15 @@ extern vanessa_logger_t *vanessa_adt_logger;
  * return: none
  **********************************************************************/
 
-#define vanessa_adt_logger_set(_vl) vanessa_adt_logger=_vl
+#define vanessa_adt_logger_set(_vl) vanessa_socket_set(_vl)
 
 
 /**********************************************************************
  * vanessa_adt_logger_unset
+ *
+ * Depreciated, but provided for backwards compatibility.
+ * Call vanessa_socket_unset() instead.
+ *
  * set logger to NULL
  * That is no logging will take place
  * pre: none
@@ -662,7 +674,7 @@ extern vanessa_logger_t *vanessa_adt_logger;
  * return: none
  **********************************************************************/
 
-#define vanessa_adt_logger_unset() vanessa_adt_logger_set(NULL)
+#define vanessa_adt_logger_unset() vanessa_logger_unset()
 
 
 /**********************************************************************

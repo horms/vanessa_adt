@@ -15,7 +15,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -35,7 +35,6 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
-#include "logger.h"
 
 
 struct vanessa_dynamic_array_t_struct {
@@ -113,7 +112,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_create(size_t block_size,
 	if ((a =
 	     (vanessa_dynamic_array_t *)
 	     malloc(sizeof(vanessa_dynamic_array_t))) == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 
@@ -190,7 +189,7 @@ vanessa_dynamic_array_t
 						   a->allocated_size *
 						   sizeof(void *))) ==
 		    NULL) {
-			VANESSA_ADT_DEBUG_ERRNO("realloc");
+			VANESSA_LOGGER_DEBUG_ERRNO("realloc");
 			vanessa_dynamic_array_destroy(a);
 			return (NULL);
 		}
@@ -200,7 +199,7 @@ vanessa_dynamic_array_t
 	if ((*(a->vector + a->count) =
 	     (e == NULL || a->e_duplicate == NULL) ? e : a->e_duplicate(e)
 	    ) == NULL && e != NULL) {
-		VANESSA_ADT_DEBUG("a->e_duplicate");
+		VANESSA_LOGGER_DEBUG("a->e_duplicate");
 		return (NULL);
 	}
 	a->count++;
@@ -255,7 +254,7 @@ vanessa_dynamic_array_t
 						   a->allocated_size *
 						   sizeof(void *))) ==
 		    NULL) {
-			VANESSA_ADT_DEBUG_ERRNO("realloc");
+			VANESSA_LOGGER_DEBUG_ERRNO("realloc");
 			vanessa_dynamic_array_destroy(a);
 			return (NULL);
 		}
@@ -286,14 +285,14 @@ vanessa_dynamic_array_t
 						  a->e_duplicate,
 						  a->e_display,
 						  a->e_length)) == NULL) {
-		VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
+		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 
 	for (i = 0; i < a->count; i++) {
 		if (vanessa_dynamic_array_add_element(new_a, a->vector[i])
 		    == NULL) {
-			VANESSA_ADT_DEBUG
+			VANESSA_LOGGER_DEBUG
 			    ("vanessa_dynamic_array_add_element");
 			vanessa_dynamic_array_destroy(new_a);
 			return (NULL);
@@ -385,7 +384,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
 
 	nochar = vanessa_dynamic_array_length(a) + 1;
 	if ((buffer = (char *) malloc(nochar)) == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 
@@ -512,14 +511,14 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
 					      VANESSA_DISPLAY_STR,
 					      VANESSA_LENGTH_STR)) ==
 	    NULL) {
-		VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
+		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 	while ((sub_string = strchr(string, delimiter)) != NULL) {
 		*sub_string = '\0';
 		if (vanessa_dynamic_array_add_element(a, (void *) string)
 		    == NULL) {
-			VANESSA_ADT_DEBUG
+			VANESSA_LOGGER_DEBUG
 			    ("vanessa_dynamic_array_add_element 1");
 			return (NULL);
 		}
@@ -529,7 +528,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str(char *string,
 	    && vanessa_dynamic_array_add_element(a,
 						 (void *) string) ==
 	    NULL) {
-		VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element 2");
+		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_add_element 2");
 		return (NULL);
 	}
 	return (a);
@@ -568,7 +567,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
 					      VANESSA_DISPLAY_INT,
 					      VANESSA_LENGTH_INT)) ==
 	    NULL) {
-		VANESSA_ADT_DEBUG("vanessa_dynamic_array_create");
+		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_create");
 		return (NULL);
 	}
 	while ((sub_string = strchr(string, delimiter)) != NULL) {
@@ -576,7 +575,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
 		i = atoi(string);
 		if (vanessa_dynamic_array_add_element(a, (void *) i) ==
 		    NULL) {
-			VANESSA_ADT_DEBUG
+			VANESSA_LOGGER_DEBUG
 			    ("vanessa_dynamic_array_add_element");
 			return (NULL);
 		}
@@ -586,7 +585,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
 		i = atoi(string);
 		if (vanessa_dynamic_array_add_element(a, (void *) i) ==
 		    NULL) {
-			VANESSA_ADT_DEBUG
+			VANESSA_LOGGER_DEBUG
 			    ("vanessa_dynamic_array_add_element");
 			return (NULL);
 		}

@@ -9,7 +9,7 @@
  *               School, NSW, Australia in June 1997.
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -29,7 +29,6 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
-#include "logger.h"
 
 struct vanessa_queue_member_t_struct {
         void *value;
@@ -88,7 +87,7 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy) (const void *))
 	if ((q =
 	     (vanessa_queue_t *) malloc(sizeof(vanessa_queue_t))) ==
 	    NULL) {
-		VANESSA_ADT_DEBUG("malloc");
+		VANESSA_LOGGER_DEBUG("malloc");
 		return (NULL);
 	}
 
@@ -123,7 +122,7 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t * q, void *value)
 	if ((new =
 	     (vanessa_queue_member_t *)
 	     malloc(sizeof(vanessa_queue_member_t))) == NULL) {
-		VANESSA_ADT_DEBUG("malloc");
+		VANESSA_LOGGER_DEBUG("malloc");
 		vanessa_queue_destroy(q);
 		return (NULL);
 	}

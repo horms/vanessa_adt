@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	/*
 	 * Set this as the logger for this programme
 	 */
-	vanessa_adt_logger_set(vl);
+	vanessa_logger_set(vl);
 
 
 	/*

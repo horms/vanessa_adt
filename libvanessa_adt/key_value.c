@@ -6,7 +6,7 @@
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2000  Horms
+ * Copyright (C) 1999-2002  Horms
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -26,7 +26,6 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
-#include "logger.h"
 
 
 struct vanessa_key_value_t_struct {
@@ -56,7 +55,7 @@ vanessa_key_value_t *vanessa_key_value_create(void)
 	if ((kv =
 	     (vanessa_key_value_t *) malloc(sizeof(vanessa_key_value_t)))
 	    == NULL) {
-		VANESSA_ADT_DEBUG_ERRNO("malloc");
+		VANESSA_LOGGER_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
 	kv->key = NULL;
