@@ -12,6 +12,7 @@ Copyright (C) 1999-2003  Horms
   - vanessa_config_file_read() and vanessa_config_file_read_fd()
     check to make sure that they are reading a plain file.
   - Strip trailing whitespace from configuration parameters
+  - Don't use *_UNSAFE logging macros with only one argument
 
 ----------------------------------------------------------------------
 

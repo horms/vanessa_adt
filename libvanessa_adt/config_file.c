@@ -585,7 +585,7 @@ int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
 
 	if(flag & VANESSA_CONFIG_FILE_CHECK_FILE) {
 		if(!S_ISREG(stat_buf.st_mode)) {
-		 	VANESSA_LOGGER_DEBUG_UNSAFE("not a regular file");
+		 	VANESSA_LOGGER_DEBUG("not a regular file");
 		 	return(-1);
 		}
 	}
