@@ -31,7 +31,9 @@ configure.in \
 README \
 TODO \
 vanessa_adt.spec.in \
-vanessa_adt.spec
+vanessa_adt.spec \
+INSTALL \
+INSTALL.in
 
 
 m4datadir = $(datadir)/aclocal

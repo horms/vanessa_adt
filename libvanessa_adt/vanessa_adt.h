@@ -157,7 +157,7 @@ void vanessa_queue_destroy(vanessa_queue_t *q);
  *         -1 on error
  **********************************************************************/
 
-#define vanessa_queue_length(_q)  (_q!=NULL)?(_q)->size:-1
+#define vanessa_queue_length(_q)  ((_q!=NULL)?(_q)->size:-1)
 
 
 
@@ -372,8 +372,8 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a);
  **********************************************************************/
 
 #define vanessa_dynamic_array_get_element(_a, _elementno) \
-  (void *)((_a==NULL||_elementno<0||_elementno>=(_a)->count)? \
-	   NULL:*(((_a)->vector)+_elementno))
+  ((void *)((_a==NULL||_elementno<0||_elementno>=(_a)->count)? \
+	   NULL:*(((_a)->vector)+_elementno)))
 
 
 /**********************************************************************
@@ -633,10 +633,10 @@ void *vanessa_key_value_get_value(vanessa_key_value_t *kv);
 extern vanessa_logger_t *vanessa_adt_logger;
 
 #define VANESSA_ADT_DEBUG_ERRNO(s, e) \
-  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, "%s: %s", s, strerror(e));
+  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, "%s: %s", s, strerror(e))
 
 #define VANESSA_ADT_DEBUG(s) \
-  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, s);
+  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, s)
 
 
 /**********************************************************************
