@@ -711,8 +711,6 @@ typedef struct {
  *                         duplicate as the only element and return a copy
  *                         of the element Any memory allocation required
  *                         should be done by this function.
- *      element_match:     Pointer to a function to match an element
- *                         by a key.
  *      element_display:   Pointer to a function to display an element
  *                         Function should take a pointer to char and a
  *                         pointer to an element as arguments. An ASCII
@@ -721,7 +719,7 @@ typedef struct {
  *                         argument.  May be NULL in which case
  *                         vanessa_dynamic_array_display will return an empty
  *                         string ("\0");
- *      element_length:    Pointer to a function to find the length of an
+ *      element_size:      Pointer to a function to find the length of an
  *                         ASCII representation of the element not
  *                         including the trailing '\0'. Used to guard
  *                         against buffer over runs when using
