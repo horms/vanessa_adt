@@ -4,7 +4,4 @@
 
 if [ "$1" = "configure" ]; then
     ldconfig
-    if [ -d /usr/doc -a ! -e /usr/doc/libvanessa-adt0 -a -d /usr/share/doc/libvanessa-adt0 ]; then
-      ln -sf ../share/doc/libvanessa-adt0 /usr/doc/libvanessa-adt0
-    fi
 fi
