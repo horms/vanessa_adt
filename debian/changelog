@@ -1,8 +1,8 @@
-vanessa-adt (0.0.4beta1-1) unstable; urgency=low
+vanessa-adt (0.0.4beta2-1) unstable; urgency=low
 
   * New Upstream
 
- -- Simon Horman <horms@vergenet.net>  Fri, 27 Dec 2002 17:23:41 +0900
+ -- Simon Horman <horms@vergenet.net>  Wed,  8 Jan 2003 16:04:49 +0900
 
 vanessa-adt (0.0.3-2) unstable; urgency=low
 
