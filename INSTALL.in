@@ -6,13 +6,18 @@ Copyright (C) 2000  Horms
 ----------------------------------------------------------------------
 
 To install vanessa_socket 
+-------------------------
+
 tar zxf vanessa_socket-@VERSION@.tar.gz
 cd vanessa_socket-@VERSION@
 ./configure [--prefix=/usr]
 make
 make install
 
+
 To build RPMS
+-------------
+
 rpm -ta vanessa_socket-@VERSION@.tar.gz
 
 or
@@ -24,5 +29,24 @@ rpm -ta vanessa_socket-@VERSION@.tar.gz
 
 
 To Build Debian Packages
+------------------------
 
+cd vanessa_socket-@VERSION@
 dpkg-buildpackage [-uc] [-us]
+
+
+To install on Solaris 8
+-----------------------
+
+You may need to set some envirnoment variables to aid the build process.
+The following worked for me using a bourne shell. Make apropriate
+adjustments if you are using a C shell.
+
+export CPPFLAGS="-I/usr/local/include/"
+export LDFLAGS="-L/usr/local/lib/"
+
+cd vanessa_adt-@VERSION@
+./configure [--prefix=/usr]
+make
+make install
+
