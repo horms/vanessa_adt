@@ -5,10 +5,10 @@ Library of Abstract Data Types
 Copyright (C) 2000  Horms
 ----------------------------------------------------------------------
 
-xxx
+24th March 2002
 (Horms)
 
-   * xxx
+   * xxx0.0.3beta2
    - Tidied up logging
    - Fixed minor .spec file errors 
      Scot W. Hetzel <scot@genroco.com> & Horms
@@ -17,6 +17,23 @@ xxx
      rather than integers
    - made data structures more opaque
    - added hash
+
+
+----------------------------------------------------------------------
+
+14th March 2002
+(Horms)
+
+   * 0.0.3beta1
+   - Tidied up logging
+   - Fixed minor .spec file errors 
+     Scot W. Hetzel <scot@genroco.com> & Horms
+   - Added linked list
+   - vanessa_duplicate_int and friends now work on poiters to integers
+     rather than integers
+   - made data structures more opaque
+   - added hash
+
 
 ----------------------------------------------------------------------
 
@@ -27,6 +44,7 @@ xxx
    - Dynamic array can now accept NULL elements
    - Queue now handles trying to push a value to a NULL queue
 
+
 ----------------------------------------------------------------------
 
 5th April 2001
@@ -35,6 +53,7 @@ xxx
    * Version 0.0.1
    - Solaris Compatibility fixed
    - Debian packages cleaned up
+
 
 ----------------------------------------------------------------------
 
