@@ -1,3 +1,10 @@
+vanessa-adt (0.0.4beta7-3) unstable; urgency=low
+
+  * Changed libvanessa-adt0-dev from devel to libdevel section
+  * Changed libvanessa-adt0 from libs to devel
+
+ -- Simon Horman <horms@vergenet.net>  Fri, 18 Apr 2003 17:04:24 +0900
+
 vanessa-adt (0.0.4beta7-2) unstable; urgency=low
 
   * New upstream
