@@ -37,6 +37,5 @@ rules \
 dpkg-checkbuild
 
 clean-local:
-	rm -f *.substvars *.debhelper
+	rm -f *.substvars *.debhelper files
 	rm -r -f libvanessa-adt-dev libvanessa-adt0 tmp
-

@@ -35,5 +35,5 @@ vanessa_adt.spec \
 INSTALL \
 INSTALL.in
 
-
-m4datadir = $(datadir)/aclocal
+clean-local:
+	rm -f build-stamp
