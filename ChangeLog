@@ -5,9 +5,9 @@ Library of Abstract Data Types
 Copyright (C) 1999-2002  Horms
 ----------------------------------------------------------------------
 
-XXX
+27th December 2002
   
-  * XXX
+  * 0.0.4beta1
   - Use loging convenicence macros provided by libvanessa_logger
     rather than providing our own.
   - Fixed bug in vanessa_list_destroy, whereby an element,
