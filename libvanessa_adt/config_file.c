@@ -225,7 +225,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 			switch (c) {
 			case ' ':
 			case '\t':
-				if(!(flag & VANESSA_CONFIG_FILE_MULTI_VALUE)) {
+				if(flag & VANESSA_CONFIG_FILE_MULTI_VALUE) {
 					END_VALUE;
 				}
 				END_KEY;

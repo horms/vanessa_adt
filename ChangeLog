@@ -5,6 +5,11 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
+XXX
+  * 0.0.4beta2 Unreleased
+  - fixed logic in handling of mutivalue config files
+
+----------------------------------------------------------------------
 27th December 2002
   
   * 0.0.4beta1
