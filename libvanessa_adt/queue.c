@@ -97,6 +97,10 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *)){
 vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value){
   vanessa_queue_member_t *new;
 
+  if(q==NULL){
+    return(NULL);
+  }
+
   if( (new=(vanessa_queue_member_t *)malloc(
 	sizeof(vanessa_queue_member_t))) == NULL){
     VANESSA_ADT_DEBUG_ERRNO("vanessa_queue_push: malloc", errno);

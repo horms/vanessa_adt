@@ -5,6 +5,15 @@ Library of Abstract Data Types
 Copyright (C) 2000  Horms
 ----------------------------------------------------------------------
 
+19th April 2001
+(Horms)
+
+   * 0.0.2
+   - Dynamic array can now accept NULL elements
+   - Queue now handles trying to push a value to a NULL queue
+
+----------------------------------------------------------------------
+
 5th April 2001
 (Horms)
 

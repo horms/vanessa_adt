@@ -36,4 +36,4 @@ logger.c
 
 libvanessa_adt_la_LDFLAGS    = -version-info 0:1:0
 
-libvanessa_adt_la_LIBADD     = @extra_libs@
+libvanessa_adt_la_LIBADD     = -lvanessa_logger

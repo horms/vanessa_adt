@@ -154,7 +154,6 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
 
   /* Make sure arguments are sane */
   if(a==NULL) return(NULL);
-  if(e==NULL) return(a);
 
   /* Grow vector as required */
   if(a->count==a->allocated_size){
@@ -171,7 +170,9 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
   }
 
   /* Duplicate element and add it to array */
-  if((*(a->vector+a->count)=(a->e_duplicate==NULL)?e:a->e_duplicate(e))==NULL){
+  if((
+    *(a->vector+a->count)=(e==NULL||a->e_duplicate==NULL)?e:a->e_duplicate(e)
+  )==NULL && e!=NULL){
     VANESSA_ADT_DEBUG("vanessa_dynamic_array_add_element: a->e_duplicate");
     return(NULL);
   }

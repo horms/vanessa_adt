@@ -33,4 +33,4 @@ dynamic_array_test_LDADD = \
 -L../libvanessa_adt \
 -L../libvanessa_adt/.libs/ \
 -lvanessa_adt \
--lvanessa_logger
+@extra_libs@

@@ -13,7 +13,7 @@ Description: Headers and static libraries required to develop against vanessa_ad
 
 Package: libvanessa-adt0
 Architecture: any
-Depends: ${shlibs:Depends}, libvanessa-logger0
+Depends: ${shlibs:Depends}
 Description: Library of Abstract Data Types
  Library of Abstract Data Types (ADTs).  Incudes queue, dynamic array and 
  key value ADT.
