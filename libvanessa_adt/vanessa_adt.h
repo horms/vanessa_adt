@@ -1075,7 +1075,7 @@ vanessa_hash_t *vanessa_hash_remove_element(vanessa_hash_t *h, void *value);
  *         duplicated hash 
  **********************************************************************/
 
-vanessa_hash_t *hash_duplicate(vanessa_hash_t *h);
+vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h);
 
 
 /**********************************************************************
