@@ -677,8 +677,7 @@ int vanessa_config_file_check_exits_fd(int fd)
  *         -1 on error
  **********************************************************************/
 
-int vanessa_config_file_check_exits(const char *filename, 
-		uid_t uid, gid_t gid, mode_t mode, vanessa_adt_flag_t flag)
+int vanessa_config_file_check_exits(const char *filename)
 {
 	int status;
 	int fd;
