@@ -36,4 +36,7 @@ shlibs.local \
 rules \
 dpkg-checkbuild
 
-m4datadir = $(datadir)/aclocal
+clean-local:
+	rm -f *.substvars *.debhelper
+	rm -r -f libvanessa-adt-dev libvanessa-adt0 tmp
+
