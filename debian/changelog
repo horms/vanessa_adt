@@ -1,3 +1,9 @@
+vanessa-adt (0.0.4beta7-4) unstable; urgency=low
+
+  * Made versioned dependancy on libvanessa-logger-dev. (closes: Bug#189579)
+
+ -- Simon Horman <horms@vergenet.net>  Sat, 19 Apr 2003 09:35:08 +0900
+
 vanessa-adt (0.0.4beta7-3) unstable; urgency=low
 
   * Changed libvanessa-adt0-dev from devel to libdevel section

@@ -103,7 +103,7 @@
 				"vanessa_dynamic_array_add_element"); \
 		close(fd); \
 		return(NULL); \
-	} \
+	}
 
 #define BEGIN_KEY \
 	if(!in_escape && !in_comment && !in_quote){ \
@@ -112,7 +112,7 @@
 		} \
 		in_key=1; \
 		added_key=0; \
-	} \
+	}
 
 #define END_KEY \
 	if(!in_escape && in_key && !in_quote){ \
@@ -131,12 +131,12 @@
 		} \
 		token_pos=0; \
 		in_key=0; \
-	} \
+	}
 
 #define BEGIN_VALUE \
 	if(!in_key && !in_comment && !in_quote){ \
 		in_value=1; \
-	} \
+	}
 
 #define END_VALUE \
 	if(!in_escape && in_value && !in_quote){ \
@@ -146,17 +146,17 @@
 		} \
 		token_pos=0; \
 		in_value=0; \
-	} \
+	}
 
 #define END_COMMENT \
 	if(!in_escape){ \
 		in_comment=0; \
-	} \
+	}
 
 #define BEGIN_COMMENT \
 	if(!in_escape && !in_quote){ \
 		in_comment=1; \
-	} \
+	}
 
 #define BEGIN_ESCAPE \
 	in_escape=1;
@@ -180,6 +180,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 	char c;
 	int max_token_pos = MAX_LINE_LENGTH - 3;
 	int read_pos;
+	struct stat stat_buf;
 
 	int in_escape = 0;
 	int in_comment = 0;
@@ -188,6 +189,16 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 	int in_quote = 0;
 	int in_key = 1;
 	int added_key = 0;
+
+	if(fstat(fd, &stat_buf) < 0) {
+		VANESSA_LOGGER_DEBUG_ERRNO("stat");
+		return(NULL);
+	}
+
+	if(!S_ISREG(stat_buf.st_mode)) {
+		VANESSA_LOGGER_DEBUG("configuration file is not a file");
+		return(NULL);
+	}
 
 	a = vanessa_dynamic_array_create(0, VANESSA_DESTROY_STR,
 		      VANESSA_DUPLICATE_STR, VANESSA_DISPLAY_STR,

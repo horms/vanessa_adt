@@ -5,6 +5,15 @@ Library of Abstract Data Types
 Copyright (C) 1999-2003  Horms
 ----------------------------------------------------------------------
 
+XXX
+(Horms)
+
+  * XXX
+  - vanessa_config_file_read() and vanessa_config_file_read_fd()
+    check to make sure that they are reading a plain file.
+
+----------------------------------------------------------------------
+
 26th March 2003
 (Horms)
 
