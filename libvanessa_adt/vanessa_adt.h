@@ -317,22 +317,23 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t * a);
 
 
 /**********************************************************************
- * vanessa_dynamic_array_length
- * Find the length of an ASCII representation of a dynamic array.
- * Not including a terminating '\0'.
- * pre: a: dynamic array to find the length of
- * post: If a is NULL or there are no elements in a then the 
- *          length is 0
- *       If element_length, as passed to vanessa_dynamic_array_create, 
- *          is NULL, then 0 is returned.
- *       Else the cumulative lenth of the elemements as per the
- *           element_length function, plus one character per 
- *           element for a delimiter between elements.
- *           The trailing '\0' is not counted.
- *          It is up to the user to free this buffer.  
- * return: Cumulative length of the elements.
- *         0 if a is NULL or there are no elements in a or if
- *           element_length passed to vanessa_list_create is NULL.
+ * vanessa_dynamic_array_display
+ * Make an ASCII representation of a dynamic array.
+ * pre: a: dynamic array to display
+ *      delimiter: character to place between elements of the array
+ * post: If a is NULL or there are no elements in a then nothing is 
+ *          done
+ *       If element_display or element_length, as passed to
+ *          vanessa_dynamic_array_create, are NULL, then an empty 
+ *          string ("") is returned.  
+ *       Else a character buffer is allocated and an ASCII 
+ *          representation of of each array element, as determined by 
+ *          element_display, separated by delimiter is placed in the 
+ *          '\0' terminated buffer that is returned. 
+ *       It is up to the user to free this buffer.  
+ * return: Allocated buffer as above 
+ *         NULL on error, 
+ *         NULL a or empty a
  **********************************************************************/
 
 char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
@@ -1100,6 +1101,7 @@ int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
 #define VANESSA_CONFIG_FILE_NONE        0x0
 #define VANESSA_CONFIG_FILE_MULTI_VALUE 0x1
 #define VANESSA_CONFIG_FILE_X           0x2
+#define VANESSA_CONFIG_FILE_BLANK       0x4
 
 typedef struct {
 	char mode_str[11];
@@ -1125,16 +1127,19 @@ typedef struct {
  * Reads a configuration file from an file descriptor
  * that has been opend for reading. 
  * pre: filename: file to read configuration from
- *      flags: VANESSA_CONFIG_FILE_NONE, VANESSA_CONFIG_FILE_MULTI_VALUE
- *             or VANESSA_CONFIG_FILE_X. These ar mutually exclusive.
+ *      flags: logical or of VANESSA_CONFIG_FILE_MULTI_VALUE,
+ *             VANESSA_CONFIG_FILE_X and VANESSA_CONFIG_FILE_BLANK.
+ *             VANESSA_CONFIG_FILE_NONE for no flags.
+ *             VANESSA_CONFIG_FILE_X and VANESSA_CONFIG_FILE_BLANK
+ *             may not be used together.
  * post: The file is parsed according to the following rules.
  *       Escaping and quoting is intended to be analogous to 
  *       how a shell (bash) handles these.
- *       o Each line begins with a key, optionally folled
+ *       o Each line begins with a key, optionally followed
  *         by some whitespace and a value 
  *         If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
- *         then there may be multiple wite-space delimited values
- *         Otherwise eveyrhing after the key and delimiting whitespace
+ *         then there may be multiple white-space delimited values
+ *         Otherwise everything after the key and delimiting whitespace
  *         is considerd as one value
  *       o Leading whitespace is ignored
  *       o Blank lines are ignored
@@ -1147,13 +1152,15 @@ typedef struct {
  *         treated as a litreal.
  *       o Whitespace in keys must be escaped or quoted.
  *       o Whitespace in values need not be escaped or quoted.
- *       o If flag is VANESSA_CONFIG_FILE_NONE
- *           If a key is a single letter it is prefixed by a "-"
- *           Else the key is prefixed with "--"
- *         If flag is VANESSA_CONFIG_FILE_X
+ *       o If flag includes VANESSA_CONFIG_FILE_BLANK
+ *           key is not prefixed
+ *         If flag includes VANESSA_CONFIG_FILE_X
  *           key is prefixed with a "-"
  *         Otherwise
- *           key is not prefixed
+ *           If a key is a single letter it is prefixed by a "-"
+ *           Else the key is prefixed with "--"
+ *         Note if flag contains both VANESSA_CONFIG_FILE_BLANK and
+ *         VANESSA_CONFIG_FILE_X then the behaviour is undefined
  *        * If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
  *           a NULL entry is inserted after each line
  *          Otherwise

@@ -54,16 +54,19 @@
  * Reads a configuration file from an file descriptor
  * that has been opend for reading. 
  * pre: filename: file to read configuration from
- *      flags: VANESSA_CONFIG_FILE_NONE, VANESSA_CONFIG_FILE_MULTI_VALUE
- *             or VANESSA_CONFIG_FILE_X. These ar mutually exclusive.
+ *      flags: logical or of VANESSA_CONFIG_FILE_MULTI_VALUE,
+ *             VANESSA_CONFIG_FILE_X and VANESSA_CONFIG_FILE_BLANK.
+ *             VANESSA_CONFIG_FILE_NONE for no flags.
+ *             VANESSA_CONFIG_FILE_X and VANESSA_CONFIG_FILE_BLANK
+ *             may not be used together.
  * post: The file is parsed according to the following rules.
  *       Escaping and quoting is intended to be analogous to 
  *       how a shell (bash) handles these.
- *       o Each line begins with a key, optionally folled
+ *       o Each line begins with a key, optionally followed
  *         by some whitespace and a value 
  *         If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
- *         then there may be multiple wite-space delimited values
- *         Otherwise eveyrhing after the key and delimiting whitespace
+ *         then there may be multiple white-space delimited values
+ *         Otherwise everything after the key and delimiting whitespace
  *         is considerd as one value
  *       o Leading whitespace is ignored
  *       o Blank lines are ignored
@@ -76,13 +79,15 @@
  *         treated as a litreal.
  *       o Whitespace in keys must be escaped or quoted.
  *       o Whitespace in values need not be escaped or quoted.
- *       o If flag is VANESSA_CONFIG_FILE_NONE
- *           If a key is a single letter it is prefixed by a "-"
- *           Else the key is prefixed with "--"
- *         If flag is VANESSA_CONFIG_FILE_X
+ *       o If flag includes VANESSA_CONFIG_FILE_BLANK
+ *           key is not prefixed
+ *         If flag includes VANESSA_CONFIG_FILE_X
  *           key is prefixed with a "-"
  *         Otherwise
- *           key is not prefixed
+ *           If a key is a single letter it is prefixed by a "-"
+ *           Else the key is prefixed with "--"
+ *         Note if flag contains both VANESSA_CONFIG_FILE_BLANK and
+ *         VANESSA_CONFIG_FILE_X then the behaviour is undefined
  *        * If flag is VANESSA_CONFIG_FILE_MULTI_VALUE
  *           a NULL entry is inserted after each line
  *          Otherwise
@@ -91,7 +96,6 @@
  * return: dynamic array containin elements
  *         NULL on error
  **********************************************************************/
-
 
 #define ADD_TOKEN(_a, _t) \
 	if((_a=vanessa_dynamic_array_add_element(_a, _t))==NULL){ \
@@ -115,7 +119,7 @@
 		if(in_key && token_pos){ \
 			*(token_buffer+token_pos+2)='\0'; \
 			tmp_token_buffer = token_buffer; \
-			if(flag & VANESSA_CONFIG_FILE_MULTI_VALUE) { \
+			if(flag & VANESSA_CONFIG_FILE_BLANK) { \
 				tmp_token_buffer += 2; \
 			} \
 			else if(flag & VANESSA_CONFIG_FILE_X) { \
@@ -221,7 +225,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 			switch (c) {
 			case ' ':
 			case '\t':
-				if(flag | VANESSA_CONFIG_FILE_MULTI_VALUE) {
+				if(!(flag & VANESSA_CONFIG_FILE_MULTI_VALUE)) {
 					END_VALUE;
 				}
 				END_KEY;
