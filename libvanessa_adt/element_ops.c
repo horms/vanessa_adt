@@ -32,30 +32,42 @@
 
 /**********************************************************************
  * vanessa_destroy_int
- * Dummy function to "destroy" an int.
- * DOES NOTHING
+ * function to destroy an pointer to an int.
  * pre: i: int to "destroy"
  * post: none
  * return: none
  **********************************************************************/
 
-void vanessa_destroy_int(int i)
-{;
+void vanessa_destroy_int(int *i)
+{
+	if(i!=NULL) {
+		free(i);
+	}
 }
 
 
 /**********************************************************************
  * vanessa_dup_int
- * Dummy function to "duplicate" an int.
- * DOES NOTHING
- * pre: i: int to "destroy"
- * post: none
- * return: i is returned cast to a void *
+ * function to duplicate pointer to an int.
+ * pre: i: int to duplicate
+ * post: new int is alocated and value of i is copied into it
+ * return: pointer to new integer
+ *         NULL on error
  **********************************************************************/
 
-void *vanessa_dup_int(int i)
+int *vanessa_dup_int(int *i)
 {
-	return ((void *) i);
+	int *new_i;
+
+	new_i=(int *)malloc(sizeof(int));
+	if(new_i == NULL) {
+		VANESSA_ADT_DEBUG_ERRNO("vanessa_dup_int");
+		return(NULL);
+	}
+
+	*new_i = *i;
+
+	return (new_i);
 }
 
 
@@ -63,14 +75,14 @@ void *vanessa_dup_int(int i)
  * vanessa_display_int
  * Display an int in ASCII as a decimal.
  * pre: d: buffer to display ASCII represetation of int to
- *      i: int to display
+ *      i: pointer to int to display
  * post: an ASCII representation of i is in d
  * return: none
  **********************************************************************/
 
-void vanessa_display_int(char *d, int i)
+void vanessa_display_int(char *d, int *i)
 {
-	sprintf(d, "%d", i);
+	sprintf(d, "%d", *i);
 }
 
 
@@ -78,21 +90,24 @@ void vanessa_display_int(char *d, int i)
  * vanessa_length_int
  * Return the length in bytes of an ASCII representation of the in as a
  * decimal.
- * pre: i: int to find the "length" of
+ * pre: i: pointer to int to find the "length" of
  * post: none
  * return: length is returned
  **********************************************************************/
 
-size_t vanessa_length_int(int i)
+size_t vanessa_length_int(int *i)
 {
 	int j = 1;
+	int i_cpy;
 
-	if (i < 0) {
+	i_cpy = *i;
+
+	if (i_cpy < 0) {
 		j++;
-		i = -i;
+		i_cpy = -i_cpy;
 	}
-	while (i > 10) {
-		i /= 10;
+	while (i_cpy > 10) {
+		i_cpy /= 10;
 		j++;
 	}
 	return (j);
@@ -104,16 +119,16 @@ size_t vanessa_length_int(int i)
  * Compare two integers. Return the difference. That is < 1 if a < b,
  * 0 if a == b and > 1 if a > b.
  * Analogous to strcmp(3)
- * pre: a: int to compare
- *      b: other int to compare
+ * pre: a: pointer to int to compare
+ *      b: pointer to other int to compare
  * post: none
  * return: difference between a and b
  **********************************************************************/
 
-int vanessa_match_int(int a, int b)
+int vanessa_match_int(int *a, int *b)
 {
-	if(a < b) {
-		return(a - b);
+	if(*a < *b) {
+		return(*a - *b);
 	}
-	return(b - a);
+	return(*b - *a);
 }

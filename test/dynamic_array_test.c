@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 	 */
 	printf("Inserting Elements into Dynamic Array\n");
 	for (i = 0; i < 8; i++) {
-		if ((vanessa_dynamic_array_add_element(a, (void *) i)) ==
+		if ((vanessa_dynamic_array_add_element(a, &i)) ==
 		    NULL) {
 			vanessa_logger_log(vl, LOG_ERR,
 					   "main: vanessa_dynamic_array_add_element");

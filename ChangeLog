@@ -13,6 +13,8 @@ xxx
    - Fixed minor .spec file errors 
      Scot W. Hetzel <scot@genroco.com> & Horms
    - Added linked list
+   - vanessa_duplicate_int and friends now work on poiters to integers
+     rather than integers
 
 ----------------------------------------------------------------------
 

@@ -35,8 +35,10 @@ int main(int argc, char **argv)
 {
 	vanessa_logger_t *vl;
 	vanessa_list_t *l;
+	vanessa_list_t *l_copy;
 	char *str;
 	int i;
+	int *p;
 
 	/* 
 	 * Open logger to filehandle stderr
@@ -78,7 +80,7 @@ int main(int argc, char **argv)
 	 */
 	printf("Inserting Elements into List\n");
 	for (i = 0; i < 8; i++) {
-		if ((vanessa_list_add_element(l, (void *) i)) == NULL) {
+		if ((vanessa_list_add_element(l, &i)) == NULL) {
 			vanessa_logger_log(vl, LOG_ERR,
 					   "main: vanessa_list_add_element");
 			vanessa_logger_log(vl, LOG_ERR,
@@ -105,7 +107,8 @@ int main(int argc, char **argv)
 	 * Delete an element
 	 */
 	printf("Deleting the evil element \"6\"\n");
-	vanessa_list_remove_element(l, (void *)6);
+	i = 6;
+	vanessa_list_remove_element(l, &i);
 
 	/* 
 	 * Display the contents
@@ -125,15 +128,16 @@ int main(int argc, char **argv)
 	 * Find an element
 	 */
 	printf("Finding element \"5\"\n");
-	i = (int)vanessa_list_get_element(l, (void *)5);
-	if( i != 5 ) {
+	i = 5;
+	p = (int *)vanessa_list_get_element(l, &i);
+	if( p == NULL ) {
 		vanessa_logger_log(vl, LOG_DEBUG,
-				"main: vanessa_get_element");
+				"main: vanessa_list_get_element");
 		vanessa_logger_log(vl, LOG_ERR,
 				"Fatal error retrieving element. Exiting.");
 		exit(-1);
 	}
-	printf("%d\n", i);
+	printf("%d\n", *p);
 
 	/*
 	 * Counting the Elements
@@ -142,11 +146,39 @@ int main(int argc, char **argv)
 	i = (int)vanessa_list_get_count(l);
 	printf("%d\n", i);
 
+	/*
+	 * Duplicate the list
+	 */
+	printf("Duplicating the list\n");
+	l_copy = vanessa_list_duplicate(l);
+	if(l_copy == NULL) {
+		vanessa_logger_log(vl, LOG_DEBUG,
+				"main: vanessa_list_duplicate");
+		vanessa_logger_log(vl, LOG_ERR,
+				"Fatal error duplicating list. Exiting.");
+		exit(-1);
+	}
+
+	/* 
+	 * Display the contents
+	 */
+	printf("Displaying contents of the new list\n");
+	if ((str = vanessa_list_display(l_copy, ',')) == NULL) {
+		vanessa_logger_log(vl, LOG_DEBUG,
+				   "main: vanessa_list_display");
+		vanessa_logger_log(vl, LOG_ERR,
+				   "Fatal error displaying dynamic array. Exiting.");
+		exit(-1);
+	}
+	printf("%s\n", str);
+	free(str);
+
 	/* 
 	 * Clean Up
 	 */
 	printf("Cleaning Up\n");
 	vanessa_list_destroy(l);
+	vanessa_list_destroy(l_copy);
 	vanessa_adt_logger_unset();
 	vanessa_logger_closelog(vl);
 

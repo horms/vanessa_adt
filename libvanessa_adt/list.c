@@ -10,8 +10,7 @@
  * the vanessa_dynamic_array API to have a dynamic array containing any
  * primitive
  *
- * Includes macros required to create an array of strings or integers.
-
+ * Includes macros required to create an list of strings or integers.
  *
  * vanessa_adt
  * Library of Abstract Data Types
@@ -129,7 +128,7 @@ void vanessa_list_elem_destroy(vanessa_list_elem_t * e,
 
 static
 vanessa_list_t *vanessa_list_elem_remove(vanessa_list_t * l,
-					 vanessa_list_elem_t * e)
+	vanessa_list_elem_t * e, void (*element_destroy) (void *e))
 {
 	size_t i;
 
@@ -139,12 +138,15 @@ vanessa_list_t *vanessa_list_elem_remove(vanessa_list_t * l,
 	for (i = 0; i < l->norecent; i++) {
 		if (*(l->recent + i) == e) {
 			*(l->recent + i) = NULL;
+			l->recent_offset = (l->recent_offset + 
+					l->norecent - 1) % l->norecent;
 		}
 	}
 
-	if(l->norecent > 0) {
-		l->recent_offset = (l->recent_offset + 1) % l->norecent;
+	if(e->value != NULL && element_destroy != NULL) {
+		element_destroy(e->value);
 	}
+
 	if (e->prev != NULL) {
 		e->prev->next = e->next;
 		*(l->recent + l->recent_offset) = e->prev;
@@ -177,35 +179,33 @@ vanessa_list_t *vanessa_list_elem_remove(vanessa_list_t * l,
 
 static
 vanessa_list_elem_t *vanessa_list_elem_create(vanessa_list_elem_t * prev,
-					      vanessa_list_elem_t * next,
-					      void * value)
+	vanessa_list_elem_t * next, void *value,
+	void *(*element_duplicate) (void *e))
 {
 	vanessa_list_elem_t *e;
+	void *new_value;
 
 	e = (vanessa_list_elem_t *) malloc(sizeof(vanessa_list_elem_t));
 	if (e == NULL) {
 		VANESSA_ADT_DEBUG_ERRNO("malloc");
 		return (NULL);
 	}
-	e = vanessa_list_elem_assign(e, prev, next, value);
+
+	if(value != NULL && element_duplicate != NULL) {
+		new_value = element_duplicate(value);
+		if(new_value == NULL) {
+			VANESSA_ADT_DEBUG("element_duplicate");
+			free(e);
+			return(NULL);
+		}
+	}
+	else {
+		new_value = value;
+	}
+
+	e = vanessa_list_elem_assign(e, prev, next, new_value);
 
 	return (e);
-}
-
-
-/**********************************************************************
- * vanessa_list_elem_create_empty
- * Create a new element, and seed it with NULL values
- * pre: none
- * post: e is initialised and values are seeded with NULL
- * return: pointer to e
- *         NULL on error
- **********************************************************************/
-
-static
-vanessa_list_elem_t *vanessa_list_elem_create_empty(void)
-{
-	return (vanessa_list_elem_create(NULL, NULL, NULL));
 }
 
 
@@ -432,7 +432,7 @@ static vanessa_list_elem_t *__vanessa_list_get_element(vanessa_list_t *l,
 	int i;
 	vanessa_list_elem_t *e;
 
-	if (l == NULL || key == NULL) {
+	if (l == NULL  || l->e_match == NULL || key == NULL) {
 		return(NULL);
 	}
 
@@ -508,7 +508,8 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value)
 		return(NULL);
 	}
 
-	if ((e = vanessa_list_elem_create(NULL, l->first, value)) == NULL) {
+	e = vanessa_list_elem_create(NULL, l->first, value, l->e_duplicate);
+	if (e == NULL) {
 		VANESSA_ADT_DEBUG_ERRNO("vanessa_list_elem_create");
 		vanessa_list_destroy(l);
 		return (NULL);
@@ -577,4 +578,37 @@ void vanessa_list_remove_element(vanessa_list_t *l, void *key) {
 
 	e = __vanessa_list_get_element(l, key);
 	__vanessa_list_remove_element(l, e);
+}
+
+/**********************************************************************
+ * vanessa_list_duplicate
+ * Duplicate a list
+ * pre: l: list to duplicate
+ * post: list is duplicated
+ * return: NULL if l is NULL or on error
+ *         duplicated list 
+ **********************************************************************/
+
+vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l) {
+	vanessa_list_t *new_list;
+	vanessa_list_elem_t *e;
+	
+	if(l==NULL) {
+		return(NULL);
+	}
+
+	new_list=vanessa_list_create(l->norecent, l->e_destroy,
+			l->e_duplicate, l->e_match, l->e_display,
+			l->e_length);
+	if(new_list == NULL) {
+		VANESSA_ADT_DEBUG("vanessa_list_create");
+		return(NULL);
+	}
+
+
+	for(e=l->last; e!=NULL; e=e->prev) {
+		vanessa_list_add_element(new_list, e->value);
+	}
+
+	return(new_list);
 }

@@ -25,8 +25,8 @@
  *
  **********************************************************************/
 
-#ifndef VANESSA_ADT_FLIM
-#define VANESSA_ADT_FLIM
+#ifndef _VANESSA_ADT_FLIM
+#define _VANESSA_ADT_FLIM
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -457,51 +457,49 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char
 
 /**********************************************************************
  * vanessa_destroy_int
- * Dummy function to "destroy" an int.
- * DOES NOTHING
+ * function to destroy an pointer to an int.
  * pre: i: int to "destroy"
  * post: none
  * return: none
  **********************************************************************/
 
-void vanessa_destroy_int(int i);
+void vanessa_destroy_int(int *i);
 
 
 /**********************************************************************
  * vanessa_dup_int
- * Dummy function to "duplicate" an int.
- * DOES NOTHING
- * pre: i: int to "destroy"
- * post: none
- * return: i is returned cast to a void *
+ * function to duplicate pointer to an int.
+ * pre: i: int to duplicate
+ * post: new int is alocated and value of i is copied into it
+ * return: pointer to new integer
+ *         NULL on error
  **********************************************************************/
 
-void *vanessa_dup_int(int i);
+int *vanessa_dup_int(int *i);
 
 
 /**********************************************************************
  * vanessa_display_int
  * Display an int in ASCII as a decimal.
- * pre: d: buffer to display ASCII representation of int to
- *      i: int to display
+ * pre: d: buffer to display ASCII represetation of int to
+ *      i: pointer to int to display
  * post: an ASCII representation of i is in d
  * return: none
  **********************************************************************/
 
-void vanessa_display_int(char *d, int i);
+void vanessa_display_int(char *d, int *i);
 
 
 /**********************************************************************
  * vanessa_length_int
  * Return the length in bytes of an ASCII representation of the in as a
  * decimal.
- * DOES NOTHING
- * pre: i: int to find the "length" of
+ * pre: i: pointer to int to find the "length" of
  * post: none
  * return: length is returned
  **********************************************************************/
 
-size_t vanessa_length_int(int i);
+size_t vanessa_length_int(int *i);
 
 
 /**********************************************************************
@@ -509,13 +507,14 @@ size_t vanessa_length_int(int i);
  * Compare two integers. Return the difference. That is < 1 if a < b,
  * 0 if a == b and > 1 if a > b.
  * Analogous to strcmp(3)
- * pre: a: int to compare
- *      b: other int to compare
+ * pre: a: pointer to int to compare
+ *      b: pointer to other int to compare
  * post: none
  * return: difference between a and b
  **********************************************************************/
 
-int vanessa_match_int(int a, int b);
+int vanessa_match_int(int *a, int *b);
+
 
 /* #defines to destroy and duplicate integers */
 #define VANESSA_DESTROY_INT \
@@ -714,7 +713,7 @@ typedef struct {
 	size_t recent_offset;
 	void (*e_destroy) (void *e);
 	void *(*e_duplicate) (void *e);
-	void *(*e_match) (void *e, void *key);
+	int (*e_match) (void *e, void *key);
 	void (*e_display) (char *s, void *e);
 	size_t(*e_length) (void *e);
 } vanessa_list_t;
@@ -868,5 +867,17 @@ vanessa_list_t *vanessa_list_add_element(vanessa_list_t * l, void *value);
  **********************************************************************/
 
 void vanessa_list_remove_element(vanessa_list_t *l, void *key);
+
+
+/**********************************************************************
+ * vanessa_list_duplicate
+ * Duplicate a list
+ * pre: l: list to duplicate
+ * post: list is duplicated
+ * return: NULL if l is NULL or on error
+ *         duplicated list 
+ **********************************************************************/
+
+vanessa_list_t *vanessa_list_duplicate(vanessa_list_t *l);
 
 #endif
