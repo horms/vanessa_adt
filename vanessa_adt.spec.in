@@ -21,17 +21,17 @@
 Summary: Library of Abstract Data Types 
 Name: vanessa_adt
 Version: @VERSION@
-Release: 1
+Release: 2
 Copyright: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
 Packager: Horms <horms@verge.net.au>
 Group: Development/Libraries
-Source0: ftp://vergenet.net/pub/vanessa_adt/vanessa_adt/%{name}-%{version}.tar.gz
+Source0: http://www.vergenet.net/linux/vanessa/download/%{version}/%{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-root
 Docdir: %{prefix}/doc
 Provides: %{name}-%{version}
-BuildPrereq: automake autoconf libtool vanessa_logger-devel
-Requires: vanessa_logger
+BuildPrereq: automake autoconf libtool vanessa_logger-devel >= 0.0.5
+Requires: vanessa_logger >= 0.0.5
 
 %description
 Library of Abstract Data Types (ADTs) that may be useful.  Includes queue,
@@ -40,7 +40,7 @@ dynamic array and key value ADT.
 %package devel
 Summary: Headers and static libraries for development
 Group: Development/Libraries
-Requires: %{name}-%{version} vanessa_logger-devel
+Requires: %{name}-%{version} vanessa_logger-devel >= 0.0.5
 Provides: %{name}-devel-%{version}
 
 

@@ -1,3 +1,9 @@
+vanessa-adt (0.0.6-2) unstable; urgency=low
+
+  * Fixed handling of shlibs
+
+ -- Simon Horman <horms@debian.org>  Mon, 22 Mar 2004 17:13:52 +0900
+
 vanessa-adt (0.0.6-1) unstable; urgency=low
 
   * New Upstream

@@ -32,7 +32,7 @@ libvanessa-adt-dev.files \
 libvanessa-adt0.dirs \
 libvanessa-adt0.files \
 libvanessa-adt0.postinst \
-shlibs.local \
+libvanessa-adt0.shlibs \
 rules \
 dpkg-checkbuild
 
