@@ -97,17 +97,39 @@
  *         NULL on error
  **********************************************************************/
 
+static void remove_trailing_whitespace(char *buf)
+{
+	size_t len;
+
+	if(!buf) {
+		return;
+	}
+
+	VANESSA_LOGGER_DEBUG_UNSAFE("\"%s\"", buf);
+	len = strlen(buf);
+
+	while(len) {
+		if(*(buf+len-1) != ' ' && *(buf+len-1) != '\t') {
+			break;
+		}
+		len--;
+		*(buf+len) = '\0';
+	}
+}
+
 #define ADD_TOKEN(_a, _t) \
+	remove_trailing_whitespace(_t+last_escaped); \
 	if((_a=vanessa_dynamic_array_add_element(_a, _t))==NULL){ \
 		VANESSA_LOGGER_DEBUG("config_file_read: " \
 				"vanessa_dynamic_array_add_element"); \
 		close(fd); \
 		return(NULL); \
-	}
+	} \
 
 #define BEGIN_KEY \
 	if(!in_escape && !in_comment && !in_quote){ \
-		if(added_key && (flag & VANESSA_CONFIG_FILE_MULTI_VALUE)) { \
+		if(added_key && (flag & \
+				VANESSA_CONFIG_FILE_MULTI_VALUE)) { \
 			ADD_TOKEN(a, NULL); \
 		} \
 		in_key=1; \
@@ -126,7 +148,8 @@
 					!*(tmp_token_buffer+3)) { \
 				tmp_token_buffer++; \
 			} \
-			ADD_TOKEN(a, tmp_token_buffer++); \
+			ADD_TOKEN(a, tmp_token_buffer); \
+			tmp_token_buffer++; \
 			added_key=1; \
 		} \
 		token_pos=0; \
@@ -162,7 +185,10 @@
 	in_escape=1;
 
 #define END_ESCAPE \
-	in_escape=0;
+	if(in_escape) { \
+		in_escape=0; \
+		last_escaped = token_pos+1; \
+	}
 
 #define SINGLE_QUOTE 1
 #define DOUBLE_QUOTE 2
@@ -184,6 +210,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 
 	int in_escape = 0;
 	int in_comment = 0;
+	size_t last_escaped = 0;
 	int skip_char = 0;
 	int in_value = 0;
 	int in_quote = 0;
@@ -218,7 +245,8 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 	token_pos = 0;
 
 	while (1) {
-		if ((nread = read(fd, read_buffer, MAX_LINE_LENGTH)) < 0) {
+		if ((nread = read(fd, read_buffer, 
+						MAX_LINE_LENGTH)) < 0) {
 			if (errno == EINTR) {
 				continue;
 			}
@@ -277,6 +305,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 						in_quote ^=
 						    in_quote &
 						    DOUBLE_QUOTE;
+						last_escaped = token_pos;
 					} else {
 						in_quote |= DOUBLE_QUOTE;
 					}
@@ -289,6 +318,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 				if (!in_escape && !in_comment) {
 					if (in_quote & SINGLE_QUOTE) {
 						in_quote ^= SINGLE_QUOTE;
+						last_escaped = token_pos;
 					} else {
 						in_quote |= SINGLE_QUOTE;
 					}
@@ -302,7 +332,8 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 				break;
 			}
 
-			if (in_key | in_value && c != '\n' && c != '\r' &&
+			if (in_key | in_value && 
+					c != '\n' && c != '\r' &&
 					!in_escape && !skip_char && 
 					token_pos < max_token_pos) {
 				*(token_buffer + token_pos + 2) = c;
