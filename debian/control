@@ -17,5 +17,5 @@ Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
 Description: Library of Abstract Data Types
- Library of Abstract Data Types (ADTs).  Incudes queue, dynamic array and 
+ Library of Abstract Data Types (ADTs).  Includes queue, dynamic array and 
  key value ADT.
