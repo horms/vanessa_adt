@@ -9,7 +9,7 @@
  * and length_primitive functions will allow you to use the
  * vanessa_dynamic_array API to have a dynamic array containing any
  * primitive
-
+ *
  *
  * vanessa_adt
  * Library of Abstract Data Types
@@ -42,7 +42,7 @@
  *                  DEFAULT_DYNAMIC_ARRAY_BLOCK_SIZE is used if 
  *                  block_size is 0.
  *                  Block size refers to how many elements are 
- *                  prealocated each time the array is grown. 
+ *                  preallocated each time the array is grown.
  *      element_destroy:   Pointer to a function to destroy an element
  *                         Function should take an argument of a pointer
  *                         and free the memory allocated to the structure
@@ -59,20 +59,20 @@
  *                         copied.
  *      element_display:   Pointer to a function to display an element
  *                         Function should take a pointer to char and a
- *                         pointer to an element as aruments. An ascii
+ *                         pointer to an element as arguments. An ASCII
  *                         representation of the element should be placed
  *                         in the character buffer given as the first
  *                         argument.  May be NULL in which case
  *                         vanessa_dynamic_array_display will return an empty
  *                         string ("");
  *      element_length:    Pointer to a function to find the length of an
- *                         ascii representation of the element not
+ *                         ASCII representation of the element not
  *                         including the trailing '\0'. Used to
- *                         gaurd against buffer over runs when using
+ *                         guard against buffer over runs when using
  *                         element_display. May be NULL, in which case
  *                         vanessa_dynamic_array_display will return an empty
  *                         string ("");
- * post: Dynamic array is allocated and intialised.
+ * post: Dynamic array is allocated and initialised.
  * return: An empty dynamic array 
  *         NULL on error
  **********************************************************************/
@@ -138,7 +138,7 @@ void vanessa_dynamic_array_destroy(vanessa_dynamic_array_t *a){
  * pre: a: dynamic array to add element to
  *      e: element to add
  * post: element in inserted in the first unused position in the array
- *       array size is incresaed by block_size, as passed to
+ *       array size is increased by block_size, as passed to
  *       vanessa_dynamic_array_create,  if there is insufficient room in the 
  *       array to add the element.
  *       Nothing is done if e is NULL
@@ -187,10 +187,10 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
  * pre: a: dynamic array to delete element from
  *      index: index of element to delete
  * post: Element is destroyed and removed from array. Subsequent
- *       elements in the array are shuffeled up to fill the gap.
- *       array size is decresaed by block_size, as passed to
+ *       elements in the array are shuffled up to fill the gap.
+ *       array size is decreased by block_size, as passed to
  *       vanessa_dynamic_array_create,  if there number if used elements in
- *       the array falls below a block boundry.
+ *       the array falls below a block boundary.
  *       Nothing is done if e is NULL or index is not a valid element
  *       in the array.
  * return: a on success
@@ -285,11 +285,11 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
  * post: If a is NULL or there are no elements in a then nothing is done
  *       If element_display or element_length, as passed to
  *       vanessa_dynamic_array_create, are NULL, then an empty string
- *       ("") is returned.  Else a character buffer is alocated and
+ *       ("") is returned.  Else a character buffer is allocated and
  *       and ASCII representation of of each array element, as
  *       determined by element_display passed to
  *       vanessa_dynamic_array_create, separated by delimiter is
- *       placed in the '\0' termintated buffer returned. It is up to
+ *       placed in the '\0' terminated buffer returned. It is up to
  *       the user to free this buffer.  
  * return: Allocated buffer as above 
  *         NULL on error, 
@@ -345,18 +345,18 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t *a, char delimiter){
  * post: If a is NULL or there are no elements in a then the length i
  *       If element_display or element_length, as passed to
  *       vanessa_dynamic_array_create, are NULL, then an empty string
- *       ("\0") is returned.  Else a character buffer is alocated and
+ *       ("\0") is returned.  Else a character buffer is allocated and
  *       and ASCII representation of of each array element, as
  *       determined by element_display passed to
  *       vanessa_dynamic_array_create, separated by delimiter is
- *       placed in the '\0' termintated buffer returned. It is up to
+ *       placed in the '\0' terminated buffer returned. It is up to
  *       the user to free this buffer.  
  * return: Cumulative length of the elements as per the element_length 
  *         function passed to vanessa_dynamic_array_create, plus once
- *         character per element for a delimiter betweeen elements.
+ *         character per element for a delimiter between elements.
  *         The trailing '\0' is not counted.  0 if a is NULL or there
  *         are no elements in a or if element_length passed to
- *         vanessa_dynamic_array_create is nULL.
+ *         vanessa_dynamic_array_create is NULL.
  **********************************************************************/
 
 size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a){
@@ -548,10 +548,10 @@ void *vanessa_dynamic_array_dup_int(int i){ return((void *)i); }
 
 /**********************************************************************
  * vanessa_dynamic_array_display_int
- * Display an int in ascii as a decimal.
- * pre: d: buffer to display ascii represetation of int to
+ * Display an int in ASCII as a decimal.
+ * pre: d: buffer to display ASCII represetation of int to
  *      i: int to display
- * post: an ascii representation of i is in d
+ * post: an ASCII representation of i is in d
  * return: none
  **********************************************************************/
 
@@ -562,7 +562,7 @@ void vanessa_dynamic_array_display_int(char *d, int i){
 
 /**********************************************************************
  * vanessa_dynamic_array_length_int
- * Return the length in bytes of an ascii representation of the in as a
+ * Return the length in bytes of an ASCII representation of the in as a
  * decimal.
  * DOES NOTHING
  * pre: i: int to find the "length" of

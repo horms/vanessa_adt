@@ -60,7 +60,7 @@ static void vanessa_queue_member_free(
  * pre: e_destroy: pointer to a function to destroy elements of the queue
  *                 If null, then elements will not be freed on calls
  *                 to vanessa_queue_destroy or on errors
- * post: Memory for a queue is allocates and values are initialised
+ * post: memory is allocated for queue and values are initialised
  * return: new, empty vanessa_queue
  *         NULL on error
  **********************************************************************/
@@ -85,9 +85,9 @@ vanessa_queue_t *vanessa_queue_create(void (*e_destroy)(const void *)){
 
 /**********************************************************************
  * vanessa_queue_push
- * push an element onto the begining of a vanessa_queue
+ * push an element onto the beginning of a vanessa_queue
  * pre: q: vanessa_queue
- *      value: elemnt to push onto the vanessa_queue
+ *      value: element to push onto the vanessa_queue
  * post: element is added to the queue
  * return: vanessa_queue with element added
  *       NULL on error. On error, where possible the vanessa_queue is 
@@ -134,7 +134,7 @@ vanessa_queue_t *vanessa_queue_push(vanessa_queue_t *q, void *value){
  * post: elelemt is removed from queue
  * return: vanessa_queue with element removed
  *         NULL on error
- * Note: popping an emty vanessa_queue results in NULL being returned
+ * Note: popping an empty vanessa_queue results in NULL being returned
  **********************************************************************/
 
 vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t *q, void **value){

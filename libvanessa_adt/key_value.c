@@ -57,7 +57,7 @@ vanessa_key_value_t *vanessa_key_value_create(void){
 
 /**********************************************************************
  * vanessa_key_value_destroy
- * Destory a vanessa_key_value and its contents
+ * Destroy a vanessa_key_value and its contents
  * pre: kv: vanessa_key_value structure to destroy
  * post: kv and its contents are freed
  * return: none
@@ -102,22 +102,22 @@ vanessa_key_value_t *vanessa_key_value_duplicate(vanessa_key_value_t *kv){
 /**********************************************************************
  * vanessa_key_value_assign
  * Assign a key and value to a vanessa_key_value structure
- * pre: kv: key_valye_structure to assign key and value to
- *          key: key to assign
- *          key_detstory: pointer to a function to destroy key
- *                        Use NULL if you do not want the key destroyed
- *                        when the vanessa_key_value_destroy is called
- *          key_duplicate: pointer to a function to duplicate key
- *                         Use NULL if you want the key duplicated
- *                         using new_key=old_key
- *          value: value to assign
- *          value_detstory: pointer to a function to destroy value
- *                        Use NULL if you do not want the value destroyed
- *                        when the value_value_destroy is called
- *          value_duplicate: pointer to a function to duplicate value
- *                         Use NULL if you want the value duplicated
- *                         using new_value=old_value
- * post: key and value are assigned and destiry functions are registered
+ * pre: kv: key_value_structure to assign key and value to
+ *      key: key to assign
+ *      key_destroy: pointer to a function to destroy key
+ *                    Use NULL if you do not want the key destroyed
+ *                    when the vanessa_key_value_destroy is called
+ *      key_duplicate: pointer to a function to duplicate key
+ *                     Use NULL if you want the key duplicated
+ *                     using new_key=old_key
+ *      value: value to assign
+ *      value_destroy: pointer to a function to destroy value
+ *                     Use NULL if you do not want the value destroyed
+ *                     when the value_value_destroy is called
+ *      value_duplicate: pointer to a function to duplicate value
+ *                       Use NULL if you want the value duplicated
+ *                       using new_value=old_value
+ * post: key and value are assigned and destroy functions are registered
  * return: pointer to vanessa_key_value structure
  *         NULL if kv is NULL
  **********************************************************************/
@@ -144,16 +144,16 @@ vanessa_key_value_t *vanessa_key_value_assign(
 
 /**********************************************************************
  * vanessa_key_value_unassign
- * Unassign valyes in vanessa_key_values structure
+ * Unassign values in vanessa_key_values structure
  * Useful if ou want to destroy the vanessa_key_value structure
  * without freeing the contents
- * pre: kv: key_valye structure to unassign values of
+ * pre: kv: key_value structure to unassign values of
  * post: All elements in vanessa_key_value structure are set to NULL
  * return: pointer to vanessa_key_value structure
  *         NULL if kv is NULL
  **********************************************************************/
 
-vanessa_key_value_t *vanessa_key_value_unasign(vanessa_key_value_t *kv){
+vanessa_key_value_t *vanessa_key_value_unassign(vanessa_key_value_t *kv){
   if(kv==NULL){ return(NULL); }
   kv->key=NULL;
   kv->destroy_key=NULL;

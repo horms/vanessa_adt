@@ -16,11 +16,11 @@ BuildRequires: vanessa_logger-devel
 Requires: vanessa_logger
 
 %description
-Library of Abstract Data Types (ADTs) that may be useful.  Incudes queue,
+Library of Abstract Data Types (ADTs) that may be useful.  Includes queue,
 dynamic array and key value ADT.
 
 %package devel
-Summary: Headers and static libaries for development
+Summary: Headers and static libraries for development
 Group: Development/Libraries
 Requires: %{name}-%{version} vanessa_logger-devel
 Provides: %{name}-devel-%{version}
