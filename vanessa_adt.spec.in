@@ -1,0 +1,70 @@
+%define prefix   @prefix@
+
+Summary: Library of Abstract Data Types 
+Name: vanessa_adt
+Version: @VERSION@
+Release: 1
+Copyright: GNU Lesser General Public Licence
+URL: http://vanessa.sourceforge.net/
+Packager: Horms <horms@vergenet.net>
+Group: Development/Libraries
+Source0: ftp://vergenet.net/pub/vanessa_adt/vanessa_adt/%{name}-%{version}.tar.gz
+BuildRoot: /var/tmp/%{name}-%{version}-root
+Docdir: %{prefix}/doc
+Provides: %{name}-%{version}
+BuildRequires: vanessa_logger-devel
+Requires: vanessa_logger
+
+%description
+Library of Abstract Data Types (ADTs) that may be useful.  Incudes queue,
+dynamic array and key value ADT.
+
+%package devel
+Summary: Headers and static libaries for development
+Group: Development/Libraries
+Requires: %{name}-%{version} vanessa_logger-devel
+Provides: %{name}-devel-%{version}
+
+
+%description devel
+Headers and static libraries required to develop against vanessa_adt.
+
+%prep
+%setup
+
+%build
+
+%configure
+CFLAGS="${RPM_OPT_FLAGS}" make
+
+
+%install
+rm -rf ${RPM_BUILD_ROOT}
+mkdir -p ${RPM_BUILD_ROOT}/{etc,%{prefix}/{lib,bin,doc}}
+make prefix=$RPM_BUILD_ROOT%{prefix} install
+
+
+%clean
+rm -rf $RPM_BUILD_DIR/%{name}-%{version}
+rm -rf $RPM_BUILD_ROOT
+
+
+%post
+
+%postun
+
+%preun
+
+%files
+%defattr(-, root, root)
+%{prefix}/lib/*.so*
+
+%files devel
+%defattr(-, root, root)
+%{prefix}/lib/*.*a
+%{prefix}/include/*.h
+%doc README COPYING ChangeLog
+
+%changelog
+* Sat Sep 2 2000 Horms <horms@vergenet.net>
+- created for version 0.0.0
