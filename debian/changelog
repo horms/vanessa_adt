@@ -1,3 +1,9 @@
+vanessa-adt (0.0.4pre1-1) unstable; urgency=low
+
+  * CVS RElease
+
+ -- Simon Horman <horms@vergenet.net>  Thu, 20 Jun 2002 11:49:20 +0900
+
 vanessa-adt (0.0.3-2) unstable; urgency=low
 
   * Added Build-Depends on libtool and built package from

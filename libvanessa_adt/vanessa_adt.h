@@ -637,18 +637,15 @@ void *vanessa_key_value_get_value(vanessa_key_value_t * kv);
  * Logging functionality
  *
  * Depreciated, but provided for backwards compatibility.
- * Call vanessa_socket_set() and vanessa_socket_unset() instead.
+ * Call vanessa_logger_set() and vanessa_logger_unset() instead.
  *
  **********************************************************************/
-
-extern vanessa_logger_t *vanessa_adt_logger;
-
 
 /**********************************************************************
  * vanessa_adt_logger_set
  *
  * Depreciated, but provided for backwards compatibility.
- * Call vanessa_socket_set() instead.
+ * Call vanessa_logger_set() instead.
  *
  * set the logger function to use
  * No logging will take place if logger is set to NULL (default)
@@ -658,14 +655,14 @@ extern vanessa_logger_t *vanessa_adt_logger;
  * return: none
  **********************************************************************/
 
-#define vanessa_adt_logger_set(_vl) vanessa_socket_set(_vl)
+#define vanessa_adt_logger_set(_vl) vanessa_logger_set(_vl)
 
 
 /**********************************************************************
  * vanessa_adt_logger_unset
  *
  * Depreciated, but provided for backwards compatibility.
- * Call vanessa_socket_unset() instead.
+ * Call vanessa_logger_unset() instead.
  *
  * set logger to NULL
  * That is no logging will take place
