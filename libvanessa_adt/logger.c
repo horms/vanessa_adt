@@ -2,7 +2,7 @@
  * vanessa_adt_log.c                                           May 2000
  * Horms                                             horms@vergenet.net
  *
- * Logging funtionality
+ * Logging functionality
  *
  * vanessa_adt
  * Library of Abstract Data Types

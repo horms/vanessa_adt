@@ -401,6 +401,17 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a);
 
 
 /**********************************************************************
+ * vanessa_dynamic_array_reverse
+ * Reverse the order of the elements in a dynamic array
+ * pre: a: dynamic array to reverse
+ * post: Elements of a are in the reverse order
+ * return: none
+ **********************************************************************/
+
+void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t *a);
+
+
+/**********************************************************************
  * vanessa_dynamic_array_split_str
  * Split a string into substrings on a delimiter
  * pre: str: string to split
@@ -632,16 +643,19 @@ void *vanessa_key_value_get_value(vanessa_key_value_t *kv);
 
 extern vanessa_logger_t *vanessa_adt_logger;
 
-#define VANESSA_ADT_DEBUG_ERRNO(s, e) \
-  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, "%s: %s", s, strerror(e))
+#define VANESSA_ADT_LOG(priority, fmt, args...) \
+  vanessa_logger_log(vanessa_adt_logger, priority, fmt, ## args);
 
-#define VANESSA_ADT_DEBUG(s) \
-  vanessa_logger_log(vanessa_adt_logger, LOG_DEBUG, s)
+#define VANESSA_ADT_DEBUG(s) VANESSA_ADT_LOG(LOG_DEBUG, s);
+
+#define VANESSA_ADT_DEBUG_ERRNO(s, e) \
+  VANESSA_ADT_LOG(LOG_DEBUG, "%s: %e", s, strerror(e));
+
 
 
 /**********************************************************************
  * vanessa_adt_logger_set
- * set the logger funtion to use
+ * set the logger function to use
  * No logging will take place if logger is set to NULL (default)
  * That is you _must_ call this function to enable logging.
  * pre: logger: pointer to a vanessa_logger

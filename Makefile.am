@@ -23,7 +23,7 @@
 #
 ######################################################################
 
-SUBDIRS = libvanessa_adt
+SUBDIRS = libvanessa_adt test
 
 EXTRA_DIST = \
 configure \

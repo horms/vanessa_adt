@@ -60,6 +60,7 @@ AC_CHECK_LIB(
 
 AC_OUTPUT(
 libvanessa_adt/Makefile 
+test/Makefile 
 Makefile
 vanessa_adt.spec
 INSTALL

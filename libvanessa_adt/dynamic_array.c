@@ -393,6 +393,31 @@ size_t vanessa_dynamic_array_length(vanessa_dynamic_array_t *a){
 
 
 /**********************************************************************
+ * vanessa_dynamic_array_reverse
+ * Reverse the order of the elements in a dynamic array
+ * pre: a: dynamic array to reverse
+ * post: Elements of a are in the reverse order
+ * return: none
+ **********************************************************************/
+
+void vanessa_dynamic_array_reverse(vanessa_dynamic_array_t *a){
+  void **begin;
+  void **end;
+  void *tmp;
+
+  if(a==NULL || a->count==0){
+    return;
+  }
+
+  for(begin=a->vector,end=a->vector+a->count-1;begin<end;begin++,end--){
+    tmp=*begin;
+    *begin=*end;
+    *end=tmp;
+  }
+}
+
+
+/**********************************************************************
  * vanessa_dynamic_array_split_str
  * Split a string into substrings on a delimiter
  * pre: str: string to split
@@ -558,3 +583,5 @@ size_t vanessa_dynamic_array_length_int(int i){
   }
   return(j);
 }
+
+
