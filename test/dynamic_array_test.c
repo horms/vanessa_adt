@@ -1,5 +1,5 @@
 /**********************************************************************
- * dynamic_array_test.c                               September 2000
+ * dynamic_array_test.c                                  September 2000
  * Horms                                             horms@vergenet.net
  *
  * vanessa_adt
@@ -61,6 +61,7 @@ int main (int argc, char **argv){
   /*
    * Create a dynamic array
    */
+  printf("Creating Dynamic Array\n");
   if((a=vanessa_dynamic_array_create(
 	0, 
 	VANESSA_DESTROY_INT,
@@ -76,6 +77,7 @@ int main (int argc, char **argv){
   /*
    * Insert some elements
    */
+  printf("Inserting Elements into Dynamic Array\n");
   for(i=0;i<8;i++){
     if((vanessa_dynamic_array_add_element(a, (void *)i))==NULL){
       VANESSA_ADT_LOG(LOG_ERR, "main: vanessa_dynamic_array_add_element");
@@ -87,6 +89,7 @@ int main (int argc, char **argv){
   /* 
    * Display the contents
    */
+  printf("Displaying contents of Dynamic Array\n");
   if((str=vanessa_dynamic_array_display(a, ','))==NULL){
     VANESSA_ADT_LOG(LOG_DEBUG, "main: vanessa_dynamic_array_display");
     VANESSA_ADT_LOG(LOG_ERR, "Fatal error displaying dynamic array. Exiting.");
@@ -98,12 +101,14 @@ int main (int argc, char **argv){
   /*
    * Reverse the dynamic array
    */
+  printf("Reversing the contents of Dynamic Array\n");
   vanessa_dynamic_array_reverse(a);
 
 
   /* 
    * Display the contents again
    */
+  printf("Displaying contents of Dynamic Array\n");
   if((str=vanessa_dynamic_array_display(a, ','))==NULL){
     VANESSA_ADT_LOG(LOG_DEBUG, "main: vanessa_dynamic_array_display 2");
     VANESSA_ADT_LOG(LOG_ERR, "Fatal error displaying dynamic array. Exiting.");
@@ -115,6 +120,7 @@ int main (int argc, char **argv){
   /* 
    * Clean Up
    */
+  printf("Cleaning Up\n");
   vanessa_dynamic_array_destroy(a);
   vanessa_adt_logger_unset();
   vanessa_logger_closelog(vl);

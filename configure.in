@@ -19,7 +19,7 @@ dnl Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 AC_INIT(libvanessa_adt/vanessa_adt.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(vanessa_adt, 0.0.0)
+AM_INIT_AUTOMAKE(vanessa_adt, 0.0.1pre1)
 
 AM_PROG_LIBTOOL
 AC_PROG_CC
@@ -42,6 +42,16 @@ dnl Checks for library functions.
 AC_TYPE_SIGNAL
 AC_FUNC_WAIT3
 AC_CHECK_FUNCS(flim)
+
+AC_MSG_CHECKING("for Linux style shared object linking")
+if test "$host_os" = "linux" -o "$host_os" = "linux-gnu"; then
+  AC_MSG_RESULT(Yes)
+  extra_libs=""
+else
+  AC_MSG_RESULT(No)
+  extra_libs="-lvanessa_logger"
+fi
+AC_SUBST(extra_libs)
 
 AC_CHECK_LIB(
   vanessa_logger,

@@ -25,12 +25,12 @@
 
 bin_PROGRAMS = dynamic_array_test
 
-dynamic_array_test_SOURCES = \
-  dynamic_array_test.c
+dynamic_array_test_SOURCES = dynamic_array_test.c
 
 INCLUDES= -I$(top_srcdir)/libvanessa_adt
 
 dynamic_array_test_LDADD = \
 -L../libvanessa_adt \
 -L../libvanessa_adt/.libs/ \
--lvanessa_adt
+-lvanessa_adt \
+-lvanessa_logger

@@ -29,8 +29,10 @@ control \
 copyright \
 libvanessa-adt-dev.dirs \
 libvanessa-adt-dev.files \
-libvanessa-adt.dirs \
-libvanessa-adt.files \
-libvanessa_adt0.postinst
+libvanessa-adt0.dirs \
+libvanessa-adt0.files \
+libvanessa-adt0.postinst \
+shlibs.local \
+rules
 
 m4datadir = $(datadir)/aclocal
