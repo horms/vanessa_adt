@@ -450,7 +450,7 @@ vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h)
  *              action should return < 0 if an error occurs,
  *              which indicates that processing will be stopped
  *      data: data passed to action
- * post: action is run with the value of each element as its first argumetn
+ * post: action is run with the value of each element as its first argument
  * return: 0 on success
  *         < 0 if action returns < 0
  **********************************************************************/
