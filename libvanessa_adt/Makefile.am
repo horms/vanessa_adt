@@ -34,6 +34,6 @@ queue.c \
 key_value.c \
 logger.c
 
-libvanessa_adt_la_LDFLAGS    = -version-info 0:1:0
+libvanessa_adt_la_LDFLAGS    = -version-info 0:2:0
 
 libvanessa_adt_la_LIBADD     = -lvanessa_logger
