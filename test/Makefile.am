@@ -23,13 +23,15 @@
 #
 ######################################################################
 
-noinst_PROGRAMS = dynamic_array_test list_test hash_test
+noinst_PROGRAMS = dynamic_array_test list_test hash_test config_file_test
 
 dynamic_array_test_SOURCES = dynamic_array_test.c
 
 list_test_SOURCES = list_test.c
 
 hash_test_SOURCES = hash_test.c
+
+config_file_test_SOURCES = config_file_test.c
 
 INCLUDES= -I$(top_srcdir)/libvanessa_adt
 

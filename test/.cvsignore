@@ -1,6 +1,7 @@
 dynamic_array_test
 list_test
 hash_test
+config_file_test
 .libs
 .deps
 Makefile
