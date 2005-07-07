@@ -279,7 +279,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 				END_ESCAPE;
 				break;
 			case '\\':
-				if (in_escape || in_quote) {
+				if (in_escape || in_quote & SINGLE_QUOTE) {
 					END_ESCAPE;
 				} else {
 					BEGIN_ESCAPE;
@@ -295,17 +295,18 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 				break;
 			case '"':
 				BEGIN_VALUE;
-				if (!in_escape && !in_comment
-				    && !(in_quote & SINGLE_QUOTE)) {
+				if (!in_escape && !in_comment) {
 					if (in_quote & DOUBLE_QUOTE) {
 						in_quote ^=
 						    in_quote &
 						    DOUBLE_QUOTE;
 						last_escaped = token_pos;
-					} else {
-						in_quote |= DOUBLE_QUOTE;
+						skip_char = 1;
 					}
-					skip_char = 1;
+					else if (!(in_quote & SINGLE_QUOTE)) {
+						in_quote |= DOUBLE_QUOTE;
+						skip_char = 1;
+					}
 				}
 				END_ESCAPE;
 				break;
@@ -315,10 +316,12 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 					if (in_quote & SINGLE_QUOTE) {
 						in_quote ^= SINGLE_QUOTE;
 						last_escaped = token_pos;
-					} else {
-						in_quote |= SINGLE_QUOTE;
+						skip_char = 1;
 					}
-					skip_char = 1;
+					else if (! (in_quote & DOUBLE_QUOTE)) {
+						in_quote |= SINGLE_QUOTE;
+						skip_char = 1;
+					}
 				}
 				END_ESCAPE;
 				break;

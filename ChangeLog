@@ -8,6 +8,8 @@ Copyright (C) 1999-2003  Horms
 XXX
   - Added config_file_test
   - Remove bogus check for a file fd in vanessa_config_file_read_fd()
+  - Fix handling of nested single and double qoutes in
+    vanessa_config_file_read_fd()
 
 ----------------------------------------------------------------------
 
