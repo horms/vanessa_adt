@@ -223,11 +223,6 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 		return(NULL);
 	}
 
-	if(!S_ISREG(stat_buf.st_mode)) {
-		VANESSA_LOGGER_DEBUG("configuration file is not a file");
-		return(NULL);
-	}
-
 	a = vanessa_dynamic_array_create(0, VANESSA_DESTROY_STR,
 		      VANESSA_DUPLICATE_STR, VANESSA_DISPLAY_STR,
 		      VANESSA_LENGTH_STR);
