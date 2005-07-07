@@ -44,7 +44,10 @@ static int reader(int fd[2])
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_display");
 		return -1;
 	}
-	printf ("Actual Result\n%s\n", str);
+	printf ("Actual Result\n"
+		"===begin===\n"
+		"%s\n"
+		"===end===\n\n", str);
 	free(str);
 
 	return 0;
@@ -74,6 +77,7 @@ static int writer(int fd[2])
 {
 
 	printf ("Expected Result:\n"
+		"===begin===\n"
 		"\n"
 		"--a=b\n"
 		"--a=b\n"
@@ -81,7 +85,12 @@ static int writer(int fd[2])
 		"--a=\\\\\n"
 		"--a=\\\n"
 		"--a=\'b\'\n"
-		"--a=\"b\"\n\n\n");
+		"--a=\"b\"\n"
+		"--a=b\n"
+		"--a=b\n"
+		"--a=\'b\'\n"
+		"--a=\"b\"\n"
+		"===end===\n\n");
 
 	write_str(fd[1], "a=b\n");
 	write_str(fd[1], "a=\"b\"\n");
@@ -90,6 +99,10 @@ static int writer(int fd[2])
 	write_str(fd[1], "a=\"\\\\\"\n");
 	write_str(fd[1], "a=\"\'b\'\"\n");
 	write_str(fd[1], "a=\'\"b\"\'\n");
+	write_str(fd[1], "a=\'b\'\n");
+	write_str(fd[1], "a=\"b\"\n");
+	write_str(fd[1], "a=\\\'b\\\'\n");
+	write_str(fd[1], "a=\\\"b\\\"\n");
 	return 0;
 }
 
