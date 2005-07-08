@@ -26,6 +26,7 @@
 EXTRA_DIST = \
 changelog \
 control \
+compat \
 copyright \
 libvanessa-adt-dev.dirs \
 libvanessa-adt-dev.files \
