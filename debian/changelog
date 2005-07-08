@@ -1,3 +1,9 @@
+vanessa-adt (0.0.7-1) unstable; urgency=low
+
+  * New Uptream
+
+ -- Simon Horman <horms@debian.org>  Fri,  8 Jul 2005 11:51:47 +0900
+
 vanessa-adt (0.0.6-2) unstable; urgency=low
 
   * Fixed handling of shlibs
