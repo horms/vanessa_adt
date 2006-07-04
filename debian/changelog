@@ -1,3 +1,11 @@
+vanessa-adt (0.0.7-2) unstable; urgency=low
+
+  * Update from standards version 3.6.2 to 3.7.2
+  * Remove unnecessary autotools build dependencies.
+    (closes: #376648)
+
+ -- Simon Horman <horms@debian.org>  Tue,  4 Jul 2006 15:49:36 +0900
+
 vanessa-adt (0.0.7-1) unstable; urgency=low
 
   * New Uptream

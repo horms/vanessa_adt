@@ -1,9 +1,9 @@
 Source: vanessa-adt
-Build-Depends: libvanessa-logger-dev (>=0.0.5), debhelper (>=4.0.0), automake, libtool
+Build-Depends: libvanessa-logger-dev (>=0.0.5), debhelper (>=4.0.0)
 Section: libs
 Priority: optional
 Maintainer: Simon Horman <horms@debian.org>
-Standards-Version: 3.6.2
+Standards-Version: 3.7.2
 
 Package: libvanessa-adt-dev
 Architecture: any
