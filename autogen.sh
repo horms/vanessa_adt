@@ -1,6 +1,4 @@
-#!/bin/bash
-#Running bash because /bin/sh is a complete piece of shit on solaris
-#I wonder how long it will take the fuckwits at Sun to wake up
+#!/bin/sh
 
 # Run this to generate all the initial makefiles, etc.
 
@@ -16,15 +14,23 @@ DIE=0
 	echo
 	echo "You must have autoconf installed to compile vanessa_adt."
 	echo "Download the appropriate package for your distribution,"
-	echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
+	echo "or get the source from ftp://ftp.gnu.org/pub/gnu/autoconf/"
 	DIE=1
 }
 
 (automake --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have automake installed to compile vanessa_adt."
-	echo "Get ftp://ftp.cygnus.com/pub/home/tromey/automake-1.2d.tar.gz"
-	echo "(or a newer version if it is available)"
+	echo "Download the appropriate package for your distribution,"
+	echo "or get the source from ftp://ftp.gnu.org/pub/gnu/automake/"
+	DIE=1
+}
+
+(libtoolize --version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "You must have libtool installed to compile vanessa_adt."
+	echo "Download the appropriate package for your distribution,"
+	echo "or get the source from ftp://ftp.gnu.org/pub/gnu/libtool/"
 	DIE=1
 }
 
@@ -46,9 +52,10 @@ aclocal $ACLOCAL_FLAGS
 (autoheader --version)  < /dev/null > /dev/null 2>&1 && autoheader
 automake --add-missing $am_opt
 autoconf
+libtoolize --ltdl
 cd $THEDIR
 
-$srcdir/configure "$@" || exit -1
+$srcdir/configure "$@" || exit $?
 
-echo 
+echo
 echo "Now type 'make' to compile vanessa_adt."
