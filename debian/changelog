@@ -1,9 +1,3 @@
-vanessa-adt (0.0.7+0.0.8-rc1-1) unstable; urgency=low
-
-  * New upstream
-
- -- Simon Horman <horms@debian.org>  Thu, 22 Feb 2007 12:38:55 +0900
-
 vanessa-adt (0.0.7-2) unstable; urgency=low
 
   * Update from standards version 3.6.2 to 3.7.2
