@@ -7,7 +7,7 @@ Standards-Version: 3.8.0
 
 Package: libvanessa-adt-dev
 Architecture: any
-Section: libs
+Section: libdevel
 Depends: libvanessa-adt0 (= ${binary:Version}), libvanessa-logger-dev
 Description: Headers and static libraries for vanessa_adt
  Headers and static libraries required to develop against vanessa_adt.
