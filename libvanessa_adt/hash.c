@@ -3,7 +3,7 @@
  * Horms                                             horms@verge.net.au
  *
  * Hash to put your flims in.
- * Copyright (C) 2002  Horms
+ * Copyright (C) 2002-2008  Horms
  * 
  * The primitive type for the array is void *. Thus, providing your
  * own duplicate_primitive, destroy_primitive, match_primative,

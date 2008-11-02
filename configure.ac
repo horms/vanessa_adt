@@ -1,6 +1,6 @@
 dnl vanessa_adt
 dnl Library of Abstract Data Types
-dnl Copyright (C) 1999-2003  Horms
+dnl Copyright (C) 1999-2008  Horms
 dnl 
 dnl This library is free software; you can redistribute it and/or modify it
 dnl under the terms of the GNU Lesser General Public License as published by
