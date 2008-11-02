@@ -1,10 +1,10 @@
 /**********************************************************************
  * hash_test.c                                               March 2002
- * Horms                                             horms@verge.net.au
+ * Simon Horman                                      horms@verge.net.au
  *
  * vanessa_adt
  * Library of Abstract Data Types
- * Copyright (C) 1999-2008  Horms <horms@verge.net.au>
+ * Copyright (C) 1999-2008  Simon Horman <horms@verge.net.au>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

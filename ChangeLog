@@ -2,11 +2,11 @@ ChangeLog
 
 vanessa_adt
 Library of Abstract Data Types
-Copyright (C) 1999-2008  Horms
+Copyright (C) 1999-2008  Simon Horman
 ----------------------------------------------------------------------
 
 22nd June 2005
-(Horms)
+(Simon Horman)
 
  * 0.0.7
   - Added config_file_test
@@ -17,7 +17,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 22nd December 2003
-(Horms)
+(Simon Horman)
 
   * 0.0.6
   - Fixed segmentation fault problem in vanessa_config_file_read*()
@@ -27,7 +27,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 15th December 2003
-(Horms)
+(Simon Horman)
 
   * 0.0.5
   - Strip trailing whitespace from configuration parameters
@@ -36,7 +36,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 6th June 2003
-(Horms)
+(Simon Horman)
 
   * 0.0.4
   - vanessa_config_file_read() and vanessa_config_file_read_fd()
@@ -45,7 +45,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 26th March 2003
-(Horms)
+(Simon Horman)
 
   * 0.0.4beta7
   - vanessa_config_file_read() handles short arguments correctly
@@ -54,14 +54,14 @@ Copyright (C) 1999-2008  Horms
 
 
 7th February 2003
-(Horms)
+(Simon Horman)
 
   * 0.0.4beta4
   - fixed logic in handling of mutivalue config files
 
 ----------------------------------------------------------------------
 27th December 2002
-(Horms)
+(Simon Horman)
   
   * 0.0.4beta1
   - Use logging convenicence macros provided by libvanessa_logger
@@ -76,7 +76,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 17th May 2002
-(Horms)
+(Simon Horman)
 
    * 0.0.3
    - Include sys/types in vanessa_adt.h so ssize_t is defined on
@@ -86,12 +86,12 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 24th March 2002
-(Horms)
+(Simon Horman)
 
    * 0.0.3beta2
    - Tidied up logging
    - Fixed minor .spec file errors 
-     Scot W. Hetzel <scot@genroco.com> & Horms
+     Scot W. Hetzel <scot@genroco.com> & Simon Horman
    - Added linked list
    - vanessa_duplicate_int and friends now work on poiters to integers
      rather than integers
@@ -102,12 +102,12 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 14th March 2002
-(Horms)
+(Simon Horman)
 
    * 0.0.3beta1
    - Tidied up logging
    - Fixed minor .spec file errors 
-     Scot W. Hetzel <scot@genroco.com> & Horms
+     Scot W. Hetzel <scot@genroco.com> & Simon Horman
    - Added linked list
    - vanessa_duplicate_int and friends now work on poiters to integers
      rather than integers
@@ -118,7 +118,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 19th April 2001
-(Horms)
+(Simon Horman)
 
    * 0.0.2
    - Dynamic array can now accept NULL elements
@@ -128,7 +128,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 5th April 2001
-(Horms)
+(Simon Horman)
 
    * Version 0.0.1
    - Solaris Compatibility fixed
@@ -138,7 +138,7 @@ Copyright (C) 1999-2008  Horms
 ----------------------------------------------------------------------
 
 9th January 2001
-(Horms)
+(Simon Horman)
 
    * Version 0.0.0
    - Initial release
