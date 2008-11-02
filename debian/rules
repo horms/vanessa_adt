@@ -27,8 +27,8 @@ install: build
 
 	$(MAKE) install DESTDIR=$(pwd)/debian/tmp
 
-	./mkinstalldirs \
-	  $(pwd)/debian/tmp/usr/share/doc/libvanessa-adt-dev/ 
+	mkdir -p $(pwd)/debian/tmp/usr/share/doc/libvanessa-adt-dev/
+	chmod 755 $(pwd)/debian/tmp/usr/share/doc/libvanessa-adt-dev/
 	install -c -m 644 ChangeLog \
 	  $(pwd)/debian/tmp/usr/share/doc/libvanessa-adt-dev/changelog
 	gzip --best $(pwd)/debian/tmp/usr/share/doc/libvanessa-adt-dev/changelog
