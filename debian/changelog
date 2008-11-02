@@ -1,3 +1,31 @@
+vanessa-adt (0.0.7-3) unstable; urgency=low
+
+  * Debian Changes from Upstream
+    - Update from standards version 3.7.2 to 3.8.0
+    - Use ${binary:Version} instead of ${Source-Version}
+    - Remove dependency on libc6-dev
+    - Remove trailing whitespace from description of libvanessa-adt0
+    - Run make distclean conditonally, rather than ignoring _all_ errors it
+      may produce
+    - Update copyright file
+      - Use LGPL 2.1, as per COPYING file
+    - Exit postinst on error by setting -e in script
+    - Don't use ./mkinstalldirs as it may not exist
+    - Move libvanessa-adt-dev to section libdevel
+  * non-Debian Changes from Upstream
+    - Use AC_PROG_LIBTOOL instead of AM_PROC_LIBTOOL in configure.am
+    - Rename configure.in as configure.ac
+    - Don't use AC_PROG_RANLIB in configure.ac, it isn't needed
+    - Remove files from EXTRA_DIST that are included in the distribution
+      anyway
+    - Update COPYTING file to the recent text for the LGPL v2.1
+    - Update inline copyright information
+      - Update years to cover up to 2008
+      - Always include email address with name
+      - Use name rather than nickname
+
+ -- Simon Horman <horms@debian.org>  Sat, 01 Nov 2008 18:18:06 +1100
+
 vanessa-adt (0.0.7-2) unstable; urgency=low
 
   * Update from standards version 3.6.2 to 3.7.2
