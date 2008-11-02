@@ -25,15 +25,7 @@
 
 SUBDIRS = libvanessa_adt test debian
 
-EXTRA_DIST = \
-configure \
-configure.ac \
-README \
-TODO \
-vanessa_adt.spec.in \
-vanessa_adt.spec \
-INSTALL \
-INSTALL.in
+EXTRA_DIST = autogen.sh
 
 clean-local:
 	rm -f build-stamp
