@@ -27,7 +27,7 @@ SUBDIRS = libvanessa_adt test debian
 
 EXTRA_DIST = \
 configure \
-configure.in \
+configure.ac \
 README \
 TODO \
 vanessa_adt.spec.in \
