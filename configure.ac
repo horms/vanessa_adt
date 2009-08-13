@@ -25,7 +25,7 @@ LT_INIT
 LT_CONFIG_LTDL_DIR([libltdl])
 LTDL_INIT
 AC_CONFIG_AUX_DIR([libltdl/config])
-AM_INIT_AUTOMAKE(vanessa_adt, 0.0.7)
+AM_INIT_AUTOMAKE(vanessa_adt, 0.0.8)
 
 AC_PROG_LIBTOOL
 AC_PROG_CC
