@@ -24,7 +24,7 @@ vanessa-adt (0.0.7-3) unstable; urgency=low
       - Always include email address with name
       - Use name rather than nickname
 
- -- Simon Horman <horms@debian.org>  Sat, 01 Nov 2008 18:18:06 +1100
+ -- Simon Horman <horms@debian.org>  Thu, 13 Aug 2009 19:55:51 +1000
 
 vanessa-adt (0.0.7-2) unstable; urgency=low
 
