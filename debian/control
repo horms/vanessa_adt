@@ -1,5 +1,5 @@
 Source: vanessa-adt
-Build-Depends: libvanessa-logger-dev (>=0.0.5), debhelper (>=4.0.0)
+Build-Depends: libvanessa-logger-dev (>=0.0.5), debhelper (>=7.0.0)
 Section: libs
 Priority: optional
 Maintainer: Simon Horman <horms@debian.org>
