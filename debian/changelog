@@ -26,7 +26,7 @@ vanessa-adt (0.0.8-1) unstable; urgency=low
       - Use name rather than nickname
     - Resolve various libtoolize warnings
 
- -- Simon Horman <horms@debian.org>  Thu, 13 Aug 2009 19:55:51 +1000
+ -- Simon Horman <horms@debian.org>  Thu, 03 Sep 2009 17:43:32 +1000
 
 vanessa-adt (0.0.7-2) unstable; urgency=low
 
