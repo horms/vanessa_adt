@@ -2,7 +2,52 @@ ChangeLog
 
 vanessa_adt
 Library of Abstract Data Types
-Copyright (C) 1999-2008  Simon Horman
+Copyright (C) 1999-2009  Simon Horman
+----------------------------------------------------------------------
+
+3rd September 2005
+(Simon Horman)
+
+* 0.0.8
+  - Debian: Don't include LGPL preamble in Debian changelog
+  - Debian: Changes standards version to 3.8.3
+  - LT_CONFIG_LTDL_DIR appears to be incompatible with libtool 2
+  - Build: Don't use AC_CONFIG_AUX_DIR
+  - Build: autogen.sh: Call automake after autoconf so Makefile.in files are generated
+  - # HG changeset patch
+  - Debian: update changelog
+  - Resolve various libtoolize warnings
+  - Debian: Use standards version 3.8.2
+  - Debian: Use debhelper 7
+  - Remove .cvsignore files
+  - Debian: Changelog entry for pending upstream release
+  - Debian: Move libvanessa-adt-dev to section libdevel
+  - Debian: Don't use ./mkinstalldirs as it may not exist
+  - Debian: Use policy version 3.8.0 instead of 3.7.2
+  - Debian: set -e in postinst script for libvanessa-adt0 to fail on any errors
+  - Use name instead of nickname
+  - Always use email address in copyright notice
+  - Update copyright years
+  - Debian: Update copyright file
+  - Update COPYTING file to the recent text for the LGPL v2.1
+  - Debian: Don't ignore errors in make rules
+  - Debian: Remove trailing whitespace from description of libvanessa-adt0
+  - A dependancy on libc6-dev is not needed as it is part of build-essential.
+  - Debian: Use ${binary:Version} instead of ${Source-Version}
+  - Prune EXTRA_DIST
+  - Remove AC_PROG_RANLIB, is is not needed
+  - Rename configure.in as configure.ac
+  - Use AC_PROG_LIBTOOL instead of AM_PROC_LIBTOOL
+  - update tags
+  - There haven't been any changes since 0.0.7
+  - Update autogen.sh from perdition
+  - Actually, I think the release was on 22nd June 2005
+  - Revert version back to 0.0.7 as there haven't been any non-debian changes since then
+  - Fix up changelog for 0.0.7 release
+  - Prepare for 0.0.8-rc1
+  - Debian packaging update: Release vanessa-adt 0.0.7-2
+  - Updated debian packaging
+
 ----------------------------------------------------------------------
 
 22nd June 2005
