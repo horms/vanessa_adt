@@ -22,7 +22,7 @@ Summary: Library of Abstract Data Types
 Name: vanessa_adt
 Version: @VERSION@
 Release: 2
-Copyright: GNU Lesser General Public Licence
+License: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
 Packager: Simon Horman <horms@verge.net.au>
 Group: Development/Libraries
