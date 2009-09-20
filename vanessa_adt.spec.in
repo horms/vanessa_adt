@@ -30,7 +30,7 @@ Source0: http://www.vergenet.net/linux/vanessa/download/%{version}/%{name}-%{ver
 BuildRoot: /var/tmp/%{name}-%{version}-root
 Docdir: %{prefix}/doc
 Provides: %{name}-%{version}
-BuildPrereq: automake autoconf libtool vanessa_logger-devel >= 0.0.5
+BuildPrereq: gcc make vanessa_logger-devel >= 0.0.5
 Requires: vanessa_logger >= 0.0.5
 
 %description
