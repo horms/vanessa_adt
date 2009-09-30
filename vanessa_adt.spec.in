@@ -8,7 +8,7 @@ Group: Development/Libraries
 Source0: http://www.vergenet.net/linux/vanessa/download/%{version}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
-BuildPrereq: gcc make vanessa_logger-devel >= 0.0.5
+BuildRequires: gcc make vanessa_logger-devel >= 0.0.5
 Requires: vanessa_logger >= 0.0.5
 
 %description
