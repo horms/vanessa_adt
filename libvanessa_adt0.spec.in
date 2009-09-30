@@ -30,7 +30,7 @@ Headers and static libraries required to develop against vanessa_adt.
 
 %build
 
-%configure
+%configure --disable-static
 make
 
 %install
@@ -56,7 +56,6 @@ ldconfig
 
 %files devel
 %defattr(-, root, root)
-%{_libdir}/*.*a
 %{_libdir}/*.so
 %{_includedir}/*.h
 %doc README COPYING ChangeLog
