@@ -1,5 +1,3 @@
-%define prefix   /usr
-
 Summary: Library of Abstract Data Types 
 Name: vanessa_adt
 Version: @VERSION@
