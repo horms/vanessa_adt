@@ -5,7 +5,7 @@ Release: 2
 License: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
 Group: Development/Libraries
-Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/vanessa_adt-%{version}.tar.gz
+Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/vanessa_adt-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
 BuildRequires: gcc make libvanessa_logger0-devel >= 0.0.5
