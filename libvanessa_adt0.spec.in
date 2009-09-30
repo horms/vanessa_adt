@@ -34,7 +34,6 @@ Headers and static libraries required to develop against vanessa_adt.
 make
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Don't install libvanessa_adt.la
