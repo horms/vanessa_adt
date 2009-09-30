@@ -1,11 +1,11 @@
 Summary: Library of Abstract Data Types 
-Name: vanessa_adt
+Name: libvanessa_adt0
 Version: @VERSION@
 Release: 2
 License: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
 Group: Development/Libraries
-Source0: http://www.vergenet.net/linux/vanessa/download/%{version}/%{name}-%{version}.tar.gz
+Source0: http://www.vergenet.net/linux/vanessa/download/%{version}/vanessa_adt-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
 BuildRequires: gcc make vanessa_logger-devel >= 0.0.5
@@ -26,7 +26,7 @@ Provides: %{name}-devel-%{version}
 Headers and static libraries required to develop against vanessa_adt.
 
 %prep
-%setup
+%setup -n vanessa_adt-%{version}
 
 %build
 
