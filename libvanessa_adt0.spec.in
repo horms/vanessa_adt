@@ -9,7 +9,6 @@ Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/v
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
 BuildRequires: gcc make vanessa_logger-devel >= 0.0.5
-Requires: vanessa_logger >= 0.0.5
 
 %description
 Library of Abstract Data Types (ADTs) that may be useful.  Includes queue,
