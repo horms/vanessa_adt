@@ -1,7 +1,7 @@
 Summary: Library of Abstract Data Types 
 Name: libvanessa_adt0
 Version: @VERSION@
-Release: 2
+Release: 1
 License: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
 Group: Development/Libraries
