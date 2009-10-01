@@ -8,7 +8,7 @@ Group: Development/Libraries
 Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/vanessa_adt-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
-BuildRequires: gcc make vanessa_logger-devel >= 0.0.5
+BuildRequires: gcc make libvanessa_logger0-devel >= 0.0.5
 
 %description
 Library of Abstract Data Types (ADTs) that may be useful.  Includes queue,
@@ -17,7 +17,7 @@ dynamic array and key value ADT.
 %package devel
 Summary: Headers and static libraries for development
 Group: Development/Libraries
-Requires: %{name}-%{version} vanessa_logger-devel >= 0.0.5
+Requires: %{name}-%{version} libvanessa_logger0-devel >= 0.0.5
 Provides: %{name}-devel-%{version}
 
 
