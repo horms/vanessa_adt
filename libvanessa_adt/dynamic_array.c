@@ -221,7 +221,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
 	if (!a) {
 		return (NULL);
 	}
-	if (i < 0 || i >= a->count) {
+	if (index < 0 || index >= a->count) {
 		return (NULL);
 	}
 
