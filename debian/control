@@ -14,7 +14,7 @@ Description: Headers and static libraries for vanessa_adt
  vanessa_adt is a abstract data types (ADT) library.  Includes queue,
  dynamic array and key value ADT.
 
-Package: libvanessa-adt0
+Package: libvanessa-adt1
 Architecture: any
 Section: libdevel
 Depends: ${shlibs:Depends}
