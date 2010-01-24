@@ -135,7 +135,7 @@ vanessa_hash_t *vanessa_hash_create(size_t nobucket,
 
 void vanessa_hash_destroy(vanessa_hash_t *h) 
 {
-	int i;
+	ssize_t i;
 	
 	if(h == NULL) {
 		return;
