@@ -40,7 +40,7 @@ static int reader(int fd[2])
 	a = vanessa_config_file_read_fd(fd[0], 0);
 
 	str = vanessa_dynamic_array_display(a, '\n');
-	if (str < 0) {
+	if (!str) {
 		VANESSA_LOGGER_DEBUG("vanessa_dynamic_array_display");
 		return -1;
 	}
