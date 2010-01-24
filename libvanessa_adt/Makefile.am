@@ -35,8 +35,9 @@ queue.c \
 key_value.c \
 config_file.c \
 list.c \
-hash.c
+hash.c \
+unused.h
 
-libvanessa_adt_la_LDFLAGS    = -version-info 0:3:0
+libvanessa_adt_la_LDFLAGS    = -version-info 1:0:0
 
 libvanessa_adt_la_LIBADD     = -lvanessa_logger

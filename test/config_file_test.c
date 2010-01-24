@@ -107,10 +107,9 @@ static int writer(int fd[2])
 }
 
 
-int main(int argc, char **argv)
+int main(void)
 {
 	vanessa_logger_t *vl;
-	pid_t child;
 	int fd[2];
 
 	/* 

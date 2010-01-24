@@ -31,7 +31,7 @@
  * Muriel the main function
  **********************************************************************/
 
-int main(int argc, char **argv)
+int main(void)
 {
 	vanessa_logger_t *vl;
 	vanessa_list_t *l;
