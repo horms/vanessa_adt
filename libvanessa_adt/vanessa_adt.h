@@ -279,7 +279,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
-		vanessa_dynamic_array_t * a, const int index);
+		vanessa_dynamic_array_t * a, const ssize_t index);
 
 
 /**********************************************************************
@@ -353,7 +353,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
-		size_t elementno);
+					 ssize_t elementno);
 
 
 /**********************************************************************

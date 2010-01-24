@@ -39,9 +39,9 @@
 
 struct vanessa_dynamic_array_t_struct {
         void **vector;
-        size_t count;
-        size_t allocated_size;
-        size_t block_size;
+        ssize_t count;
+        ssize_t allocated_size;
+        ssize_t block_size;
         void (*e_destroy) (void *);
         void *(*e_duplicate) (void *s);
         void (*e_display) (char *, void *);
@@ -213,9 +213,9 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
-		vanessa_dynamic_array_t * a, const int index)
+		vanessa_dynamic_array_t * a, const ssize_t index)
 {
-	int i = 0;
+	ssize_t i = 0;
 
 	/* Make sure parameters are sane */
 	if (!a) {
@@ -264,7 +264,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
 		vanessa_dynamic_array_t * a)
 {
 	vanessa_dynamic_array_t *new_a;
-	int i;
+	ssize_t i;
 
 	extern int errno;
 
@@ -409,9 +409,9 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a, 
-					size_t elementno)
+					 ssize_t elementno)
 {
-	if(!a || elementno > a->count) {
+	if (!a || elementno < 0 || elementno > a->count) {
 		return(NULL);
 	}
 	

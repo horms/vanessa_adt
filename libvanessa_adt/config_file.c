@@ -200,12 +200,12 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 {
 	vanessa_dynamic_array_t *a;
 	size_t token_pos;
-	size_t nread;
+	ssize_t nread;
 	char token_buffer[MAX_LINE_LENGTH];
 	char read_buffer[MAX_LINE_LENGTH];
 	char *tmp_token_buffer;
 	char c;
-	int max_token_pos = MAX_LINE_LENGTH - 3;
+	size_t max_token_pos = MAX_LINE_LENGTH - 3;
 	int read_pos;
 	struct stat stat_buf;
 
