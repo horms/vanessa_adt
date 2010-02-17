@@ -76,6 +76,6 @@ debian/Makefile
 libvanessa_adt/Makefile 
 test/Makefile 
 Makefile
-libvanessa_adt0.spec
+libvanessa_adt1.spec
 INSTALL
 )
