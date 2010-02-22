@@ -242,6 +242,7 @@ vanessa_list_t *vanessa_list_create(int norecent,
 
 void vanessa_list_destroy(vanessa_list_t * l)
 {
+	int i;
 	vanessa_list_elem_t *next;
 
 	if (l == NULL) {
@@ -257,6 +258,12 @@ void vanessa_list_destroy(vanessa_list_t * l)
 			free(l->first);
 			l->first = next;
 		}
+	}
+
+	if (l->recent) {
+		for (i = 0; i < l->norecent; i++)
+			vanessa_list_elem_destroy(l->recent[i], NULL);
+		free(l->recent);
 	}
 
 	free(l);
