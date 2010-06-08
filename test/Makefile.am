@@ -36,6 +36,7 @@ config_file_test_SOURCES = config_file_test.c
 INCLUDES= -I$(top_srcdir)/libvanessa_adt
 
 LDADD = \
+-lvanessa_logger \
 -L../libvanessa_adt \
 -L../libvanessa_adt/.libs/ \
 -lvanessa_adt \
