@@ -4,7 +4,7 @@ Version: @VERSION@
 Release: 1
 License: GNU Lesser General Public Licence
 URL: http://www.vergenet.net/linux/vanessa/
-Group: System Environment/Libraries
+Group: Development/Libraries
 Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/vanessa_adt-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Provides: %{name}-%{version}
@@ -16,7 +16,7 @@ dynamic array and key value ADT.
 
 %package devel
 Summary: Headers and static libraries for development
-Group: System Environment/Libraries
+Group: Development/Libraries
 Requires: %{name}-%{version} libvanessa_logger0-devel >= 0.0.5
 Provides: %{name}-devel-%{version}
 
