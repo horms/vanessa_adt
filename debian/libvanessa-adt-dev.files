@@ -2,6 +2,6 @@ usr/include/vanessa_adt.h
 usr/lib/libvanessa_adt.so
 usr/lib/libvanessa_adt.a
 usr/lib/libvanessa_adt.la
+usr/lib/pkgconfig/vanessa-adt.pc
 usr/share/doc/libvanessa-adt-dev/changelog.gz
 usr/share/doc/libvanessa-adt-dev/README
-

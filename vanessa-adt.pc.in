@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: Vanessa ADT
+Description: Library of Abstract Data Types
+Version: @VERSION@
+Libs: -L${libdir}
+Cflags: -I${includedir}
