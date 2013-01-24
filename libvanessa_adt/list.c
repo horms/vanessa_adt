@@ -189,7 +189,7 @@ vanessa_list_t *vanessa_list_create(int norecent,
                 int (*element_sort) (void *a, void *b))
 {
 	vanessa_list_t *l;
-	size_t i;
+	int i;
 
 	l = (vanessa_list_t *) malloc(sizeof(vanessa_list_t));
 	if (!l) {

@@ -35,7 +35,7 @@
  **********************************************************************/
 
 #include "vanessa_adt.h"
-
+#include <limits.h>
 
 struct vanessa_dynamic_array_t_struct {
         void **vector;
@@ -168,6 +168,13 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
 	if (!a) {
 		return (NULL);
 	}
+    /* Although a->count is of type size_t we can only
+     * insert up to SSIZE_MAX and still be able to
+     * access the number of elements through
+     * vanessa_dynamic_array_get_count() which returns a ssize_t.
+     */
+    if (a->count >= SSIZE_MAX)
+        return NULL;
 
 	/* Grow vector as required */
 	if (a->count == a->allocated_size) {
@@ -215,13 +222,10 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
 vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
 		vanessa_dynamic_array_t * a, const int index)
 {
-	int i = 0;
+	size_t i = 0;
 
 	/* Make sure parameters are sane */
 	if (!a) {
-		return (NULL);
-	}
-	if (i < 0 || i >= a->count) {
 		return (NULL);
 	}
 
@@ -264,7 +268,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_duplicate(
 		vanessa_dynamic_array_t * a)
 {
 	vanessa_dynamic_array_t *new_a;
-	int i;
+	size_t i;
 
 	extern int errno;
 
@@ -427,9 +431,13 @@ void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
  *         -1 if a is NULL
  **********************************************************************/
 
-ssize_t vanessa_dynamic_array_get_count(vanessa_dynamic_array_t * a) 
+ssize_t vanessa_dynamic_array_get_count(vanessa_dynamic_array_t * a)
 {
-	return(a==NULL?-1:a->count);
+    if (a == NULL)
+        return -1;
+    if (a->count >= SSIZE_MAX)
+        return SSIZE_MAX;
+    return (ssize_t)a->count;
 }
 
 
