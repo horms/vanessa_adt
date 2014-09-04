@@ -103,7 +103,7 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value);
  *       value may be NULL
  **********************************************************************/
 
-void *vanessa_queue_peek_last(vanessa_queue_t * q);
+void *vanessa_queue_peek_last(const vanessa_queue_t * q);
 
 #define vanessa_queue_peek vanessa_queue_peek_last
 
@@ -121,7 +121,7 @@ void *vanessa_queue_peek_last(vanessa_queue_t * q);
  *       value may be NULL
  **********************************************************************/
 
-void *vanessa_queue_peek_first(vanessa_queue_t * q);
+void *vanessa_queue_peek_first(const vanessa_queue_t * q);
 
 
 /**********************************************************************
@@ -146,7 +146,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q);
  *         -1 on error
  **********************************************************************/
 
-ssize_t vanessa_queue_length(vanessa_queue_t * q);
+ssize_t vanessa_queue_length(const vanessa_queue_t * q);
 
 
 /**********************************************************************
@@ -279,7 +279,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_add_element(
  **********************************************************************/
 
 vanessa_dynamic_array_t *vanessa_dynamic_array_delete_element(
-		vanessa_dynamic_array_t * a, const int index);
+		vanessa_dynamic_array_t * a, const ssize_t index);
 
 
 /**********************************************************************
@@ -353,7 +353,7 @@ char *vanessa_dynamic_array_display(vanessa_dynamic_array_t * a,
  **********************************************************************/
 
 void * vanessa_dynamic_array_get_element(vanessa_dynamic_array_t * a,
-		size_t elementno);
+					 ssize_t elementno);
 
 
 /**********************************************************************

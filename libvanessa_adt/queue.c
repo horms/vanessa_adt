@@ -197,7 +197,7 @@ vanessa_queue_t *vanessa_queue_pop(vanessa_queue_t * q, void **value)
  *       value may be NULL
  **********************************************************************/
 
-void *vanessa_queue_peek_last(vanessa_queue_t * q)
+void *vanessa_queue_peek_last(const vanessa_queue_t * q)
 {
 	return((q == NULL || q->last == NULL)?NULL:q->last->value);
 }
@@ -216,7 +216,7 @@ void *vanessa_queue_peek_last(vanessa_queue_t * q)
  *       value may be NULL
  **********************************************************************/
 
-void *vanessa_queue_peek_first(vanessa_queue_t * q)
+void *vanessa_queue_peek_first(const vanessa_queue_t * q)
 {
 	return((q==NULL || q->first==NULL)?NULL:q->first->value);
 }
@@ -261,7 +261,7 @@ void vanessa_queue_destroy(vanessa_queue_t * q)
  *         -1 on error
  **********************************************************************/
 
-ssize_t vanessa_queue_length(vanessa_queue_t * q)
+ssize_t vanessa_queue_length(const vanessa_queue_t * q)
 {
 	return(q == NULL?-1:q->size);
 }

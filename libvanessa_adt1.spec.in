@@ -1,0 +1,66 @@
+Summary: Library of Abstract Data Types 
+Name: libvanessa_adt1
+Version: @VERSION@
+Release: 1
+License: GNU Lesser General Public Licence
+URL: http://www.vergenet.net/linux/vanessa/
+Group: Development/Libraries
+Source0: http://www.vergenet.net/linux/vanessa/download/vanessa_adt/%{version}/vanessa_adt-%{version}.tar.bz2
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Provides: %{name}-%{version}
+BuildRequires: gcc make libvanessa_logger0-devel >= 0.0.5
+
+%description
+Library of Abstract Data Types (ADTs) that may be useful.  Includes queue,
+dynamic array and key value ADT.
+
+%package devel
+Summary: Headers and static libraries for development
+Group: Development/Libraries
+Requires: %{name}-%{version} libvanessa_logger0-devel >= 0.0.5
+Provides: %{name}-devel-%{version}
+
+
+%description devel
+Headers and static libraries required to develop against vanessa_adt.
+
+%prep
+%setup -n vanessa_adt-%{version}
+
+%build
+
+%configure --disable-static
+make
+
+%install
+make DESTDIR=$RPM_BUILD_ROOT install
+
+# Don't install libvanessa_adt.la
+[ ! -e $RPM_BUILD_ROOT/%{_libdir}/libvanessa_adt.la ] || \
+	rm $RPM_BUILD_ROOT/%{_libdir}/libvanessa_adt.la
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%post
+ldconfig
+
+%postun
+ldconfig
+
+%files
+%defattr(-, root, root)
+%{_libdir}/*.so.*
+
+%files devel
+%defattr(-, root, root)
+%{_libdir}/*.so
+%{_includedir}/*.h
+%doc README COPYING ChangeLog
+
+%changelog
+* Tue Jun  8 2010 Simon Horman <horms@verge.net.au> (0.0.9-1)
+  new release
+* Sat Sep 20 2009 Simon Horman <horms@verge.net.au> (0.0.8-1)
+  new release

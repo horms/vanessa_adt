@@ -37,7 +37,7 @@ size_t hash_function(int *i) {
  * Muriel the main function
  **********************************************************************/
 
-int main(int argc, char **argv)
+int main()
 {
 	vanessa_logger_t *vl;
 	vanessa_hash_t *a;

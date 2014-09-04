@@ -30,10 +30,10 @@ compat \
 copyright \
 libvanessa-adt-dev.dirs \
 libvanessa-adt-dev.files \
-libvanessa-adt0.dirs \
-libvanessa-adt0.files \
-libvanessa-adt0.postinst \
-libvanessa-adt0.shlibs \
+libvanessa-adt1.dirs \
+libvanessa-adt1.files \
+libvanessa-adt1.postinst \
+libvanessa-adt1.shlibs \
 rules \
 dpkg-checkbuild
 

@@ -21,9 +21,10 @@ AC_INIT(libvanessa_adt/vanessa_adt.h)
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR([libltdl/m4])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 LT_INIT
 LTDL_INIT
-AM_INIT_AUTOMAKE(vanessa_adt, 0.0.8)
+AM_INIT_AUTOMAKE(vanessa_adt, 0.0.9)
 
 AC_PROG_LIBTOOL
 AC_PROG_CC
@@ -37,7 +38,6 @@ AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_TYPE_UID_T
 AC_TYPE_SIZE_T
 
@@ -75,6 +75,6 @@ debian/Makefile
 libvanessa_adt/Makefile 
 test/Makefile 
 Makefile
-vanessa_adt.spec
+libvanessa_adt1.spec
 INSTALL
 )

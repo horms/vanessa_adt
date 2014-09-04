@@ -135,7 +135,7 @@ vanessa_hash_t *vanessa_hash_create(size_t nobucket,
 
 void vanessa_hash_destroy(vanessa_hash_t *h) 
 {
-	int i;
+	size_t i;
 	
 	if(h == NULL) {
 		return;
@@ -173,7 +173,7 @@ void vanessa_hash_destroy(vanessa_hash_t *h)
 
 size_t vanessa_hash_length(vanessa_hash_t *h) 
 {
-	int i;
+	size_t i;
 	size_t len = 0;
 
 	if(h == NULL) {
@@ -217,7 +217,7 @@ size_t vanessa_hash_length(vanessa_hash_t *h)
 
 char *vanessa_hash_display(vanessa_hash_t *h, const char delimiter) 
 {
-	int i;
+	size_t i;
 	char *str;
 	char *bucket_str;
 	size_t len;
@@ -267,7 +267,7 @@ char *vanessa_hash_display(vanessa_hash_t *h, const char delimiter)
 
 size_t vanessa_hash_get_count(vanessa_hash_t *h) 
 {
-	int i;
+	size_t i;
 	size_t count = 0;
 
 	if(h == NULL) {
@@ -415,7 +415,7 @@ vanessa_hash_t *vanessa_hash_remove_element(vanessa_hash_t *h, void *value)
 
 vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h) 
 {
-	int i;
+	size_t i;
 	vanessa_hash_t *new_h;
 
 	new_h = vanessa_hash_create(h->nobucket, h->e_destroy, h->e_duplicate,
@@ -458,7 +458,7 @@ vanessa_hash_t *vanessa_hash_duplicate(vanessa_hash_t *h)
 int vanessa_hash_iterate(vanessa_hash_t *h, int(* action)(void *e, void *data),
 		                void *data) 
 {
-	int i;
+	size_t i;
 	int status;
 
 	for(i = 0 ; i < h->nobucket ; i++ ){

@@ -40,6 +40,7 @@
 #include <unistd.h>
 
 #include "vanessa_adt.h"
+#include "unused.h"
 
 #ifdef DMALLOC
 #include <dmalloc.h>
@@ -205,7 +206,7 @@ vanessa_dynamic_array_t *vanessa_config_file_read_fd(int fd,
 	char read_buffer[MAX_LINE_LENGTH];
 	char *tmp_token_buffer;
 	char c;
-	int max_token_pos = MAX_LINE_LENGTH - 3;
+	size_t max_token_pos = MAX_LINE_LENGTH - 3;
 	int read_pos;
 	struct stat stat_buf;
 
@@ -563,8 +564,10 @@ vanessa_mode_num_str_t *vanessa_mode_num_str(mode_t mode,
  *         -1 otherwise
  **********************************************************************/
 
-int vanessa_config_file_check_permission_fd(int fd, uid_t uid, gid_t gid,
-		mode_t mode, vanessa_adt_flag_t flag)
+int vanessa_config_file_check_permission_fd(int fd, uid_t UNUSED(uid),
+					    gid_t UNUSED(gid),
+					    mode_t UNUSED(mode),
+					    vanessa_adt_flag_t flag)
 {
 	vanessa_mode_str_t mode_a;
 	vanessa_mode_str_t mode_b;
