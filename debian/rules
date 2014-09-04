@@ -8,6 +8,7 @@ cfg:=--prefix=/usr
 build: checkbuild build-stamp
 build-stamp:
 	dh_testdir
+	dh_autoreconf
 	./configure $(cfg)
 	$(MAKE)
 	touch build-stamp
@@ -17,6 +18,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	[ ! -f Makefile ] || $(MAKE) distclean
+	dh_autoreconf_clean
 	dh_clean
 
 install: build
