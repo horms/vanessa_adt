@@ -15,7 +15,7 @@ build-stamp:
 	dh_testdir
 	dh_autoreconf
 	./configure $(cfg)
-	$(MAKE)
+	$(MAKE) V=1
 	touch build-stamp
 
 clean:
