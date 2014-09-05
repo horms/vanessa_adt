@@ -77,4 +77,5 @@ test/Makefile
 Makefile
 libvanessa_adt1.spec
 INSTALL
+vanessa-adt.pc
 )
