@@ -561,7 +561,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char *string,
 	while ((sub_string = strchr(string, delimiter)) != NULL) {
 		*sub_string = '\0';
 		i = atoi(string);
-		if (!vanessa_dynamic_array_add_element(a, (void *) i)) {
+		if (!vanessa_dynamic_array_add_element(a, &i)) {
 			VANESSA_LOGGER_DEBUG(
 					"vanessa_dynamic_array_add_element");
 			return (NULL);
@@ -570,7 +570,7 @@ vanessa_dynamic_array_t *vanessa_dynamic_array_split_str_to_int(char *string,
 	}
 	if (*string != '\0') {
 		i = atoi(string);
-		if (!vanessa_dynamic_array_add_element(a, (void *) i)) {
+		if (!vanessa_dynamic_array_add_element(a, &i)) {
 			VANESSA_LOGGER_DEBUG(
 					"vanessa_dynamic_array_add_element");
 			return (NULL);
